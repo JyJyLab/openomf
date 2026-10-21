@@ -1,6 +1,7 @@
 #ifndef LANGUAGES_H
 #define LANGUAGES_H
 
+#include "utils/str.h"
 #include <stdbool.h>
 
 /*
@@ -50,5 +51,8 @@ const char *lang_get2(unsigned int id);
 // Looked up in KOREAN.UI ("English<TAB>Korean" per line) only while the Korean language is active;
 // returns the input unchanged when there is no translation.
 const char *lang_ui(const char *english);
+
+// Korean: replace particle marks such as "은(는)" with the form that fits the preceding syllable.
+void lang_josa(str *s);
 
 #endif // LANGUAGES_H

@@ -119,11 +119,12 @@ void newsroom_fixup_str(newsroom_local *local) {
     str_replace(&tmp, "~8", pronoun_strip(subject_pronoun(local->sex1), scratch, sizeof scratch), -1);
     str_replace(&tmp, "~7", pronoun_strip(object_pronoun(local->sex1), scratch, sizeof scratch), -1);
     str_replace(&tmp, "~6", pronoun_strip(possessive_pronoun(local->sex1), scratch, sizeof scratch), -1);
-    str_replace(&tmp, "~5", "Stadium", -1);
+    str_replace(&tmp, "~5", lang_ui("Stadium"), -1);
     str_replace(&tmp, "~4", pronoun_strip(lang_get(local->har2 + LANG_STR_HAR), scratch, sizeof scratch), -1);
     str_replace(&tmp, "~3", pronoun_strip(lang_get(local->har1 + LANG_STR_HAR), scratch, sizeof scratch), -1);
     str_replace(&tmp, "~2", str_c(&local->pilot2), -1);
     str_replace(&tmp, "~1", str_c(&local->pilot1), -1);
+    lang_josa(&tmp); // Korean particles after the inserted names
 
     newsroom_fixup_capitalization(&tmp);
 

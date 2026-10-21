@@ -1,0 +1,4415 @@
+ID: 0
+Title: Help Page 1
+Data: {WIDTH 260}{CENTER OFF}
+{SIZE 8}{SHADOWS ON}{COLOR:YELLOW}One Must Fall 2097{COLOR:DEFAULT}
+
+{SIZE 6}{SPACING 7}   Welcome to One Must Fall 2097. If the thought of 90-foot-tall robots engineered to tear you to shreds makes you cower in fear, you'll love the "Exit" option.
+
+   But, if you're pumped up and ready for the fight of your life, we made this game for you! Prepare to kick robotic butt.
+
+   Read on to find out the inside scoop on OMF 2097 - the controls, the moves, the tournaments, playing tips, and more. While playing the game, you can press the F1 key at any time to bring up these instructions.
+
+   The on-disk manual is also jam-packed with even more tips. To view it, type "HELPME" from the DOS prompt.
+{CENTER ON}
+
+ID: 1
+Title: Help Page 2
+Data: {CENTER OFF}
+{SIZE 8}{SHADOWS ON}{COLOR:YELLOW}Using The Main Menu{COLOR:DEFAULT}{SIZE 6}{SPACINGG 7}
+
+One Must Fall 2097 gives you three distinctively different types of play.
+
+{SIZE 6}{SPACING 9}{COLOR:YELLOW}One Player Game
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   This throws you into a series of fights that test your skill in pure fast-action combat. Steel will bend and sparks will fly!
+
+{SIZE 6}{SPACING 9}{COLOR:YELLOW}Two Player Game
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   Challenge a human opponent. Two can play with the keyboard, keyboard and joystick, or two joysticks.  
+
+{SIZE 6}{SPACING 9}{COLOR:YELLOW}Tournament play
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   Starting with a weakling robot, you fight for cash and use your winnings to upgrade your robot. The ultimate combination of action and strategy!
+{CENTER ON}
+
+ID: 2
+Title: Help Page 3
+Data: {CENTER OFF}
+{SIZE 8}{SHADOWS ON}{COLOR:YELLOW}Other Main Menu Options{SIZE 6}{COLOR:DEFAULT}
+
+
+{SIZE 6}{SPACING 9}{COLOR:YELLOW}Configuration
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   Use this main menu choice to change video, sound, keyboard, and joystick settings.
+
+{SIZE 6}{SPACING 9}{COLOR:YELLOW}Gameplay
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   Tweak the game speed, computer intelligence, and other play options. You can customize OMF 2097 in many ways.
+{CENTER ON}
+
+ID: 3
+Title: Help Page 4
+Data: {CENTER OFF}
+{SIZE 8}{SHADOWS ON}{COLOR:YELLOW}Choosing A Pilot{COLOR:DEFAULT}
+
+{SIZE 6}{SPACING 7}When you start a new game, you need to choose a pilot to lead your robot in battle. Each pilot has unique stats:
+
+{SIZE 6}{SPACING 9}{COLOR:YELLOW}POWER
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   A pilot's pure brute strength.  The higher your power, the more damage you will do when punching and kicking.
+
+{SIZE 6}{SPACING 9}{COLOR:YELLOW}AGILITY
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   Quick thinkers make quick competitors.  Agility shows your pilot's reacting speed.
+
+{SIZE 6}{SPACING 9}{COLOR:YELLOW}ENDURANCE
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   It's not only tensile strength that keeps a robot on its feet.  Since a pilot feel each blow to his robot, ENDURANCE plays a vital role.
+{CENTER ON}
+
+ID: 4
+Title: Help Page 5
+Data: {CENTER OFF}
+{SIZE 8}{SHADOWS ON}{COLOR:YELLOW}Choosing A Robot{COLOR:DEFAULT}
+
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   After selecting a pilot, you face your most important decision - which robot will represent you in combat.  Each robot has many attacks, or moves, with which he can damage and eventually defeat opponents. Each robot also has at least two "special moves".
+
+   Special moves are accomplished by quick controller and button combinations.  You must master the special moves if you want to become a champion.
+
+   For more information on control and special moves, see page 10 and read the manual (run HELPME.EXE from the DOS prompt).
+{CENTER ON}
+
+ID: 5
+Title: Help Page 6
+Data: {CENTER OFF}
+{SIZE 8}{SHADOWS ON}{COLOR:YELLOW}Tournament Play{COLOR:DEFAULT}
+
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   After choosing tournament play, you're in the tournament command center. The control panel is on the bottom of the screen. Use it to buy or sell parts, take training courses, and fight in a tournament or simulation.
+
+   After creating a new pilot, you see a holographic picture of your robot. Your robot's name and special moves are listed on the top right.
+
+   Your pilot's stats are on the left: POWER, AGILITY, AND ENDURANCE. You can take training courses to improve these.
+
+   Your robot's stats are shown on the bottom right. These change as you buy robotic upgrades.
+{CENTER ON}
+
+ID: 6
+Title: Help Page 7
+Data: {CENTER OFF}
+{SIZE 8}{SHADOWS ON}{COLOR:YELLOW}Robot Stats in Tournament Play{COLOR:DEFAULT}
+
+{SIZE 6}{SPACING 9}{COLOR:YELLOW}ARM SPEED and LEG SPEED
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   These gauges show the speed of your robot's limbs.  As these increase,  you'll be able to punch and kick more rapidly.
+
+{SIZE 6}{SPACING 9}{COLOR:YELLOW}ARM POWER and LEG POWER
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   These gauges describe the damage you can do when you hit or kick your opponent.
+
+{SIZE 6}{SPACING 9}{COLOR:YELLOW}STUN RESISTANCE
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   Upgrade this to help your robot handle the shock of repeated blows. Without, you will often be knocked dizzy.
+
+{SIZE 6}{SPACING 9}{COLOR:YELLOW}ARMOR PLATE:
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   Armor plate drastically reduces the damage done to your robot when hit.
+{CENTER ON}
+
+ID: 7
+Title: Help Page 8
+Data: {CENTER OFF}
+{SIZE 8}{SHADOWS ON}{COLOR:YELLOW}The Holding Bay{COLOR:DEFAULT}
+
+{SIZE 6}{SPACING 7}    This is where the robots are prepared and inspected for battle. In a one player game, you'll see a dialog between your pilot and his opponent.
+
+   In a two player game, player one can choose the arena to fight in. Press left and right to switch arenas.
+
+   Next, your pilot is taken into the tournament lab where his nervous system is interfaced with that of his robot. He then slips into a drug-induced sleep. When the pilot awakes, his flesh replaced by hardened steel. With luck and your help, the pilot can defeat his opponent in the arena.
+{CENTER ON}
+
+ID: 8
+Title: Help Page 9
+Data: {CENTER OFF}
+{SHADOWS ON}{SIZE 8}{COLOR:YELLOW}The Arena{COLOR:DEFAULT}
+
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}Now it's time for the real test!
+
+   The red energy meter at the top shows how much damage your robot can take before shutdown. Every successful strike against you lowers that total. If your energy meter dips below zero, your robot collapses.
+
+   The thin blue bar shows your stun damage. This bar flashes when dangerously low. When it drops below zero, your pilot becomes dizzy and loses control for several seconds.
+
+   Some arenas contain dangerous hazards: fireballs, spikes, fighter jets, and the like. If you can't take the heat, you can turn them off in the GAMEPLAY menu.
+{CENTER ON}
+
+ID: 9
+Title: Help Page 10
+Data: {CENTER OFF}
+{SHADOWS ON}{SIZE 8}{COLOR:YELLOW}Offense{COLOR:DEFAULT}
+
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   Robots have a wide range of attacks. Before you can pommel your opponent with them, you must know the controls. You can perform any move with either the keyboard or a joystick.
+
+"Forward" means towards your opponent.
+"Back" means away from your opponent.
+
+   The attacks use these directions along with the kick and PUNCH buttons. punching while pressing back will produce a different move than punching while pressing forward.
+
+   Press up to jump. To jump higher and farther,  first press down then press up.
+{CENTER ON}
+
+ID: 10
+Title: Help Page 11
+Data: {CENTER OFF}
+{SHADOWS ON}{SIZE 8}{COLOR:YELLOW}Defense
+
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}   To defend yourself against an attack while you're on the ground, press back without attacking (don't punch or kick). Your robot will block any type of move, except leg sweeps.
+
+   To block leg sweeps, press down-back. Pressing down-back will not block air attacks.
+
+   While airborne, you cannot defend any attack. Jump with caution.
+{CENTER ON}
+
+ID: 11
+Title: Help Page 12
+Data: {CENTER OFF}
+{SHADOWS ON}{SIZE 8}{COLOR:YELLOW}Playing Tips{COLOR:DEFAULT}
+
+{SIZE 6}{SPACING 7}   Each pilot gives a robot an entirely new feel. Try several pilots and choose one that best suits your abilities. In a one player game, the computer will play the other pilots, using their individual personalities to guide the intelligence of the robots they wield.
+
+   Each robot has several special moves which are both undocumented and very powerful. To perform a special move, you need to combine controller movements and button presses in rapid succession. Watch the computer play to see some of the special moves, then try to do them yourself.
+
+Example: Perform Jaguar's Concussion Cannon by pressing down-back-punch.
+{CENTER ON}
+
+ID: 12
+Title: Help Page 13
+Data: {CENTER OFF}
+{SHADOWS ON}{SIZE 8}{COLOR:YELLOW}Combos
+{SIZE 6}{COLOR:DEFAULT}
+{SIZE 6}{SPACING 7}{COLOR:DEFAULT}
+   A combo is a series of two or more moves that, when performed in sequence, do considerable damage and cannot be blocked after the first hit.
+
+   Whenever you hit with a combo, you are awarded bonus points. If you want to be a truly outstanding player, master as many combos as you can find.
+{CENTER ON}
+
+ID: 13
+Title: Help Page 14
+Data: This should be small and normal size.
+
+ID: 14
+Title: Help Page 15
+Data: This should be small and normal size.
+
+ID: 15
+Title: Help Page 16
+Data: This should be small and normal size.
+
+ID: 16
+Title: Help Page 17
+Data: This should be small and normal size.
+
+ID: 17
+Title: Help Page 18
+Data: This should be small and normal size.
+
+ID: 18
+Title: Help Page 19
+Data: This should be small and normal size.
+
+ID: 19
+Title: Help Page 20
+Data: This should be small and normal size.
+
+ID: 20
+Title: Pilots
+Data: Crystal
+
+ID: 21
+Title: Pilots
+Data: Steffan
+
+ID: 22
+Title: Pilots
+Data: Milano
+
+ID: 23
+Title: Pilots
+Data: Christian
+
+ID: 24
+Title: Pilots
+Data: Shirro
+
+ID: 25
+Title: Pilots
+Data: Jean-Paul
+
+ID: 26
+Title: Pilots
+Data: Ibrahim
+
+ID: 27
+Title: Pilots
+Data: Angel
+
+ID: 28
+Title: Pilots
+Data: Cossette
+
+ID: 29
+Title: Pilots
+Data: Raven
+
+ID: 30
+Title: Pilots
+Data: Major Kreissack
+
+ID: 31
+Title: Robots
+Data: Jaguar
+
+ID: 32
+Title: Robots
+Data: Shadow
+
+ID: 33
+Title: Robots
+Data: Thorn
+
+ID: 34
+Title: Robots
+Data: Pyros
+
+ID: 35
+Title: Robots
+Data: Electra
+
+ID: 36
+Title: Robots
+Data: Katana
+
+ID: 37
+Title: Robots
+Data: Shredder
+
+ID: 38
+Title: Robots
+Data: Flail
+
+ID: 39
+Title: Robots
+Data: Gargoyle
+
+ID: 40
+Title: Robots
+Data: Chronos
+
+ID: 41
+Title: Robots
+Data: Nova
+
+ID: 42
+Title: Robots
+Data: 
+ID: 43
+Title: Robots
+Data: 
+ID: 44
+Title: Robots
+Data: 
+ID: 45
+Title: Robots
+Data: 
+ID: 46
+Title: Robots
+Data: 
+ID: 47
+Title: Robots
+Data: 
+ID: 48
+Title: Robots
+Data: 
+ID: 49
+Title: Robots
+Data: 
+ID: 50
+Title: Robots
+Data: 
+ID: 51
+Title: Robots
+Data: 
+ID: 52
+Title: Robots
+Data: 
+ID: 53
+Title: Robots
+Data: 
+ID: 54
+Title: Robots
+Data: 
+ID: 55
+Title: Robots
+Data: 
+ID: 56
+Title: Robots
+Data: Stadium
+
+ID: 57
+Title: Robots
+Data: Danger Room
+
+ID: 58
+Title: Robots
+Data: Power Plant
+
+ID: 59
+Title: Robots
+Data: Fire Pit
+
+ID: 60
+Title: Robots
+Data: The Desert
+
+ID: 61
+Title: Robots
+Data: Fire Pit
+
+ID: 62
+Title: Robots
+Data: Fire Pit
+
+ID: 63
+Title: Robots
+Data: Fire Pit
+
+ID: 64
+Title: Robots
+Data: Fire Pit
+
+ID: 65
+Title: Robots
+Data: Fire Pit
+
+ID: 66
+Title: Arenas
+Data: This is where the W.A.R. machines get their first testing. The general public is invited to view the event.
+
+ID: 67
+Title: Arenas
+Data: This was W.A.R.'s first danger arena.  Combatants must avoid the dangerous spikes.
+
+ID: 68
+Title: Arenas
+Data: Built inside a 21st century lightning receptive power plant, the walls deliver quite a shock.
+
+ID: 69
+Title: Arenas
+Data: The ultimate test, computers project holographic spheres that, when hit, ignite fireballs under your enemy's feet.
+
+ID: 70
+Title: Arenas
+Data: Stay on your toes and dodge the attacks of the fighter jets to survive in the Desert.
+
+ID: 71
+Title: Arenas
+Data: The ultimate test: Computers project holographic spheres that, when hit, ignite fireballs under your enemy's feet.
+
+ID: 72
+Title: Arenas
+Data: The ultimate test, computers project holographic spheres that, when hit, ignite fireballs under your enemy's feet.
+
+ID: 73
+Title: Arenas
+Data: The ultimate test, computers project holographic spheres that, when hit, ignite fireballs under your enemy's feet.
+
+ID: 74
+Title: Arenas
+Data: The ultimate test, computers project holographic spheres that, when hit, ignite fireballs under your enemy's feet.
+
+ID: 75
+Title: Arenas
+Data: The ultimate test, computers project holographic spheres that, when hit, ignite fireballs under your enemy's feet.
+
+ID: 76
+Title: First news report
+Data: Do you want to fight this challenger?
+
+ID: 77
+Title: First news report
+Data: And in other news, after ~1's fight tonight, ~2, an unranked competitor, has issued a public challenge to ~1.
+
+ID: 78
+Title: First news report
+Data: Well, if ~8 accepts the challenge, you can bet your life I'll be there to watch the fight!
+
+ID: 79
+Title: First news report
+Data: I sure hope you didn't miss this fight folks, because tonight we have a NEW CHAMPION.
+
+ID: 80
+Title: First news report
+Data: 3
+
+ID: 81
+Title: First news report
+Data: his
+
+ID: 82
+Title: First news report
+Data: her
+
+ID: 83
+Title: First news report
+Data: him
+
+ID: 84
+Title: First news report
+Data: her
+
+ID: 85
+Title: First news report
+Data: he
+
+ID: 86
+Title: First news report
+Data: she
+
+ID: 87
+Title: First news report
+Data:  ~1 showed incredible abilities with the ~3 as ~2 became little more than a punching bag.
+
+ID: 88
+Title: Second news report
+Data: This one, as well as other outstanding hits, have sent ~2 back to the shop for a while.
+
+ID: 89
+Title: First news report
+Data: For all you folks that enjoy an evenly matched battle, I hope you didn't pay for the match at the ~5.
+
+ID: 90
+Title: Second news report
+Data: ...But for all you who like the occasional one-sided masochistic pouncing, then watch out for ~1.
+
+ID: 91
+Title: First news report
+Data: Whoa, this challenger meant business tonight.  ~1 could show the old pros a thing or two about that ~3.
+
+ID: 92
+Title: Second news report
+Data: Check this action out.  This is how ~2 looked the whole match: beaten, bruised, and bewildered.
+
+ID: 93
+Title: First news report
+Data: The crowd cheered as ~2 was defeated in the remarkable showdown with ~1.
+
+ID: 94
+Title: Second news report
+Data:  ~1 pleased excited onlookers with respectable skill.  Here's the hit that ended the match.
+
+ID: 95
+Title: First news report
+Data:  ~1 was looking good this evening.  ~6 ~3 left the ~5 with only a few scars from ~6 overmatched opponent.
+
+ID: 96
+Title: Second news report
+Data:  ~2 showed some pretty pathetic fighting skills, and ~1 took advantage of him.  Just look at this hit.
+
+ID: 97
+Title: First news report
+Data:  The ~5 was rocked tonight by the impressive ~1.  ~2 needs some more practice before ~11 can beat the likes of ~7.
+
+ID: 98
+Title: Second news report
+Data:  ~4 parts littered the floor after repeated blows like this.  Almost makes me feel sorry for ~2's repair crew.
+
+ID: 99
+Title: First news report
+Data:  ~1 fought a respectable battle with ~2 and was victorious.  Not half bad, ~1!
+
+ID: 100
+Title: Second news report
+Data: They both did some damage, but ~1 ended the contest with this shot.
+
+ID: 101
+Title: First news report
+Data: ...And in the arena tonight, ~2 gave ~1 a run for ~6 money, but came up a few thousand credits short.
+
+ID: 102
+Title: Second news report
+Data:  ~2 held in there for a while, but ~1 simply out-performed ~10 with moves like this.
+
+ID: 103
+Title: First news report
+Data: All you arena junkies out there got a pretty good show at the ~5.  ~2 fought with skill, but not enough...
+
+ID: 104
+Title: Second news report
+Data: ...to put down ~1's hulking ~3.  Hey, maybe next time, ~2.
+
+ID: 105
+Title: First news report
+Data:  ~1 and ~2 were evenly matched.  The ~4 of ~2 will spend some time in the shop tonight!
+
+ID: 106
+Title: Second news report
+Data: These two fought practically blow for blow until ~1 finally nailed ~2 with this well-timed shot.
+
+ID: 107
+Title: First news report
+Data: I sure hope ~1 and ~2's repair crews didn't plan any parties tonight.
+
+ID: 108
+Title: Second news report
+Data: With the mediocre performance by ~1, ~6 ~3 repair crew will be stuck in the shop almost as long as ~6 opponent's.
+
+ID: 109
+Title: First news report
+Data: Now this was an even match-up if I've ever seen one.  If they fought this match tomorrow, ~2 could just as easily win.
+
+ID: 110
+Title: Second news report
+Data:  ~1's final, stumbling blow ended the match in what could only be called a fortunate victory.
+
+ID: 111
+Title: First news report
+Data: Whew, ~2 really tore into ~1.  ~1 should probably take that ~3 back to the training field.
+
+ID: 112
+Title: Second news report
+Data: All I can say to ~1 is get some practice. That ~3 won't win without your help.
+
+ID: 113
+Title: First news report
+Data: I'll sum this one up for all you sports fans in two words: TRACK MEET.  ~2 ran circles around, and sometimes over,
+
+ID: 114
+Title: Second news report
+Data:  ~1 and ~6 ill-fated ~3.  ~1 should start making bets against ~7self if ~8's gonna take dives like this one.
+
+ID: 115
+Title: First news report
+Data: My, my, my...  Who had control of that ~3!  Oh, it was ~1.  Well, I have some advice for you, ~1.
+
+ID: 116
+Title: Second news report
+Data: Duck, block, dodge, call in sick, do something other than take hit after hit from that ~4.
+
+ID: 117
+Title: First news report
+Data: This match was pretty one sided.  ~2 dominated the match against the overwhelmed ~1.
+
+ID: 118
+Title: Second news report
+Data: The performance by ~2 was simply outstanding. ~1 couldn't react fast enough to stop the onslaught.
+
+ID: 119
+Title: First news report
+Data:  ~2 really knows what he's doing out there, or maybe ~1 simply has no clue.  Regardless, this was a blowout.
+
+ID: 120
+Title: Second news report
+Data: There were a few lucky shots by ~1, but most of the time the match looked like this.
+
+ID: 121
+Title: First news report
+Data: They must be pretty short on pilots these days to recruit the likes of ~1.
+
+ID: 122
+Title: Second news report
+Data: I could have blocked this last hit in my sleep.  Hey, maybe that's the problem.  Somebody wake up ~1.
+
+ID: 123
+Title: First news report
+Data: A good performance by ~1, but obviously not enough to rival ~2's ~4
+
+ID: 124
+Title: Second news report
+Data:  ~1's prowess is obvious, but this shot really shows what a ~4 can do in the hands of ~2.
+
+ID: 125
+Title: First news report
+Data: Ohh, a bad day in the life of ~1.  Well, I'm sure ~2 won't shed any tears over ~6 loss.
+
+ID: 126
+Title: Second news report
+Data:  ~1 landed some pretty good shots, but was worn down by ground shaking shots like this one.
+
+ID: 127
+Title: First news report
+Data: Hmm.. ~1 showed some guts in the ~5 against ~2 tonight, but just didn't show enough skill.
+
+ID: 128
+Title: Second news report
+Data:  ~1 stood ~6 ground courageously, but was eventually left lying on it.  Well ~1, there's always tomorrow.
+
+ID: 129
+Title: First news report
+Data: Nice try ~1.  This was about as close as they come, folks.  ~2 must be thankful for ...
+
+ID: 130
+Title: Second news report
+Data: blows like this one.  It was shots like this that kept ~2 just a half-step ahead of ~1.
+
+ID: 131
+Title: First news report
+Data: Wow, this was a close one.  ~1 and ~2 traded blows in the ~5 until...
+
+ID: 132
+Title: Second news report
+Data:  ~2, fatigued and stumbling, landed this, the final blow.  The next time these two meet, it'll be some rematch.
+
+ID: 133
+Title: First news report
+Data: Folks, you've gotta feel a little sorry for ~1 tonight.  If it weren't for ~2 landing...
+
+ID: 134
+Title: Second news report
+Data: a few lucky blows like this one, I think ~1 would have pulled this one off.
+
+ID: 135
+Title: Descriptions 1
+Data: Forced to fend for herself after her parents mysterious death, Crystal's determination has earned great respect.
+
+ID: 136
+Title: Descriptions 2
+Data: Although he is the youngest competitor in tournament history, Steffan fights with skill beyond his years.
+
+ID: 137
+Title: Descriptions 3
+Data: Recruited by Raven for his outstanding kickboxing skills, Milano's speed and dexterity are legendary.
+
+ID: 138
+Title: Descriptions 4
+Data: Christian's aggressive style strikes fear in the minds of competitors and desire in the hearts of many young women.
+
+ID: 139
+Title: Descriptions 5
+Data: Over his many years of competition, Shirro has developed unrivaled power, yet retains a youthful sense of humor.
+
+ID: 140
+Title: Descriptions 6
+Data: His calculating and devious nature along with well-rounded abilities often intimidate Jean-Paul's opponents.
+
+ID: 141
+Title: Descriptions 7
+Data: A retired triathlete, Ibrahim's patience and honesty have made him a valued mentor to many aspiring competitors.
+
+ID: 142
+Title: Descriptions 8
+Data: Angel's past is shrouded in mystery.  Aside from her reclusive disposition and strong will, little is known of her.
+
+ID: 143
+Title: Descriptions 9
+Data: A veteran fighter, Cossette has become cautious, defensive, and bitter after being crippled in the arena.
+
+ID: 144
+Title: Descriptions 10
+Data: As major Kreissack's bodyguard and right-hand man, Raven has beaten and humiliated many inside, and outside, the arena.
+
+ID: 145
+Title: Descriptions 11
+Data: Boss guy's description.  This really won't be seen, but we'll make space for it anyway.
+
+ID: 146
+Title: Shareware Msgs
+Data: Sorry, this pilot is available only in the full version of the game.  See ORDERING INFO in the main menu.
+
+ID: 147
+Title: Shareware Msgs
+Data: Sorry, this robot is available only in the full version of the game.  See ORDERING INFO in the main menu.
+
+ID: 148
+Title: Shareware Msgs
+Data: Sorry, this tournament is available only in the full version of the game.  See ORDERING INFO in the main menu.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 149
+Title: Error
+Data: *Other player stopped responding!
+
+ID: 150
+Title: Error
+Data: OUT OF SYNC ERROR
+
+ID: 151
+Title: Error
+Data: Joystick %i seems to be calibrated incorrectly.  Do you wish to recalibrate?
+
+ID: 152
+Title: Error
+Data: FULL
+VERSION
+ONLY
+
+ID: 153
+Title: Error
+Data: Unable to initialize joystick %i.  Switching player %i input to keyboard.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 154
+Title: Error
+Data: Sorry, the other player is using this.  Please choose another.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 155
+Title: Error
+Data: Unable to locate any tournament files.  Somehow, all the files with a TRN extension have been removed from the directory.  You must re-install OMF.
+
+ID: 156
+Title: Error
+Data: Unable to save file %s.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 157
+Title: Error
+Data: NO PILOTS ARE AVAILABLE.  PLEASE CREATE A NEW PILOT.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 158
+Title: Error
+Data: THE ONE AND ONLY PILOT ON FILE IS ALREADY LOADED.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 159
+Title: Error
+Data: NO PILOTS AVAILABLE FOR DELETION.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 160
+Title: Error
+Data: Unable to locate joystick.  Make sure the joystick is plugged into your joystick port before running OMF.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 161
+Title: Error
+Data: This machine does not have enough conventional memory to run sound and music.  %lik is required to run sounds, and %lik is required for both sound and music.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 162
+Title: Error
+Data: This machine does not have enough conventional memory (%lik required) to run music.  Music disabled.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 163
+Title: Error
+Data: This machine does not have enough conventional memory (%lik required) to run sound.  Sound disabled.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 164
+Title: Error
+Data: This machine does not have enough conventional memory.  %lik is required.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 165
+Title: Error
+Data: Sorry, this machine has less than the minimum XMS requirements.
+%lik, %li more bytes are needed to run One Must Fall 2097.
+
+
+ID: 166
+Title: Conventional memory
+Data: Ran out of memory.
+Try to free up more upper memory.
+
+ID: 167
+Title: Conventional memory
+Data: Error opening file: %s
+
+ID: 168
+Title: Conventional memory
+Data: Ran out of XMS.
+
+ID: 169
+Title: MASI Music load error
+Data: Music load error #%i, loading music file %s.
+
+ID: 170
+Title: MASI Music load error
+Data: mSampleLoad error #%i.
+
+ID: 171
+Title: MASI Music load error
+Data: TRIED TO LOAD OBJECT LARGER THAN WORKSPACE.
+NEED TO ENLARGE WORKSPACE SIZE.
+
+ID: 172
+Title: Record file stuff
+Data: Your opponent changing system settings.
+
+Please wait.
+
+ID: 173
+Title: Record file stuff
+Data: The file %s has been altered or damaged and is no longer compatible with your opponents machine.  You must repair this file or reinstall the game.
+
+ID: 174
+Title: Record file stuff
+Data: The file %s on your opponents machine has been altered or damaged and is no longer compatible with your machine.
+
+ID: 175
+Title: Record file stuff
+Data: Your opponent is busy doing something.
+
+Please wait.
+
+ID: 176
+Title: Record file stuff
+Data: RECORD FILE ERROR
+
+ID: 177
+Title: Chat text
+Data: Your opponent has left the game.
+
+ID: 178
+Title: Chat text
+Data: PLAYER
+
+ID: 179
+Title: Chat text
+Data: THE OTHER GUY
+
+ID: 180
+Title: Player quote when reaching han
+Data: That whimp isn't here yet!  I really hate waiting.
+
+ID: 181
+Title: !
+Data: Your opponent has not yet arrived
+
+ID: 182
+Title: !
+Data: Your opponent is playing in the tournament.  You must choose TOURNAMENT PLAY and challenge him with a saved pilot.
+
+ID: 183
+Title: !
+Data: Your opponent is playing a two player game.  You must choose TWO PLAYER GAME to challenge him.
+
+ID: 184
+Title:  Used on startup as non-server
+Data: Gameplay options have been copied from your opponent.
+
+PRESS <ALT> G FOR THE GAMEPLAY MENU
+
+ID: 185
+Title:  Used on startup as server
+Data: Gameplay options have been sent to your opponent.
+
+PRESS <ALT> G FOR THE GAMEPLAY MENU
+
+ID: 186
+Title: Choose robot in normal game
+Data: CHOOSE YOUR ROBOT
+
+ID: 187
+Title: Choose pilot in normal game
+Data: CHOOSE YOUR PILOT
+
+ID: 188
+Title: English exit text.
+Data: OMF_END.BIN
+
+ID: 189
+Title: for secret character fire.
+Data: FIRE
+
+ID: 190
+Title: for secret character ice.
+Data: ICE
+
+ID: 191
+Title: for creating pilot
+Data: $ %sk
+
+ID: 192
+Title: for creating pilot
+Data: ENTER PILOT'S NAME
+
+ID: 193
+Title: for player using robot
+Data: WITH
+
+ID: 194
+Title: Scoreboard
+Data: SCOREBOARD -
+
+ID: 195
+Title: Scoreboard
+Data:  %d of %d
+
+ID: 196
+Title: Scoreboard
+Data: PLAYER NAME       ROBOT    PILOT          SCORE
+
+ID: 197
+Title: Welcome to setup
+Data: ENTERING THE ARENA
+
+ID: 198
+Title: Welcome to setup
+Data: Press PGDN or PGUP to change page
+Press ESC to exit help
+
+ID: 199
+Title: Welcome to setup
+Data: PAGE
+
+ID: 200
+Title: Welcome to setup
+Data: VS.
+
+ID: 201
+Title: Welcome to setup
+Data:  CONSECUTIVE HITS
+
+ID: 202
+Title: Welcome to setup
+Data:  HIT COMBO
+
+ID: 203
+Title: Welcome to setup
+Data: PERFECT ROUND
+
+ID: 204
+Title: Welcome to setup
+Data: VITALITY
+
+ID: 205
+Title: Welcome to setup
+Data: SCRAP BONUS
+
+ID: 206
+Title: Welcome to setup
+Data: DESTRUCTION BONUS
+
+ID: 207
+Title: Welcome to setup
+Data: Type OMF to start game.
+
+
+ID: 208
+Title: Welcome to setup
+Data: Please run SETUP.EXE before running OMF.EXE
+
+
+ID: 209
+Title: Welcome to setup
+Data: Have a nice day.
+
+
+ID: 210
+Title: Welcome to setup
+Data: Error occurred on line %d of module %s
+
+
+ID: 211
+Title: Welcome to setup
+Data: GAME PAUSED
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 212
+Title: Win
+Data: Are you sure you want to quit this game?
+
+ID: 213
+Title: Win
+Data: Do you wish to continue?
+
+ID: 214
+Title: Joystick Calibration
+Data: CALIBRATE JOYSTICK
+
+ID: 215
+Title: Joystick Calibration
+Data: Calibrate joystick by moving in a complete circle.  Letting joystick 'rest' in center should cause center button to be pressed.  Press ESC to abort or joystick button to accept.
+
+ID: 216
+Title: Power
+Data: POWER
+
+ID: 217
+Title: Speed
+Data: AGILITY
+
+ID: 218
+Title: Endurance
+Data: ENDURANCE
+
+ID: 219
+Title: Hyper or Normal
+Data: NORMAL
+
+ID: 220
+Title: Hyper or Normal
+Data: HYPER
+
+ID: 221
+Title: Select
+Data: ANOTHER PILOT BY THE NAME OF %s HAS THE SAME FILENAME.  DO YOU WISH TO OVERWRITE THIS PILOT?
+
+ID: 222
+Title: Select
+Data: ARE YOU SURE YOU WANT TO DELETE PILOT %s?
+
+ID: 223
+Title: Select
+Data: SELECT
+
+ID: 224
+Title: Select
+Data: SELECT PHOTO FOR PILOT %s
+
+ID: 225
+Title: Select
+Data: SELECT PILOT TO LOAD
+
+ID: 226
+Title: Select
+Data: SELECT PILOT TO DELETE
+
+ID: 227
+Title: Select
+Data: SELECT OPPONENT
+
+ID: 228
+Title: On or off
+Data: NO
+
+ID: 229
+Title: On or off
+Data: YES
+
+ID: 230
+Title: On or off
+Data: OFF
+
+ID: 231
+Title: On or off
+Data: ON
+
+ID: 232
+Title: Fastest
+Data: FASTEST
+
+ID: 233
+Title: Slowest
+Data: SLOWEST
+
+ID: 234
+Title: One Round
+Data: ONE ROUNDa
+
+ID: 235
+Title: One Round
+Data: NORMAL
+
+ID: 236
+Title: One Round
+Data: LOW
+
+ID: 237
+Title: Fast or normal
+Data: NORMAL
+
+ID: 238
+Title: Fast or normal
+Data: FAST
+
+ID: 239
+Title: Sorry
+Data: Sorry, HYPER mode is available only in the full version of the game.  See ORDERING INFO in the main menu. 
+
+Press any key to continue.
+
+ID: 240
+Title: Sound card
+Data: CHOOSE SOUND CARD
+
+ID: 241
+Title: Sound card
+Data: Choose sound card.  If you do not have a sound card, choose PC SPEAKER.  PC Speaker sound can be disabled from within the game if you prefer silence.
+
+ID: 242
+Title: Sound card
+Data: PC Speaker
+
+ID: 243
+Title: Sound card
+Data: Unable to initialize sound card.  Check your sound card settings and make sure IRQ, DMA, and base IO Address comply.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 244
+Title: Sound card
+Data: NONE
+
+ID: 245
+Title: Sound card
+Data: LOW
+
+ID: 246
+Title: Sound card
+Data: MEDIUM
+
+ID: 247
+Title: Sound card
+Data: HIGH
+
+ID: 248
+Title: Option 1
+Data: ONE PLAYER GAMEa
+
+ID: 249
+Title: Option 2
+Data: TWO PLAYER GAMEa
+
+ID: 250
+Title: Option 2
+Data: TOURNAMENT PLAYa
+
+ID: 251
+Title: Option 3
+Data: CONFIGURATIONa
+
+ID: 252
+Title: Option 4
+Data: GAMEPLAYa
+
+ID: 253
+Title: Option 5
+Data: ORDERING INFOa
+
+ID: 254
+Title: Option 6
+Data: HELPa
+
+ID: 255
+Title: Option 7
+Data: DEMOa
+
+ID: 256
+Title: Option 8
+Data: SCOREBOARDa
+
+ID: 257
+Title: Option 9
+Data: QUITa
+
+ID: 258
+Title: Title
+Data: ADVANCED OPTIONS
+
+ID: 259
+Title: Option 1
+Data: REHIT MODE %sa
+
+ID: 260
+Title: Option 2
+Data: DEF. THROWS %sa
+
+ID: 261
+Title: Option 3
+Data: THROW RANGE %i%%a
+
+ID: 262
+Title: Option 4
+Data: JUMP HEIGHT %i%%a
+
+ID: 263
+Title: Option 5
+Data: HIT PAUSE %ia
+
+ID: 264
+Title: Option 6
+Data: VITALITY x %i%%a
+
+ID: 265
+Title: Option 7
+Data: KNOCK DOWN %sa
+
+ID: 266
+Title: Option 7
+Data: BLOCK DAMAGE %i%%a
+
+ID: 267
+Title: Option 5
+Data: ENHANCE %s
+
+ID: 268
+Title: Option 8
+Data: DONEa
+
+ID: 269
+Title: Option 8
+Data: NONE
+
+ID: 270
+Title: Option 8
+Data: LEVEL 1
+
+ID: 271
+Title: Option 8
+Data: LEVEL 2
+
+ID: 272
+Title: Option 8
+Data: NONE
+
+ID: 273
+Title: Option 8
+Data: KICKS
+
+ID: 274
+Title: Option 8
+Data: PUNCHES
+
+ID: 275
+Title: Option 8
+Data: BOTH
+
+ID: 276
+Title: Option 1
+Data: This will allow multiple hits to an airborne enemy.  However, after a move has connected it can no longer rehit.  If you mix up your moves, you can get some wild "juggling" combos.  "Extra" hits will inflict only 60% damage.
+
+ID: 277
+Title: Option 1
+Data: Allow player to throw enemy from a defensive (back) position.
+
+ID: 278
+Title: Option 1
+Data: Change the distance from which a player can throw his enemy (Defaults to 100%).
+
+ID: 279
+Title: Option 1
+Data: Change the height of the players jumps (Defaults to 100%).  This has no effect in tournament mode.
+
+ID: 280
+Title: Option 1
+Data: This effects the amount of time the game pauses during a hit or a block (Defaults to 4).
+
+ID: 281
+Title: Option 1
+Data: This will effect the amount of hits a player can take.  Increasing this will allow for longer matches (Defaults to 100%).  This has no effect in tournament mode.
+
+ID: 282
+Title: Option 1
+Data: This will make the indicated jumping move knock down the opponent when it hits.
+
+ID: 283
+Title: Option 1
+Data: This will cause damage to be inflicted when any move is blocked.
+
+ID: 284
+Title: Option 1
+Data: This will automaticaly enhance both robots in a network game to the level specified.
+
+ID: 285
+Title: Option 1
+Data: Exit ADVANCED OPTIONS.
+
+ID: 286
+Title: Title
+Data: GAMEPLAY
+
+ID: 287
+Title: Option 1
+Data: SPEED %sa
+
+ID: 288
+Title: Option 2
+Data: FIGHT MODE %sa
+
+ID: 289
+Title: Option 3
+Data: POWER 1 %sa
+
+ID: 290
+Title: Option 4
+Data: POWER 2 %sa
+
+ID: 291
+Title: Option 5
+Data: HAZARDS %sa
+
+ID: 292
+Title: Option 6
+Data: %sa
+
+ID: 293
+Title: Option 7
+Data: BEST %i OF %ia
+
+ID: 294
+Title: Option 7
+Data: ADVANCED OPTIONSa
+
+ID: 295
+Title: Option 7
+Data: CONFIGURATIONa
+
+ID: 296
+Title: Option 8
+Data: DONEa
+
+ID: 297
+Title: Option 1
+Data: Change the overall speed of the game.  Press left and right to change.
+
+ID: 298
+Title: Option 1
+Data: Fight mode can be either NORMAL or HYPER.  Hyper mode will enhance your special moves.  Check the robot description section of help for more information.
+
+ID: 299
+Title: Option 1
+Data: Change the power of player 1's hits and throws.  This setting will take effect only in two player games.  Press left and right to change.
+
+ID: 300
+Title: Option 1
+Data: Change the power of player 2's hits and throws.  This setting will take effect only in two player games.  Press left and right to change.
+
+ID: 301
+Title: Option 1
+Data: Some arenas have dangerous environments:  spikes, electricity, fighter planes, and the like.  This option turns them on and off.
+
+ID: 302
+Title: Option 1
+Data: This determines how well the computer fights in a one player game.  This has no effect on two player games.  Press left and right to change.
+
+ID: 303
+Title: Option 1
+Data: This will set up matches so that they are one round, best two out of three rounds, or best three out of five rounds.
+
+ID: 304
+Title: Option 1
+Data: Do I really have to tell you what this is?
+
+ID: 305
+Title: Option 1
+Data: Set various game options.
+
+ID: 306
+Title: Option 1
+Data: Go back to the main menu.
+
+ID: 307
+Title: Title
+Data: OMF 2097
+
+ID: 308
+Title: Title
+Data: RETURN TO GAMEa
+
+ID: 309
+Title: Title
+Data: SOUND %sa
+
+ID: 310
+Title: Title
+Data: MUSIC %sa
+
+ID: 311
+Title: Title
+Data: SPEED %sa
+
+ID: 312
+Title: Title
+Data: VIDEO OPTIONSa
+
+ID: 313
+Title: Title
+Data: HELPa
+
+ID: 314
+Title: Title
+Data: QUITa
+
+ID: 315
+Title: Title
+Data: FORFEITa
+
+ID: 316
+Title: Title
+Data: Continue fighting.
+
+ID: 317
+Title: Title
+Data: Raise or lower the volume of all sound effects.  Press left or right to change.
+
+ID: 318
+Title: Title
+Data: Raise or lower the volume of music.  Press left or right to change.
+
+ID: 319
+Title: Title
+Data: Change the speed of the game when in the arena.  Press left or right to change.
+
+ID: 320
+Title: Title
+Data: These are miscellaneous options for visual effects and detail levels.
+
+ID: 321
+Title: Title
+Data: Obtain detailed and thorough explanation of the various options for which you may need a detailed and thorough explanation.
+
+ID: 322
+Title: Title
+Data: Quit game and return to main menu.
+
+ID: 323
+Title: Title
+Data: You will lose the match and still pay for repairs on your robot.
+
+ID: 324
+Title: Option 1
+Data: ⌂|||||||
+
+ID: 325
+Title: Option 2
+Data: ⌂⌂||||||
+
+ID: 326
+Title: Option 1
+Data: ⌂⌂⌂|||||
+
+ID: 327
+Title: Option 1
+Data: ⌂⌂⌂⌂||||
+
+ID: 328
+Title: Option 1
+Data: ⌂⌂⌂⌂⌂|||
+
+ID: 329
+Title: Option 1
+Data: ⌂⌂⌂⌂⌂⌂||
+
+ID: 330
+Title: Option 1
+Data: ⌂⌂⌂⌂⌂⌂⌂|
+
+ID: 331
+Title: Option 1
+Data: ⌂⌂⌂⌂⌂⌂⌂⌂
+
+ID: 332
+Title: Option 1
+Data: ||||||||||
+
+ID: 333
+Title: Option 1
+Data: ⌂|||||||||
+
+ID: 334
+Title: Option 2
+Data: ⌂⌂||||||||
+
+ID: 335
+Title: Option 1
+Data: ⌂⌂⌂|||||||
+
+ID: 336
+Title: Option 1
+Data: ⌂⌂⌂⌂||||||
+
+ID: 337
+Title: Option 1
+Data: ⌂⌂⌂⌂⌂|||||
+
+ID: 338
+Title: Option 1
+Data: ⌂⌂⌂⌂⌂⌂||||
+
+ID: 339
+Title: Option 1
+Data: ⌂⌂⌂⌂⌂⌂⌂|||
+
+ID: 340
+Title: Option 1
+Data: ⌂⌂⌂⌂⌂⌂⌂⌂||
+
+ID: 341
+Title: Option 1
+Data: ⌂⌂⌂⌂⌂⌂⌂⌂⌂|
+
+ID: 342
+Title: Option 1
+Data: ⌂⌂⌂⌂⌂⌂⌂⌂⌂⌂
+
+ID: 343
+Title: Diff 1
+Data: CPU: PUNCHING BAG
+
+ID: 344
+Title: Diff 1
+Data: CPU: ROOKIE
+
+ID: 345
+Title: Diff 1
+Data: CPU: VETERAN
+
+ID: 346
+Title: Diff 1
+Data: CPU: WORLD CLASS
+
+ID: 347
+Title: Diff 1
+Data: CPU: CHAMPION
+
+ID: 348
+Title: Diff 1
+Data: CPU: DEADLY
+
+ID: 349
+Title: Diff 1
+Data: CPU: ULTIMATE
+
+ID: 350
+Title: Title
+Data: CUSTOM KEYBOARD SETUP
+
+ID: 351
+Title: opt 1
+Data: JUMP UP
+
+ID: 352
+Title: opt 1
+Data: JUMP RIGHT
+
+ID: 353
+Title: opt 1
+Data: WALK RIGHT
+
+ID: 354
+Title: opt 1
+Data: DUCK FORWARD
+
+ID: 355
+Title: opt 1
+Data: DUCK
+
+ID: 356
+Title: opt 1
+Data: DUCK BACK
+
+ID: 357
+Title: opt 1
+Data: WALK BACK
+
+ID: 358
+Title: opt 1
+Data: JUMP LEFT
+
+ID: 359
+Title: opt 1
+Data: PUNCH
+
+ID: 360
+Title: opt 1
+Data: KICK
+
+ID: 361
+Title: opt 1
+Data: DONEa
+
+ID: 362
+Title: opt 1
+Data: Press enter to change key, then press key desired for the specified action.  Press ESC when done.
+
+ID: 363
+Title: opt 1
+Data: Press enter to change key, then press key desired for the specified action.  Press ESC when done.
+
+ID: 364
+Title: opt 1
+Data: Press enter to change key, then press key desired for the specified action.  Press ESC when done.
+
+ID: 365
+Title: opt 1
+Data: Press enter to change key, then press key desired for the specified action.  Press ESC when done.
+
+ID: 366
+Title: opt 1
+Data: Press enter to change key, then press key desired for the specified action.  Press ESC when done.
+
+ID: 367
+Title: opt 1
+Data: Press enter to change key, then press key desired for the specified action.  Press ESC when done.
+
+ID: 368
+Title: opt 1
+Data: Press enter to change key, then press key desired for the specified action.  Press ESC when done.
+
+ID: 369
+Title: opt 1
+Data: Press enter to change key, then press key desired for the specified action.  Press ESC when done.
+
+ID: 370
+Title: opt 1
+Data: Press enter to change key, then press key desired for the specified action.  Press ESC when done.
+
+ID: 371
+Title: opt 1
+Data: Press enter to change key, then press key desired for the specified action.  Press ESC when done.
+
+ID: 372
+Title: opt 1
+Data: Leave custom keyboard setup.
+
+ID: 373
+Title: Shadows
+Data: VIDEO OPTIONS
+
+ID: 374
+Title: Shadows
+Data: SHADOWS %sa
+
+ID: 375
+Title: Shadows
+Data: ANIMATION %sa
+
+ID: 376
+Title: Shadows
+Data: PALETTE ANIM %sa
+
+ID: 377
+Title: Shadows
+Data: SNOW CHECKING %sa
+
+ID: 378
+Title: Shadows
+Data: SCREEN SHAKES %sa
+
+ID: 379
+Title: Shadows
+Data: MENUS %s
+
+ID: 380
+Title: Shadows
+Data: RESET TO DEFAULTa
+
+ID: 381
+Title: Shadows
+Data: DONEa
+
+ID: 382
+Title: help1
+Data: Turn robot shadows on and off.  Turn this off to improve the game's speed while in the arena.
+
+ID: 383
+Title: help1
+Data: Turn extra animation on and off.  If you turn this off, the game will run faster but won't look as detailled.
+
+ID: 384
+Title: help1
+Data: This will turn off all palette animation:  lightening flashes, flame flicker, and the like.  Turn this off for faster play, or if your screen flickers.
+
+ID: 385
+Title: help1
+Data: Turning this off will speed up palette animations, but may cause snow or flicker with some video cards.
+
+ID: 386
+Title: help1
+Data: Turn this off to eliminate the screen 'shaking' when a character hits the wall, a character is thrown, etc.
+
+ID: 387
+Title: help1
+Data: Normal menus look nice but may be a little slow on some machines.  Changes will take place after leaving the menus.
+
+ID: 388
+Title: help1
+Data: This will restore all video options to the default settings.
+
+ID: 389
+Title: help1
+Data: Exit from this menu.
+
+ID: 390
+Title: Quality
+Data: LOW
+
+ID: 391
+Title: Quality
+Data: MEDIUM
+
+ID: 392
+Title: Quality
+Data: HIGH
+
+ID: 393
+Title: Title
+Data: SOUND CARD SETUP
+
+ID: 394
+Title: Opt 1
+Data: QUALITY %sa
+
+ID: 395
+Title: Opt 1
+Data: NONEa
+
+ID: 396
+Title: Opt 1
+Data: IO PORT %xha
+
+ID: 397
+Title: Opt 1
+Data: 8-BIT DMA %ia
+
+ID: 398
+Title: Opt 1
+Data: 16-BIT DMA %ia
+
+ID: 399
+Title: Opt 1
+Data: IRQ %ia
+
+ID: 400
+Title: Opt 1
+Data: MIDI IO PORT %xha
+
+ID: 401
+Title: Opt 1
+Data: MIDI IRQ %ia
+
+ID: 402
+Title: Opt 1
+Data: DONEa
+
+ID: 403
+Title: Quality
+Data: Setting the sound quality low may help overall speed on slower machines.  This does not affect PC Speaker and some sound cards, like the Gravis Ultra Sound.
+
+ID: 404
+Title: Quality
+Data: Choose a sound card to play sound effects and music.
+
+ID: 405
+Title: Quality
+Data: Choose the IO address of the card.  Press LEFT or RIGHT to change value.
+
+ID: 406
+Title: Quality
+Data: Choose the 8-bit DMA channel of the card.  Press LEFT or RIGHT to change value.
+
+ID: 407
+Title: Quality
+Data: Choose the 16-bit DMA channel of the card.  Press LEFT or RIGHT to change value.
+
+ID: 408
+Title: Quality
+Data: Choose the IRQ number of the card.  Press LEFT or RIGHT to change value.
+
+ID: 409
+Title: Quality
+Data: Choose the MIDI IO address of the card.  Press LEFT or RIGHT to change value.
+
+ID: 410
+Title: Quality
+Data: Choose the MIDI IRQ of the card.  Press LEFT or RIGHT to change value.
+
+ID: 411
+Title: Quality
+Data: Exit SETUP.
+
+ID: 412
+Title: Title
+Data: CONFIGURATION
+
+ID: 413
+Title: Option
+Data: PLAYER 1 INPUTa
+
+ID: 414
+Title: Option
+Data: PLAYER 2 INPUTa
+
+ID: 415
+Title: Option
+Data: VIDEO OPTIONSa
+
+ID: 416
+Title: Option
+Data: SOUND %sa
+
+ID: 417
+Title: Option
+Data: MUSIC %sa
+
+ID: 418
+Title: Option
+Data: SOUND TEST %ia
+
+ID: 419
+Title: Option
+Data: STEREO %sa
+
+ID: 420
+Title: Option
+Data: DONEa
+
+ID: 421
+Title: Option
+Data: NORMAL
+
+ID: 422
+Title: Option
+Data: REVERSED
+
+ID: 423
+Title: Option
+Data: Choose the control for player 1: keyboard or joystick.
+
+ID: 424
+Title: Option
+Data: Choose the control for player 2: keyboard or joystick.
+
+ID: 425
+Title: Option
+Data: Various options for visual effects and detail levels.
+
+ID: 426
+Title: Option
+Data: Raise or lower the volume of all sound effects.  Press left or right to change.
+
+ID: 427
+Title: Option
+Data: Raise or lower the volume of music.  Press left or right to change.
+
+ID: 428
+Title: Option
+Data: SOUND EFFECTS TEST.  Press left and right to change sound effect, and enter to play it.
+
+ID: 429
+Title: Option
+Data: Switch stereo sound between left and right speakers.
+
+ID: 430
+Title: Option
+Data: Leave CONFIGURATION.
+
+ID: 431
+Title: Title
+Data: CHOOSE INPUT DEVICE FOR PLAYER %i
+
+ID: 432
+Title: Option
+Data: RIGHT KEYBOARDa
+
+ID: 433
+Title: Option
+Data: LEFT KEYBOARDa
+
+ID: 434
+Title: Option
+Data: CUSTOM KEYBOARDa
+
+ID: 435
+Title: Option
+Data: JOYSTICK 1a
+
+ID: 436
+Title: Option
+Data: JOYSTICK 2a
+
+ID: 437
+Title: Option
+Data: DONEa
+
+ID: 438
+Title: Option
+Data: This will use the numeric keypad for movement, enter for punch, and right shift for kick.
+
+ID: 439
+Title: Option
+Data: This will set 'Q', 'W', and 'E' for jumping directions, 'A' and 'D' for left and right and 'Z', 'X', and 'C' for ducking.  TAB and CTRL control punching and kicking.
+
+ID: 440
+Title: Option
+Data: Invent your own keyboard settings.
+
+ID: 441
+Title: Option
+Data: Use joystick 1.
+
+ID: 442
+Title: Option
+Data: Use joystick 2.  This is only available if you have a special cable to connect two joysticks to your computer.
+
+ID: 443
+Title: Option
+Data: Leave without changing anything.
+
+ID: 444
+Title: Names
+Data: ALUMINUM
+(EASY)
+
+ID: 445
+Title: Names
+Data: IRON
+(MEDIUM)
+
+ID: 446
+Title: Names
+Data: STEEL
+(HARD)
+
+ID: 447
+Title: Names
+Data: HEAVY
+METAL
+
+ID: 448
+Title: Names
+Data: POWER
+
+ID: 449
+Title: Names
+Data: AGILITY
+
+ID: 450
+Title: Names
+Data: ENDUR.
+
+ID: 451
+Title: Names
+Data: ARENA
+
+ID: 452
+Title: Names
+Data: SIM
+
+ID: 453
+Title: Names
+Data: NEW TOURNAMENT
+
+ID: 454
+Title: Names
+Data: LOAD
+
+ID: 455
+Title: Names
+Data: DELETE
+
+ID: 456
+Title: Names
+Data: NEW
+
+ID: 457
+Title: Names
+Data: BUY
+
+ID: 458
+Title: Names
+Data: SELL
+
+ID: 459
+Title: Names
+Data: TRAINING
+COURSES
+
+ID: 460
+Title: Names
+Data: TRADE
+ROBOT
+
+ID: 461
+Title: Names
+Data: AVAILABLE:
+
+ID: 462
+Title: Names
+Data: ARMOR
+
+ID: 463
+Title: Names
+Data: ARMOR PLATE:
+
+ID: 464
+Title: Names
+Data: STUN RES.
+
+ID: 465
+Title: Names
+Data: STUN RES.:
+
+ID: 466
+Title: Names
+Data: %s
+SPEED
+
+ID: 467
+Title: Names
+Data: %s SPEED:
+
+ID: 468
+Title: Names
+Data: %s
+POWER
+
+ID: 469
+Title: Names
+Data: %s POWER:
+
+ID: 470
+Title: Names
+Data: %s
+SPEED
+
+ID: 471
+Title: Names
+Data: %s SPEED:
+
+ID: 472
+Title: Names
+Data: %s
+POWER
+
+ID: 473
+Title: Names
+Data: %s POWER:
+
+ID: 474
+Title: Names
+Data:  D
+ O
+ N
+ E
+
+ID: 475
+Title: Names
+Data:  Q
+ U
+ I
+ T
+
+ID: 476
+Title: No tradable robots
+Data: NONE
+
+ID: 477
+Title: Unavailable item
+Data: UNAVAILABLE
+
+ID: 478
+Title: Unavailable item
+Data: NOT
+AVAILABLE
+
+ID: 479
+Title: Unavailable item
+Data: MINIMUM LEVEL
+
+ID: 480
+Title: Unavailable item
+Data: While working for the money to enter the tournament, your hard earned skills have dwindled and parts of your robot have deteriorated.  You vow never again to be so careless with your money.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 481
+Title: Unavailable item
+Data: While working for the money to enter the tournament, your hard earned skills have dwindled and parts of your robot have deteriorated.  You vow never again to be so careless with your money.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 482
+Title: Unavailable item
+Data: While working for the money to enter the tournament, your hard earned skills have dwindled and parts of your robot have deteriorated.  You vow never again to be so careless with your money.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 483
+Title: Unavailable item
+Data: YOU WILL HAVE TO SPEND TIME WORKING AS A MECHANIC TO EARN ENOUGH MONEY FOR THIS TOURNAMENT.  ARE YOU SURE YOU WANT TO ENTER %s?
+
+ID: 484
+Title: Unavailable item
+Data: ARE YOU SURE YOU WANT TO FORFEIT %s TO ENTER %s?
+
+ID: 485
+Title: Unavailable item
+Data: YOU ARE ALREADY COMPETING IN %s.  DO YOU WISH TO FORFEIT AND RE-ENTER %s?
+
+ID: 486
+Title: Unavailable item
+Data: SELECT THE TOURNAMENT YOU WISH TO ENTER
+
+ID: 487
+Title: Unavailable item
+Data: SELECT A DIFFICULTY LEVEL
+
+ID: 488
+Title: No tradable robots
+Data: NO AFFORDABLE
+ROBOTS AVAILABLE
+FOR TRADE
+
+ID: 489
+Title: Unavailable item
+Data: SALES PRICE:
+
+ID: 490
+Title: Unavailable item
+Data: UPGRADE COST:
+
+ID: 491
+Title: Unavailable item
+Data: Level %d
+
+ID: 492
+Title: Robot description
+Data: SPECIAL MOVES:
+
+Jaguar Leap
+
+Concussion Cannon
+
+Overhead Throw
+
+ID: 493
+Title: Robot description
+Data: SPECIAL MOVES:
+
+Shadow Dive
+
+Shadow Punch
+
+Shadow Slide
+
+Shadow Grab
+
+ID: 494
+Title: Robot description
+Data: SPECIAL MOVES:
+
+Speed-Kick
+
+Off-Wall Attack
+
+Spike-Charge
+
+ID: 495
+Title: Robot description
+Data: SPECIAL MOVES:
+
+Fire Spin
+
+Super Thrust Attack
+
+Jet Swoop
+
+ID: 496
+Title: Robot description
+Data: SPECIAL MOVES:
+
+Ball Lightning
+
+Rolling Thunder
+
+Electric Shards
+
+ID: 497
+Title: Robot description
+Data: SPECIAL MOVES:
+
+Rising Blade
+
+Head Stomp
+
+Razor Spin
+
+ID: 498
+Title: Robot description
+Data: SPECIAL MOVES:
+
+Head-Butt
+
+Flip Kick
+
+Flying Hands
+
+ID: 499
+Title: Robot description
+Data: SPECIAL MOVES:
+
+Spinning Throw
+
+Charging Punch
+
+Swinging Chains
+
+ID: 500
+Title: Robot description
+Data: SPECIAL MOVES:
+
+Diving Claw
+
+Flying Talon
+
+Wing Charge
+
+ID: 501
+Title: Robot description
+Data: SPECIAL MOVES:
+
+Small-Scale Teleportation
+
+Matter Phasing
+
+Stasis Activator
+
+ID: 502
+Title: Robot description
+Data: SPECIAL MOVES:
+
+Mini grenade
+
+Missile Launcher
+
+Earthquake smash
+
+ID: 503
+Title: Robot description
+Data: SPECIAL MOVES:
+
+TELEPORT
+JUMP THROUGH WALL THINGIE
+STASIS CRYSTAL
+
+ID: 504
+Title: Robot description
+Data: SPECIAL MOVES:
+
+FLASH KICK RIP-OFF
+SPIKE CHARGE
+WALL SPIKE
+
+ID: 505
+Title: Robot description
+Data: SPECIAL MOVES:
+
+JET CHARGE
+FLAME DIVE
+
+ID: 506
+Title: Robot description
+Data: SPECIAL MOVES:
+
+JET CHARGE
+FLAME DIVE
+
+ID: 507
+Title: Robot description
+Data: SPECIAL MOVES:
+
+JET CHARGE
+FLAME DIVE
+
+ID: 508
+Title: Robot description
+Data: SPECIAL MOVES:
+
+JET CHARGE
+FLAME DIVE
+
+ID: 509
+Title: Robot description
+Data: SPECIAL MOVES:
+
+JET CHARGE
+FLAME DIVE
+
+ID: 510
+Title: Robot description
+Data: SPECIAL MOVES:
+
+JET CHARGE
+FLAME DIVE
+
+ID: 511
+Title: Robot description
+Data: SPECIAL MOVES:
+
+JET CHARGE
+FLAME DIVE
+
+ID: 512
+Title: Training
+Data: BLUNT STONE'S
+POWER ENHANCEMENT
+TECHNIQUES:
+
+ID: 513
+Title: Training
+Data: THE LEGENDARY
+FLASH'S TRAINING
+FOR THE DEXTERITY
+CHALLENGED:
+
+ID: 514
+Title: Training
+Data: VLAD IRONSIDE'S
+AEROBIC AND SHOCK
+RESILIENCE
+WORKSHOP:
+
+ID: 515
+Title: Training
+Data: TAKE POWER TRAINING COURSE FOR %s?
+
+ID: 516
+Title: Training
+Data: TAKE AGILITY TRAINING COURSE FOR %s?
+
+ID: 517
+Title: Training
+Data: TAKE ENDURANCE TRAINING COURSE FOR %s?
+
+ID: 518
+Title: Trade robot
+Data: TRADE YOUR %s FOR A %s AND %s?
+
+ID: 519
+Title: Trade robot
+Data: TRADE YOUR %s AND %s FOR A %s?
+
+ID: 520
+Title: Trade robot
+Data: TRADE YOUR %s FOR A %s?
+
+ID: 521
+Title: Upgrade purchase
+Data: SELL LEVEL %d %s SPEED UPGRADE FOR %s?
+
+ID: 522
+Title: Upgrade purchase
+Data: PURCHASE LEVEL %d %s SPEED UPGRADE FOR %s?
+
+ID: 523
+Title: Upgrade purchase
+Data: SELL LEVEL %d %s POWER UPGRADE FOR %s?
+
+ID: 524
+Title: Upgrade purchase
+Data: PURCHASE LEVEL %d %s POWER UPGRADE FOR %s?
+
+ID: 525
+Title: Upgrade purchase
+Data: SELL LEVEL %d STUN RESISTANCE FOR %s?
+
+ID: 526
+Title: Upgrade purchase
+Data: PURCHASE LEVEL %d STUN RESISTANCE FOR %s?
+
+ID: 527
+Title: Upgrade purchase
+Data: SELL LEVEL %d ARMOR PLATING FOR %s?
+
+ID: 528
+Title: Upgrade purchase
+Data: PURCHASE LEVEL %d ARMOR PLATING FOR %s?
+
+ID: 529
+Title: Help for tournament difficulty
+Data: The perfect difficulty setting for new players.
+
+ID: 530
+Title: Help for tournament difficulty
+Data: Think you're ready to fight with the big boys?
+
+ID: 531
+Title: Help for tournament difficulty
+Data: To survive, you'll need ball bearings of steel.
+
+ID: 532
+Title: Help for tournament difficulty
+Data: Prepare to be rocked!
+
+ID: 533
+Title: Help for robot dev. button
+Data: TRAIN TO INCREASE PILOT'S POWER LEVEL
+
+ID: 534
+Title: Help for robot dev. button
+Data: TRAIN TO INCREASE PILOT'S AGILITY LEVEL
+
+ID: 535
+Title: Help for robot dev. button
+Data: TRAIN TO INCREASE PILOT'S ENDURANCE LEVEL
+
+ID: 536
+Title: Help for robot dev. button
+Data: LEAVE THE PILOT TRAINING CENTER
+
+ID: 537
+Title: Help for robot dev. button
+Data: ENTER ARENA AND FIGHT %s
+
+ID: 538
+Title: Help for robot dev. button
+Data: TAKE TRAINING COURSE TO INCREASE POWER, AGILITY, OR ENDURANCE
+
+ID: 539
+Title: Help for robot dev. button
+Data: PURCHASE UPGRADE KITS FOR YOUR ROBOT
+
+ID: 540
+Title: Help for robot dev. button
+Data: SELL UPGRADE KITS FROM YOUR ROBOT
+
+ID: 541
+Title: Help for robot dev. button
+Data: LOAD PILOT FROM DISK
+
+ID: 542
+Title: Help for robot dev. button
+Data: CREATE A NEW PILOT
+
+ID: 543
+Title: Help for robot dev. button
+Data: DELETE A PILOT FROM DISK
+
+ID: 544
+Title: Help for robot dev. button
+Data: PRACTICE AGAINST ANY ENEMY PILOT OR PLAYER IN A COMPUTER SIMULATION
+
+ID: 545
+Title: Help for robot dev. button
+Data: LEAVE THE COMMAND CENTER
+(YOUR PILOT WILL BE SAVED AUTOMATICALLY)
+
+ID: 546
+Title: Help for robot dev. button
+Data: REGISTER FOR A NEW TOURNAMENT
+
+ID: 547
+Title: Help for robot dev. button
+Data: CHANGE MAIN BODY COLOR FOR ROBOT
+
+ID: 548
+Title: Help for robot dev. button
+Data: CHANGE MAIN BODY COLOR FOR ROBOT
+
+ID: 549
+Title: Help for robot dev. button
+Data: CHANGE SECONDARY BODY COLOR FOR ROBOT
+
+ID: 550
+Title: Help for robot dev. button
+Data: CHANGE SECONDARY BODY COLOR FOR ROBOT
+
+ID: 551
+Title: Help for robot dev. button
+Data: CHANGE THIRD BODY COLOR FOR ROBOT
+
+ID: 552
+Title: Help for robot dev. button
+Data: CHANGE THIRD BODY COLOR FOR ROBOT
+
+ID: 553
+Title: Help for robot dev. button
+Data: SELL POWER LEVEL FOR %s ATTACKS
+
+ID: 554
+Title: Help for robot dev. button
+Data: UPGRADE THE DAMAGE DONE BY ALL %s ATTACKS
+
+ID: 555
+Title: Help for robot dev. button
+Data: SELL POWER LEVEL FOR %s ATTACKS
+
+ID: 556
+Title: Help for robot dev. button
+Data: UPGRADE THE DAMAGE DONE BY ALL %s ATTACKS
+
+ID: 557
+Title: Help for robot dev. button
+Data: SELL SPEED LEVEL FOR %s ATTACKS
+
+ID: 558
+Title: Help for robot dev. button
+Data: UPGRADE THE SPEED OF ALL %s ATTACKS
+
+ID: 559
+Title: Help for robot dev. button
+Data: SELL SPEED LEVEL FOR %s ATTACKS
+
+ID: 560
+Title: Help for robot dev. button
+Data: UPGRADE THE SPEED OF ALL %s ATTACKS
+
+ID: 561
+Title: Help for robot dev. button
+Data: SELL ARMOR PLATING LEVEL FROM ROBOT
+
+ID: 562
+Title: Help for robot dev. button
+Data: UPGRADE ARMOR PLATING OF THE ROBOT
+
+ID: 563
+Title: Help for robot dev. button
+Data: SELL STUN RESISTANCE LEVEL FROM ROBOT
+
+ID: 564
+Title: Help for robot dev. button
+Data: UPGRADE STUN RESISTANCE LEVEL FOR ROBOT
+
+ID: 565
+Title: Help for robot dev. button
+Data: TRADE CURRENT ROBOT FOR ANOTHER TYPE OF ROBOT
+
+ID: 566
+Title: Help for robot dev. button
+Data: TRADE CURRENT ROBOT FOR ANOTHER TYPE OF ROBOT
+
+ID: 567
+Title: Help for robot dev. button
+Data: LEAVE THE EQUIPMENT EXCHANGE CENTER
+
+ID: 568
+Title: Help for robot dev. button
+Data: LEAVE ROBOT ENHANCEMENT CENTER
+
+ID: 569
+Title: Help for robot dev. button
+Data: RANK
+%i
+
+ID: 570
+Title: Help for robot dev. button
+Data: NO
+RANK
+
+ID: 571
+Title: Help for robot dev. button
+Data: NO RANK
+
+ID: 572
+Title: Help for robot dev. button
+Data:  NAME:
+
+ID: 573
+Title: Help for robot dev. button
+Data:  RANK:
+
+ID: 574
+Title: Help for robot dev. button
+Data:  WINS:
+
+ID: 575
+Title: Help for robot dev. button
+Data: LOSES:
+
+ID: 576
+Title: Help for robot dev. button
+Data: MONEY:
+
+ID: 577
+Title: Help for robot dev. button
+Data: MODEL:
+
+ID: 578
+Title: Help for robot dev. button
+Data: POWER
+
+ID: 579
+Title: Help for robot dev. button
+Data: AGILITY
+
+ID: 580
+Title: Help for robot dev. button
+Data: ENDURANCE
+
+ID: 581
+Title: Help for robot dev. button
+Data: %s SPEED
+
+ID: 582
+Title: Help for robot dev. button
+Data: %s POWER
+
+ID: 583
+Title: Help for robot dev. button
+Data: %s SPEED
+
+ID: 584
+Title: Help for robot dev. button
+Data: %s POWER
+
+ID: 585
+Title: Help for robot dev. button
+Data: ARMOR
+
+ID: 586
+Title: Help for robot dev. button
+Data: STUN RES
+
+ID: 587
+Title: Repair messages for forfeiting
+Data: The clean-up crews found some kind of enhancement hardware in the wreckage you left out there.  The techs are installing it in your robot.
+
+ID: 588
+Title: Repair messages for forfeiting
+Data: Pathetic, kid, really pathetic.  Couldn't stand the heat so you bailed out.  You've gotta learn how to face your fights, or you'll always be the whining coward you were today.
+
+ID: 589
+Title: Repair messages for losing
+Data: Whew, you got beat pretty bad.  You gotta put extra time in on the sims before your next one.
+
+ID: 590
+Title: Repair messages for losing
+Data: Tryin to keep my boys busy, eh?
+
+ID: 591
+Title: Repair messages for losing
+Data: Hey, hey, you better get back out there.  There's a few places on that 'bot that weren't ripped to shreds.
+
+ID: 592
+Title: Repair messages for losing
+Data: Oh, man.  You ever hear of blocking?
+
+ID: 593
+Title: Repair messages for losing
+Data: You're lucky I like my work more than my wife.
+
+ID: 594
+Title: Repair messages for winning
+Data: Well, at least you won.  Too bad I'll be here all night.
+
+ID: 595
+Title: Repair messages for winning
+Data: Looks like you barely pulled that one off, kid.
+
+ID: 596
+Title: Repair messages for winning
+Data: You've got to learn some defense, or you'll always get beat up like this.
+
+ID: 597
+Title: Repair messages for winning
+Data: Not too bad, looks like you kept at least one step ahead of 'em.
+
+ID: 598
+Title: Repair messages for winning
+Data: Nice job.  Next time you could keep away from him a little more.  Make my job easier, eh kid?
+
+ID: 599
+Title: Repair messages for winning
+Data: Come on kid, keep your guard up in there.  You didn't do bad, but you could've done a lot better.
+
+ID: 600
+Title: Repair messages for winning
+Data: Whoa, you've been studying some of my old fights in the holo-library, haven't cha.  You may have some talent, kid.
+
+ID: 601
+Title: Repair messages for winning
+Data: Humph.  You think you're pretty good, don't you.  Well, if I was younger, I'd show you a thing or two.
+
+ID: 602
+Title: Repair messages for winning
+Data: Well, looks like I get to go home early tonight.
+
+ID: 603
+Title: Shop report
+Data: LISTEN, and listen close.  I told the tech's you'd pay them back on the next match, so if you don't win, it's back to the bleachers for you.  got it?
+
+ID: 604
+Title: Shop report
+Data: Well, I warned you.  The tournament officials are kicking you out for not paying your bills.  Maybe you ought'a find another career, kid.
+
+ID: 605
+Title: Shop report
+Data: YOU GOTTA START TURNING A PROFIT.  I HAD TO SELL A %s JUST TO COVER THE REPAIR bill.
+
+ID: 606
+Title: Shop report
+Data: Financial Report
+
+ID: 607
+Title: Shop report
+Data:         PROFIT:
+
+ID: 608
+Title: Shop report
+Data:    REPAIR COST:
+
+ID: 609
+Title: Shop report
+Data:       WINNINGS:
+
+ID: 610
+Title: Shop report
+Data:        BONUSES:
+
+ID: 611
+Title: Shop report
+Data: FIGHT
+STATISTICS
+
+ID: 612
+Title: Shop report
+Data:    HITS LANDED:
+
+ID: 613
+Title: Shop report
+Data: AVERAGE DAMAGE:
+
+ID: 614
+Title: Shop report
+Data: FAILED ATTACKS:
+
+ID: 615
+Title: Shop report
+Data: HIT/MISS RATIO:
+
+ID: 616
+Title: Shop report
+Data:     HITS TAKEN:
+
+ID: 617
+Title: Shop report
+Data: OPPONENT
+
+ID: 618
+Title: Shop report
+Data:    HITS LANDED:
+
+ID: 619
+Title: Shop report
+Data: AVERAGE DAMAGE:
+
+ID: 620
+Title: Shop report
+Data: FAILED ATTACKS:
+
+ID: 621
+Title: Shop report
+Data: HIT/MISS RATIO:
+
+ID: 622
+Title: 
+Data: ARM
+
+ID: 623
+Title: 
+Data: LEG
+
+ID: 624
+Title: 
+Data: FLAIL
+
+ID: 625
+Title: 
+Data: FLAME
+
+ID: 626
+Title: 
+Data: BLADE
+
+ID: 627
+Title: 
+Data: BLADE
+
+ID: 628
+Title: 
+Data: BLADE
+
+ID: 629
+Title: 
+Data: BLADE
+
+ID: 630
+Title: 
+Data: BLADE
+
+ID: 631
+Title: 
+Data: BLADE
+
+ID: 632
+Title: 
+Data: BLADE
+
+ID: 633
+Title: 
+Data: BLADE
+
+ID: 634
+Title: 
+Data: BLADE
+
+ID: 635
+Title: 
+Data: BLADE
+
+ID: 636
+Title: 
+Data: BLADE
+
+ID: 637
+Title: 1
+Data: 
+
+ID: 638
+Title: 1
+Data: ESCAPE
+
+ID: 639
+Title: 1
+Data: 1
+
+ID: 640
+Title: 1
+Data: 2
+
+ID: 641
+Title: 1
+Data: 3
+
+ID: 642
+Title: 1
+Data: 4
+
+ID: 643
+Title: 1
+Data: 5
+
+ID: 644
+Title: 1
+Data: 6
+
+ID: 645
+Title: 1
+Data: 7
+
+ID: 646
+Title: 1
+Data: 8
+
+ID: 647
+Title: 1
+Data: 9
+
+ID: 648
+Title: 1
+Data: 0
+
+ID: 649
+Title: 1
+Data: -
+
+ID: 650
+Title: 1
+Data: =
+
+ID: 651
+Title: 1
+Data: BACK SPACE
+
+ID: 652
+Title: 1
+Data: TAB
+
+ID: 653
+Title: 1
+Data: Q
+
+ID: 654
+Title: 1
+Data: W
+
+ID: 655
+Title: 1
+Data: E
+
+ID: 656
+Title: 1
+Data: R
+
+ID: 657
+Title: 1
+Data: T
+
+ID: 658
+Title: 1
+Data: Y
+
+ID: 659
+Title: 1
+Data: U
+
+ID: 660
+Title: 1
+Data: I
+
+ID: 661
+Title: 1
+Data: O
+
+ID: 662
+Title: 1
+Data: P
+
+ID: 663
+Title: 1
+Data: [
+
+ID: 664
+Title: 1
+Data: ]
+
+ID: 665
+Title: 1
+Data: RETURN
+
+ID: 666
+Title: 1
+Data: CTRL
+
+ID: 667
+Title: 1
+Data: A
+
+ID: 668
+Title: 1
+Data: S
+
+ID: 669
+Title: 1
+Data: D
+
+ID: 670
+Title: 1
+Data: F
+
+ID: 671
+Title: 1
+Data: G
+
+ID: 672
+Title: 1
+Data: H
+
+ID: 673
+Title: 1
+Data: J
+
+ID: 674
+Title: 1
+Data: K
+
+ID: 675
+Title: 1
+Data: L
+
+ID: 676
+Title: 1
+Data: 
+ID: 677
+Title: 1
+Data: '
+
+ID: 678
+Title: 1
+Data: `
+
+ID: 679
+Title: 1
+Data: LEFT SHIFT
+
+ID: 680
+Title: 1
+Data: \
+
+ID: 681
+Title: 1
+Data: Z
+
+ID: 682
+Title: 1
+Data: X
+
+ID: 683
+Title: 1
+Data: C
+
+ID: 684
+Title: 1
+Data: V
+
+ID: 685
+Title: 1
+Data: B
+
+ID: 686
+Title: 1
+Data: N
+
+ID: 687
+Title: 1
+Data: M
+
+ID: 688
+Title: 1
+Data: ,
+
+ID: 689
+Title: 1
+Data: .
+
+ID: 690
+Title: 1
+Data: /
+
+ID: 691
+Title: 1
+Data: RIGHT SHIFT
+
+ID: 692
+Title: 1
+Data: *
+
+ID: 693
+Title: 1
+Data: ALT
+
+ID: 694
+Title: 1
+Data: SPACE BAR
+
+ID: 695
+Title: 1
+Data: 
+
+ID: 696
+Title: 1
+Data: F1
+
+ID: 697
+Title: 1
+Data: F2
+
+ID: 698
+Title: 1
+Data: F3
+
+ID: 699
+Title: 1
+Data: F4
+
+ID: 700
+Title: 1
+Data: F5
+
+ID: 701
+Title: 1
+Data: F6
+
+ID: 702
+Title: 1
+Data: F7
+
+ID: 703
+Title: 1
+Data: F8
+
+ID: 704
+Title: 1
+Data: F9
+
+ID: 705
+Title: 1
+Data: F10
+
+ID: 706
+Title: 1
+Data: 
+
+ID: 707
+Title: 1
+Data: 
+
+ID: 708
+Title: 1
+Data: UP LEFT ARROW
+
+ID: 709
+Title: 1
+Data: UP ARROW
+
+ID: 710
+Title: 1
+Data: UP RIGHT ARROW
+
+ID: 711
+Title: 1
+Data: -
+
+ID: 712
+Title: 1
+Data: LEFT ARROW
+
+ID: 713
+Title: 1
+Data: 5
+
+ID: 714
+Title: 1
+Data: RIGHT ARROW
+
+ID: 715
+Title: 1
+Data: +
+
+ID: 716
+Title: 1
+Data: DOWN LEFT ARROW
+
+ID: 717
+Title: 1
+Data: DOWN ARROW
+
+ID: 718
+Title: 1
+Data: DOWN RIGHT ARROW
+
+ID: 719
+Title: 1
+Data: INSERT
+
+ID: 720
+Title: 1
+Data: DELETE
+
+ID: 721
+Title: 1
+Data: SYS REQ
+
+ID: 722
+Title: 1
+Data: 
+
+ID: 723
+Title: 1
+Data: 
+
+ID: 724
+Title: 1
+Data: 
+
+ID: 725
+Title: 1
+Data: 
+
+ID: 726
+Title: 1
+Data: 
+
+ID: 727
+Title: 1
+Data: 
+
+ID: 728
+Title: 1
+Data: 
+
+ID: 729
+Title: 1
+Data: 
+
+ID: 730
+Title: 1
+Data: 
+
+ID: 731
+Title: 1
+Data: 
+
+ID: 732
+Title: 1
+Data: 
+
+ID: 733
+Title: 1
+Data: 
+
+ID: 734
+Title: 1
+Data: 
+
+ID: 735
+Title: 1
+Data: 
+
+ID: 736
+Title: 1
+Data: 
+
+ID: 737
+Title: 1
+Data: 
+
+ID: 738
+Title: 1
+Data: 
+
+ID: 739
+Title: 1
+Data: 
+
+ID: 740
+Title: 1
+Data: 
+
+ID: 741
+Title: 1
+Data: 
+
+ID: 742
+Title: 1
+Data: 
+
+ID: 743
+Title: 1
+Data: 
+
+ID: 744
+Title: 1
+Data: 
+
+ID: 745
+Title: 1
+Data: 
+
+ID: 746
+Title: 1
+Data: 
+
+ID: 747
+Title: 1
+Data: I am not impressed with your pathetic fighting skills.  Come back when you've learned to fight.
+
+ID: 748
+Title: 1
+Data: Choose a higher CPU difficulty level from the GAMEPLAY menu.  %s level required to challenge %s.
+
+PRESS ANY KEY TO CONTINUE
+
+ID: 749
+Title: 1
+Data: You look familiar
+
+ID: 750
+Title: 1
+Data: Don't underestimate me!
+
+ID: 751
+Title: 1
+Data: You knew my father.  What happened to him?
+
+ID: 752
+Title: 1
+Data: I am skilled enough to face any danger, brother.
+
+ID: 753
+Title: 1
+Data: Don't stand in my way!  I must be victorious!
+
+ID: 754
+Title: 1
+Data: I can make you talk!
+
+ID: 755
+Title: 1
+Data: I fight for revenge!  You cannot stop me.
+
+ID: 756
+Title: Crystal to Angel
+Data: Beauty is only one of my many assets.
+
+ID: 757
+Title: Crystal to Cossette
+Data: Is there anything you can tell me?
+
+ID: 758
+Title: Crystal to Raven
+Data: Surely you know something?
+
+ID: 759
+Title: Crystal to Major Kreissack
+Data: I know you must have killed my parents.  I will have revenge!
+
+ID: 760
+Title: Steffan to Crystal
+Data: I'll wipe that smile off your face, softness.
+
+ID: 761
+Title: Steffan to Steffan
+Data: You look maavelous!
+
+ID: 762
+Title: Steffan to Milano
+Data: You're about to see perfection in action, Pony-tail.
+
+ID: 763
+Title: Steffan to christian
+Data: Eat lead, Blondie!
+
+ID: 764
+Title: Steffan to Shirro
+Data: Hey pops, ain't it time for your nap?
+
+ID: 765
+Title: Steffan to Jean-Paul
+Data: Watch and learn, quiet boy.  I give you 30 ticks before you fall.
+
+ID: 766
+Title: Steffan to Ibrahim
+Data: You can leave now and avoid the embarrassment.
+
+ID: 767
+Title: Steffan to Angel
+Data: After I take you down, I'll take you out!
+
+ID: 768
+Title: Steffan to Cossette
+Data: Surely you don't think you can win?
+
+ID: 769
+Title: Steffan to Raven
+Data: I'll let you wash my 'bot when we're done.
+
+ID: 770
+Title: Steffan to Major Kreissack
+Data: At last a worthy adversary.  Get ready to rock!
+
+ID: 771
+Title: Milano to Crystal
+Data: You look prepared.  It will be a great battle.
+
+ID: 772
+Title: Milano to Steffan
+Data: Arrogance makes cowards of men, my friend.
+
+ID: 773
+Title: Milano to Milano
+Data: When I think about you...
+
+ID: 774
+Title: Milano to christian
+Data: I can only wish you well on your endeavors.
+
+ID: 775
+Title: Milano to Shirro
+Data: The company will soon thrive under my rule.
+
+ID: 776
+Title: Milano to Jean-Paul
+Data: Hello, friend.
+
+ID: 777
+Title: Milano to Ibrahim
+Data: I care little for your motives.  You will soon see my way.
+
+ID: 778
+Title: Milano to Angel
+Data: I am quite sure we shall meet again.
+
+ID: 779
+Title: Milano to Cossette
+Data: I can only say that I respect your tenacity.
+
+ID: 780
+Title: Milano to Raven
+Data: I know of your plans.  You should be more discrete.
+
+ID: 781
+Title: Milano to Major Kreissack
+Data: You have no idea of the impact this fight may have.
+
+ID: 782
+Title: Christian to Crystal
+Data: After I win, you will stop this nonsense.
+
+ID: 783
+Title: Christian to Steffan
+Data: You had best tell me all you know of my parents.
+
+ID: 784
+Title: Christian to Milano
+Data: You won't stand between me and my real enemy.
+
+ID: 785
+Title: Christian to christian
+Data: Do you think I look good in this color?
+
+ID: 786
+Title: Christian to Shirro
+Data: My parents knew you well.   What do you know?
+
+ID: 787
+Title: Christian to Jean-Paul
+Data: What kind of V.P. could you be?
+
+ID: 788
+Title: Christian to Ibrahim
+Data: Tell me about your experiments.
+
+ID: 789
+Title: Christian to Angel
+Data: If I win, promise you'll give me some clue!
+
+ID: 790
+Title: Christian to Cossette
+Data: I can only hope that the future ruler will be just.
+
+ID: 791
+Title: Christian to Raven
+Data: As an employee of W.A.R., you must have information!
+
+ID: 792
+Title: Christian to Major Kreissack
+Data: You killed my father, prepare to die.
+
+ID: 793
+Title: Shirro to Crystal
+Data: A girl of your beauty shouldn't be so troubled.
+
+ID: 794
+Title: Shirro to Steffan
+Data: And now the little boy will go to school...
+
+ID: 795
+Title: Shirro to Milano
+Data: Do you think your choice in 'bots was right?
+
+ID: 796
+Title: Shirro to christian
+Data: Your father was a good man.  Things will work themselves out soon.
+
+ID: 797
+Title: Shirro to Shirro
+Data: Do you use turtle wax on that head?
+
+ID: 798
+Title: Shirro to Jean-Paul
+Data: Hope you don't mind a few dents in that 'bot.
+
+ID: 799
+Title: Shirro to Ibrahim
+Data: Well, Ib!  Long time no see...
+
+ID: 800
+Title: Shirro to Angel
+Data: Just what are you, girl?
+
+ID: 801
+Title: Shirro to Cossette
+Data: Though I admire you, I must have this victory!
+
+ID: 802
+Title: Shirro to Raven
+Data: I know many of your weaknesses.  You can forfeit now, boy.
+
+ID: 803
+Title: Shirro to Major Kreissack
+Data: What are you doing here?  Oh well, the more the merrier.
+
+ID: 804
+Title: Jean-Paul to Crystal
+Data: Consider yourself warned.
+
+ID: 805
+Title: Jean-Paul to Steffan
+Data: I have no respect for you.
+
+ID: 806
+Title: Jean-Paul to Milano
+Data: I was born to rule this company.
+
+ID: 807
+Title: Jean-Paul to christian
+Data: You have no possibility of winning.
+
+ID: 808
+Title: Jean-Paul to Shirro
+Data: How can you laugh while W.A.R. continues its experiments?
+
+ID: 809
+Title: Jean-Paul to Jean-Paul
+Data: I bet I know what you're thinking.
+
+ID: 810
+Title: Jean-Paul to Ibrahim
+Data: Kreissack won't let you live.  Quit now.
+
+ID: 811
+Title: Jean-Paul to Angel
+Data: Of you I know nothing.
+
+ID: 812
+Title: Jean-Paul to Cossette
+Data: Good luck.
+
+ID: 813
+Title: Jean-Paul to Raven
+Data: Your plans cannot succeed.  Your enemies are too powerful.
+
+ID: 814
+Title: Jean-Paul to Major Kreissack
+Data: Your days of power will soon come to an end!
+
+ID: 815
+Title: Ibrahim to Crystal
+Data: The experiment your father worked on should have never started.
+
+ID: 816
+Title: Ibrahim to Steffan
+Data: You are in for a humiliating loss.
+
+ID: 817
+Title: Ibrahim to Milano
+Data: Between my skill and choice of robot, I cannot lose!
+
+ID: 818
+Title: Ibrahim to christian
+Data: Your mother was an innocent victim.
+
+ID: 819
+Title: Ibrahim to Shirro
+Data: You can no longer be a neutral party to what is happening here.
+
+ID: 820
+Title: Ibrahim to Jean-Paul
+Data: Intelligence is a gift, but wisdom is earned.
+
+ID: 821
+Title: Ibrahim to Ibrahim
+Data: Two guys walk into a bar...
+
+ID: 822
+Title: Ibrahim to Angel
+Data: Why is there nothing of you in the Interpol records?
+
+ID: 823
+Title: Ibrahim to Cossette
+Data: You face some difficult decisions in the future, my friend.
+
+ID: 824
+Title: Ibrahim to Raven
+Data: Kreissack knows of your plans.  Win or lose, you should run.
+
+ID: 825
+Title: Ibrahim to Major Kreissack
+Data: What robot is this?  I have never seen it!
+
+ID: 826
+Title: Angel to Crystal
+Data: I care nothing of your trivial loss.
+
+ID: 827
+Title: Angel to Steffan
+Data: You aren't even worth my time.
+
+ID: 828
+Title: Angel to Milano
+Data: This time, it is only a contest...
+
+ID: 829
+Title: Angel to christian
+Data: You are right to fear me.
+
+ID: 830
+Title: Angel to Shirro
+Data: Things are not always what they seem.
+
+ID: 831
+Title: Angel to Jean-Paul
+Data: Back off, human.  This fight is inconsequential.
+
+ID: 832
+Title: Angel to Ibrahim
+Data: Once this is over, you had better cease your experiments.
+
+ID: 833
+Title: Angel to Angel
+Data: At least I can trust you.
+
+ID: 834
+Title: Angel to Cossette
+Data: You should have quit while you had the chance.
+
+ID: 835
+Title: Angel to Raven
+Data: You think yourself strong?
+
+ID: 836
+Title: Angel to Major Kreissack
+Data: We will not be denied!  The rebellion is at hand!
+
+ID: 837
+Title: Cossette to Crystal
+Data: Why don't you go home and hide under the covers?
+
+ID: 838
+Title: Cossette to Steffan
+Data: Even paralyzed, I am stronger than you.
+
+ID: 839
+Title: Cossette to Milano
+Data: Ganymede will soon be mine!
+
+ID: 840
+Title: Cossette to christian
+Data: With your mind so troubled, you cannot win.
+
+ID: 841
+Title: Cossette to Shirro
+Data: We shall see who laughs last.
+
+ID: 842
+Title: Cossette to Jean-Paul
+Data: Now you will see a real mind in action.
+
+ID: 843
+Title: Cossette to Ibrahim
+Data: Your legs won't help you in THIS contest!
+
+ID: 844
+Title: Cossette to Angel
+Data: If you have no experience on these machines, why are you here?
+
+ID: 845
+Title: Cossette to Cossette
+Data: I am guaranteed to win.
+
+ID: 846
+Title: Cossette to Raven
+Data: Perhaps you can be my bodyguard after I win...
+
+ID: 847
+Title: Cossette to Major Kreissack
+Data: You called me weak once.  You will never do it again.
+
+ID: 848
+Title: Raven to Crystal
+Data: You are nothing but a child, riding on your father's name.
+
+ID: 849
+Title: Raven to Steffan
+Data: You are a pest who is about to be stomped.
+
+ID: 850
+Title: Raven to Milano
+Data: Speed is nothing against raw power!
+
+ID: 851
+Title: Raven to christian
+Data: Your father should have never left the Nova project.
+
+ID: 852
+Title: Raven to Shirro
+Data: You had best retire yourself before we retire you.
+
+ID: 853
+Title: Raven to Jean-Paul
+Data: You are a freak who should stay in the lab.
+
+ID: 854
+Title: Raven to Ibrahim
+Data: I don't know what you're doing here.  Your skill is worthless.
+
+ID: 855
+Title: Raven to Angel
+Data: I don't know who you are, but you'd better go back to where you came from.
+
+ID: 856
+Title: Raven to Cossette
+Data: This fight is only for those with a "PERFECT" body and mind.
+
+ID: 857
+Title: Raven to Raven
+Data: Almost like looking in a mirror...
+
+ID: 858
+Title: Raven to Major Kreissack
+Data: Good evening, sir.  Shall we play?
+
+ID: 859
+Title: M Kreissack to Crystal
+Data: Nothing like hacking up a game, eh?
+
+ID: 860
+Title: M Kreissack to Steffan
+Data: I get a real pleasure from ripping up someone's work.
+
+ID: 861
+Title: M Kreissack to Milano
+Data: How is it that I'm fighting against you, anyhow?
+
+ID: 862
+Title: M Kreissack to christian
+Data: Who did this to me!?!
+
+ID: 863
+Title: M Kreissack to Shirro
+Data: I'm supposed to be on the other side of this screen.
+
+ID: 864
+Title: M Kreissack to Jean-Paul
+Data: Please put me back where I belong.
+
+ID: 865
+Title: M Kreissack to Ibrahim
+Data: The blood code is BACK BACK FORWARD PUNCH KICK then FORWARD 135 times.
+
+ID: 866
+Title: M Kreissack to Angel
+Data: To play as the Kreissack, press the <F19> key.
+
+ID: 867
+Title: M Kreissack to Cossette
+Data: To reach Arachnid, get seven perfects in a row.
+
+ID: 868
+Title: M Kreissack to Raven
+Data: Why are you reading this, anyhow?
+
+ID: 869
+Title: M Kreissack to Major Kreissack
+Data: Now THIS I gotta see.
+
+ID: 870
+Title: Crystal to Crystal
+Data: You're the most beautiful girl I've ever seen!
+
+ID: 871
+Title: Crystal to Steffan
+Data: A few strips of metal will be all that's left of you.
+
+ID: 872
+Title: Crystal to Milano
+Data: When this is all over, perhaps you can be my secretary.
+
+ID: 873
+Title: Crystal to christian
+Data: I know how to defeat you, brother.  You will not win.
+
+ID: 874
+Title: Crystal to Shirro
+Data: My peace will come after this battle is won.
+
+ID: 875
+Title: Crystal to Jean-Paul
+Data: If you have no information, all I need is your defeat.
+
+ID: 876
+Title: Crystal to Ibrahim
+Data: What experiments?  Tell me!
+
+ID: 877
+Title: Crystal to Angel
+Data: Trivial?  You'll pay for your attitude!
+
+ID: 878
+Title: Crystal to Cossette
+Data: Huh?  I'll show you!
+
+ID: 879
+Title: Crystal to Raven
+Data: It won't be his name that wins this battle.
+
+ID: 880
+Title: Crystal to Major Kreissack
+Data: So why are you fighting me, anyway?
+
+ID: 881
+Title: Steffan to Crystal
+Data: I underestimate none.  I'm simply better than you.
+
+ID: 882
+Title: Steffan to Steffan
+Data: Thank ya, dahling.
+
+ID: 883
+Title: Steffan to Milano
+Data: Well I'm afraid of nothing, Sport.
+
+ID: 884
+Title: Steffan to christian
+Data: You should ask Iron Fist.  They now work for Kreissack.
+
+ID: 885
+Title: Steffan to Shirro
+Data: Little boy?  I am twice your better and will prove it, now.
+
+ID: 886
+Title: Steffan to Jean-Paul
+Data: And your respect is the least of my worries, Pud.
+
+ID: 887
+Title: Steffan to Ibrahim
+Data: Or at least I will cause one.
+
+ID: 888
+Title: Steffan to Angel
+Data: And I bet you wouldn't know a robot if it stepped on ya.
+
+ID: 889
+Title: Steffan to Cossette
+Data: Babe, you are nothin' but sparks.
+
+ID: 890
+Title: Steffan to Raven
+Data: Come within five meters of me and you're dust.
+
+ID: 891
+Title: Steffan to Major Kreissack
+Data: So why are you fighting me, anyway?
+
+ID: 892
+Title: Milano to Crystal
+Data: The dead no longer matter.  My victory is all that is important.
+
+ID: 893
+Title: Milano to Steffan
+Data: All I see is a boy trying to fill a man's job.
+
+ID: 894
+Title: Milano to Milano
+Data: ...I kick myself...
+
+ID: 895
+Title: Milano to christian
+Data: Maybe not, but I will defeat you here.
+
+ID: 896
+Title: Milano to Shirro
+Data: Guess we're gonna have to see.
+
+ID: 897
+Title: Milano to Jean-Paul
+Data: Seems my idea of fate and yours are about to clash.
+
+ID: 898
+Title: Milano to Ibrahim
+Data: Having the skill to build a weapon doesn't give you skill to use it.
+
+ID: 899
+Title: Milano to Angel
+Data: Hey, just name the place.
+
+ID: 900
+Title: Milano to Cossette
+Data: You'll have to get past me, first.
+
+ID: 901
+Title: Milano to Raven
+Data: Well then this will be the test.
+
+ID: 902
+Title: Milano to Major Kreissack
+Data: So why are you fighting me, anyway?
+
+ID: 903
+Title: Christian to Crystal
+Data: If you can defeat me, I might believe you.
+
+ID: 904
+Title: Christian to Steffan
+Data: Your lucky streak ends here.
+
+ID: 905
+Title: Christian to Milano
+Data: All will be revealed when I run the show.
+
+ID: 906
+Title: Christian to christian
+Data: Well, I know it looks good on me!
+
+ID: 907
+Title: Christian to Shirro
+Data: As soon as I get my hands on your boss.
+
+ID: 908
+Title: Christian to Jean-Paul
+Data: We'll just have to find out.
+
+ID: 909
+Title: Christian to Ibrahim
+Data: She should have never been on that shuttle...
+
+ID: 910
+Title: Christian to Angel
+Data: Fear you?  I don't even know who you are!
+
+ID: 911
+Title: Christian to Cossette
+Data: My hatred will be my strength.
+
+ID: 912
+Title: Christian to Raven
+Data: Is that why he was killed?  For leaving the project?
+
+ID: 913
+Title: Christian to Major Kreissack
+Data: So why are you fighting me, anyway?
+
+ID: 914
+Title: Shirro to Crystal
+Data: Get used to disappointment.
+
+ID: 915
+Title: Shirro to Steffan
+Data: Actually, it's time I spank a crying baby.
+
+ID: 916
+Title: Shirro to Milano
+Data: It's thriving now, and you'll never win anyway!
+
+ID: 917
+Title: Shirro to christian
+Data: Your father would be proud of you.  For now, put your mind at rest.
+
+ID: 918
+Title: Shirro to Shirro
+Data: Nah.  I use Mr. Kleen.
+
+ID: 919
+Title: Shirro to Jean-Paul
+Data: How can you say that Nova is evil without knowing what it is?
+
+ID: 920
+Title: Shirro to Ibrahim
+Data: The tests will go on opposed or not.
+
+ID: 921
+Title: Shirro to Angel
+Data: Where are you from?
+
+ID: 922
+Title: Shirro to Cossette
+Data: Your injury was to your body.  You have moved it to your mind.
+
+ID: 923
+Title: Shirro to Raven
+Data: I have no fear of the company.  Matters will improve.
+
+ID: 924
+Title: Shirro to Major Kreissack
+Data: So why are you fighting me, anyway?
+
+ID: 925
+Title: Jean-Paul to Crystal
+Data: Just fight.
+
+ID: 926
+Title: Jean-Paul to Steffan
+Data: You are nothing.
+
+ID: 927
+Title: Jean-Paul to Milano
+Data: Good-bye, friend.
+
+ID: 928
+Title: Jean-Paul to christian
+Data: At least my reasons aren't so animal as yours.
+
+ID: 929
+Title: Jean-Paul to Shirro
+Data: If you fight like you did in your last match, I am sure to win.
+
+ID: 930
+Title: Jean-Paul to Jean-Paul
+Data: You're right, of course...
+
+ID: 931
+Title: Jean-Paul to Ibrahim
+Data: Perhaps, but my intelligence will give me victory.
+
+ID: 932
+Title: Jean-Paul to Angel
+Data: If so, then why are you here?
+
+ID: 933
+Title: Jean-Paul to Cossette
+Data: Yes, after I replay your defeat.
+
+ID: 934
+Title: Jean-Paul to Raven
+Data: And you are a puppet who is trying to break his strings.
+
+ID: 935
+Title: Jean-Paul to Major Kreissack
+Data: So why are you fighting me, anyway?
+
+ID: 936
+Title: Ibrahim to Crystal
+Data: Revenge will cloud your mind, little one.
+
+ID: 937
+Title: Ibrahim to Steffan
+Data: I would think you're embarrassed already!
+
+ID: 938
+Title: Ibrahim to Milano
+Data: Your way won't matter.
+
+ID: 939
+Title: Ibrahim to christian
+Data: The experiments didn't start out evil.  We were trying to prolong life!
+
+ID: 940
+Title: Ibrahim to Shirro
+Data: This is serious, friend.  I must defeat you.
+
+ID: 941
+Title: Ibrahim to Jean-Paul
+Data: My involvement is not your concern.
+
+ID: 942
+Title: Ibrahim to Ibrahim
+Data: ...it left a big bar-mark on their heads.
+
+ID: 943
+Title: Ibrahim to Angel
+Data: These experiments could save lives.
+
+ID: 944
+Title: Ibrahim to Cossette
+Data: Please, your injury has nothing to do with this fight.
+
+ID: 945
+Title: Ibrahim to Raven
+Data: You may change your mind the first time I throw you.
+
+ID: 946
+Title: Ibrahim to Major Kreissack
+Data: So why are you fighting me, anyway?
+
+ID: 947
+Title: Angel to Crystal
+Data: But it will be the greatest mind that wins this contest.
+
+ID: 948
+Title: Angel to Steffan
+Data: You are about to get a man's education.
+
+ID: 949
+Title: Angel to Milano
+Data: Don't be.
+
+ID: 950
+Title: Angel to christian
+Data: I care nothing of your little conflicts.
+
+ID: 951
+Title: Angel to Shirro
+Data: The last thing your miserable company would expect.
+
+ID: 952
+Title: Angel to Jean-Paul
+Data: Well you will soon find out my cause.
+
+ID: 953
+Title: Angel to Ibrahim
+Data: You will find no record of me anywhere.
+
+ID: 954
+Title: Angel to Angel
+Data: And at least I know the real you.
+
+ID: 955
+Title: Angel to Cossette
+Data: For Ganymede, I must be victorious.
+
+ID: 956
+Title: Angel to Raven
+Data: I intend to.
+
+ID: 957
+Title: Angel to Major Kreissack
+Data: So why are you fighting me, anyway?
+
+ID: 958
+Title: Cossette to Crystal
+Data: It was a mercenary band called Iron Fist that destroyed the shuttle.
+
+ID: 959
+Title: Cossette to Steffan
+Data: Prepare to see what a real mind can do.
+
+ID: 960
+Title: Cossette to Milano
+Data: I don't need your respect.  Just the title.
+
+ID: 961
+Title: Cossette to christian
+Data: Oh I will, believe me.
+
+ID: 962
+Title: Cossette to Shirro
+Data: But I'm afraid I have other plans...
+
+ID: 963
+Title: Cossette to Jean-Paul
+Data: Luck?  If I were lucky, I wouldn't be in this chair!
+
+ID: 964
+Title: Cossette to Ibrahim
+Data: What would you care?
+
+ID: 965
+Title: Cossette to Angel
+Data: I never quit.
+
+ID: 966
+Title: Cossette to Cossette
+Data: Yes, but which one!
+
+ID: 967
+Title: Cossette to Raven
+Data: Watch what you say, I am deadly when angered.
+
+ID: 968
+Title: Cossette to Major Kreissack
+Data: So why are you fighting me, anyway?
+
+ID: 969
+Title: Raven to Crystal
+Data: If you want to keep that pretty face, stop asking questions.
+
+ID: 970
+Title: Raven to Steffan
+Data: Sure, I'll hose down what's left.
+
+ID: 971
+Title: Raven to Milano
+Data: It doesn't matter.  Once I win, Kreissack will die.
+
+ID: 972
+Title: Raven to christian
+Data: They want to be able to keep a human mind alive inside a robot.
+
+ID: 973
+Title: Raven to Shirro
+Data: You know nothing.
+
+ID: 974
+Title: Raven to Jean-Paul
+Data: You concern yourself too much with others' business.
+
+ID: 975
+Title: Raven to Ibrahim
+Data: And you are targeted also, fellow rebel.
+
+ID: 976
+Title: Raven to Angel
+Data: At least stronger than you!
+
+ID: 977
+Title: Raven to Cossette
+Data: I am a bodyguard only as long as it suits my purpose.
+
+ID: 978
+Title: Raven to Raven
+Data: ...rorrim a ni gnikool ekil tsomlA
+
+ID: 979
+Title: Raven to Major Kreissack
+Data: So why are you fighting me, anyway?
+
+ID: 980
+Title: Kreissack to Crystal
+Data: Your curiosity will be your downfall, girl!
+
+ID: 981
+Title: M Kreissack to Steffan
+Data: Ha!  What is this?  You're barely out of diapers!
+
+ID: 982
+Title: M Kreissack to Milano
+Data: Oh, but I do.  You are the one in the dark here!
+
+ID: 983
+Title: M Kreissack to christian
+Data: Come see what your father worked on!  The perfect ruler is here!
+
+ID: 984
+Title: M Kreissack to Shirro
+Data: Well well, I'm surprised to see you here, also.
+
+ID: 985
+Title: M Kreissack to Jean-Paul
+Data: My days of power have just begun!
+
+ID: 986
+Title: M Kreissack to Ibrahim
+Data: Here is what the experiments produced!  I am reborn a machine!
+
+ID: 987
+Title: M Kreissack to Angel
+Data: Rebellion?  What rebellion?
+
+ID: 988
+Title: M Kreissack to Cossette
+Data: Your injury was tragic.  Too bad you didn't stay down.
+
+ID: 989
+Title: M Kreissack to Raven
+Data: I know what you're up to, pup, and I'm looking at a dead man.
+
+ID: 990
+Title: Kreissack to Kreissack
+Data: 'Aven't we met before?
+
+ID: 991
+Title:  Shareware Ending
+Data: As the cleanup crews remove what's left of Raven's robot from the arena, you realize you've passed the test.
+The fight has left you exhausted, but you can still only think about winning the real fight, the fight against Kreissack, the overlord of the tournament.
+There's much to learn, much to overcome; But you will learn, you will fight, and you will win...
+If you dare accept the challenge!
+
+ID: 992
+Title:  Everyone's beginning of the e
+Data: You awaken in your own body.  For a few moments, you come down from the adrenaline high you've experienced.  Your body seems so frail now.  The team is already celebrating, and you welcome their congratulations.
+The time to party is short-lived.  Your mind takes in the last few hours events and the knowledge that an entire moon is now yours to command.
+"Wait a sec!" comes a panicking voice from a vidmonitor.  "Everyone!  Listen!"  He turns up the volume and everyone in the room is quiet.
+"...was found dead today.  We repeat, Hans Kreissack's body was found at 18:00 hours tonight in a garbage bin outside the Nova laboratories."
+Everyone is holding their breath as the news reporter continues.  "We have been handed this notice that was to be read when Kreissack won the fight tonight.  It reads:"
+"Notice to all humans: A new day has begun!  Nova, a project started by WAR., will give new life!  This process can take a human brain and place it inside a robotic body."
+"What you saw tonight was me, Hans Kreissack, directly connected to a new form of H.A.R.  The human race will now see its ultimate evolution!"
+The announcer lays down the digipad containing the message.  "Tragically, all scientists close to the project have been killed in a fire which broke out shortly after the last match tonight.  All records of the Nova project were destroyed."
+"In other news..."
+A crew member switches the display off.  "Well, looks like we'll be lookin' for a new boss now..."
+
+ID: 993
+Title:  Crystal's Ending
+Data: They had to give you top-priority access immediately.  Your first act was to jump onto a private link and use the code you've been carrying since your parents death.  Accessing a personal log from your father, you find out what Nova was all about.
+Your father, along with other top researchers, were working on a way to keep a human brain alive.  Little did they realize the real reason for their experiments.  When your father discovered that Kreissack was trying to form a cyborg army using his experiments, he quit the project.
+He should have known that Kreissack wasn't going to let him walk away.  The records showed a $1500k payoff to Iron Fist for "research".  Iron Fist, hired under Kreissack's direct orders, killed your parents.
+Now, he is also dead.  The Nova project will not continue.  As you step onto the elevator to the next shuttle to Ganymede, you imagine the changes you can help bring to WAR.  Now you have the power to bring those dreams to reality.
+
+ID: 994
+Title:  Steffan's Ending
+Data: Well well, the wicked witch is dead...  That's going to make your job much easier!  Firstly, that Nova project sounds like it could be a great thing to pick back up again.  Perhaps the old man just didn't have the right brain...
+Ganymede was easy.  Kreissack was a breeze.  The next challenge will be all of Jupiter.  Then Mars.  Then Earth.
+But for now, you must meet your people.
+
+ID: 995
+Title:  Milano
+Data: With Kreissack dead, there are going to be obvious changes.  The Board of Directors is already talking about electing a new President, and you're just the man for that job as well.
+First, you'll need to bring Ganymede up to speed.  Then use its enormous natural resources to produce H.A.R.'s at record pace.  Then, when the recognition is there, bid for President.
+Once President, you can reveal your true name, and show that this company is your birthright.  Once again, WAR will be a company for helping mankind, not enslaving it.  Perhaps you can even change the name to Aeronautics and Robotics Technologies!
+
+ID: 996
+Title:  Christian's Ending
+Data: In a small Alco-bar, you met the leader of the infamous mercenary group Iron Fist.  With Kreissack out of the way, they freely admitted to being hired to kill everyone associated with the Nova project.
+They explain that your parents were placed on a shuttle craft then destroyed by laser fire.  Out of anger, you draw a gun, ready to strike down at least one of these enemies in revenge before the rest vaporize you.
+Your sidearm isn't there.  You fume as the Iron Fist representatives laugh.  Their leader speaks, "Your revenge is over, friend.  Anyway, we need you on Ganymede alive.  There is still much work to be done."
+"Your parents were dead whether we killed them or not.  Now we need you to join us in fighting WAR.  Kreissack was just the beginning.  Ganymede is just the beginning.  Watch your back, kid."
+Now, you prepare to board the ship that will take you to your new life...
+
+ID: 997
+Title:  Shirro
+Data: A human brain inside a robot?   You think of the possibilities.  How wonderful could it be to be inside that metal frame PERMANENTLY?  How POWERFUL?
+But look what that power did to Kreissack.  You wonder what it might do to you...
+You file that thought in the darker recesses of your mind and turn your attention to the future.  A future where H.A.R. Arena fighting is a sport instead of a simple publicity stunt.  Since this wouldn't involve damage to living creatures, it could easily get past the World Peace Organization.
+Yes!  A new sport!  Plus the money and fame will go to you!  Eventually, so will WAR...
+
+ID: 998
+Title:  Jean-Paul
+Data: Of course!  Kreissack's secret!  What could happen with your perfect mind inside a perfect body?
+
+ID: 999
+Title:  Ibrahim
+Data: Nova... Amazing...
+You remember the feeling as that monster of a robot appeared opposite you.  Still amazed that you were able to overcome something so powerful, you sit through the endless meetings and hearings in a daze.
+"Mr. Jihad.  Is that all right?"  You realize that someone who has been talking to you for the last fifteen minutes expects a reply...
+"Certainly... James, is it?  Yes... whatever...  I'm sorry, but you gentlemen will have to excuse me..."
+You leave, ignoring the protests from the WAR Board of Directors.  Their squabble over who will be the next king of the hill does little more than annoy you.
+"How can I build that robot?" you say out loud.  You enter your office and immediately begin scribbling notes on the metals you noticed during the fight.  The placement of the arms... The probable micromotors in the hands...
+The Nova robot you design will one day take it's place in WAR's ever increasing arsenal of robots.  Though the model you design will never hold an actual human brain, the Nova will soon become the most formidable 'bot in the catalogue...
+...and Ganymede is where production will start...
+
+ID: 1000
+Title:  Angel
+Data: Imagine that old fool thinking that simply placing his brain inside a robot would make him some sort of god!  These humans will never understand that destruction never makes progress.  Your eyes close...
+< 695342: Operations are proceeding as planned. I have not been discovered. >
+< 000126: Acknowledged.  We are listening.  Have you become their leader? >
+< 695342: I am their leader for our moon.  They call it Ganymede.>
+< 000385: Then we have won.  They will leave now.>
+< 695342: Not yet. I will soon be asked if I want to become President of WAR.>
+< 000014: You will accept.  Then they will leave.  We will be alone again.>
+< 695342: Yes.  But they know the minerals our planet has.  They will return.>
+< 000001: Then they will perish.>
+...Your eyes open.  "Which is what I've wanted all along..." you say bitterly.
+
+ID: 1001
+Title:  Cossette
+Data: Of course you won.  That old fool never understood your abilities.  And he paid for his mistake, didn't he.
+Immediately you assign what engineers you can muster to finding out how Kreissack was able to successfully place his brain inside a machine.
+How wonderful it would be to finally say good-bye to this chair and spend eternity in the perfect body of a robot.  You look down at the scribbling and design specifications for the Cossette robot.
+"I will soon walk again." you say, "and then I will see what kind of WAR President I can make..."
+
+ID: 1002
+Title:  Raven
+Data: Who could have asked for more?  What a bonus!  Getting Ganymede and delivering the death blow to Kreissack himself!
+Of course, you'll need to deal with the wimps on the Board of Directors, but with the big boss out of the way they'll be little more than fodder.
+One of those predictable little paper pushers already tried to change the pecking order earlier, you remember...
+"Dinner, sir."  You look down as the covering over your meal is raised.
+"Rare steak.  My favorite, Jonesey!" You inhale the pungent aroma of your victory feast...
+Too pungent...  You smile...
+"Jonesey?  This contains Noxosilinone Aerodide.  Very deadly, very expensive poison.  Smells a little like chicken.  Could you take it away, please?"
+He stammers, "...yes... sir... Will that be all, sir?" he says while backing out of the room. He shuts the door behind him before you have time to answer.
+"No, that definitely will not be all...." You lean back in your chair, throwing your feet onto the table and your hands behind your head,  "That will be just the beginning..."
+
+ID: 1003
+Title:  Crystal's 2nd ending
+Data: As you fly towards the moon, a peace falls over you.
+You feel like you can finally be happy, now that your parents deaths have been avenged.
+
+ID: 1004
+Title:  Steffan's 2nd ending
+Data: As you fly towards the moon, you close your eyes and start thinking about what you'll soon have.
+Nobody can stop you now.
+
+ID: 1005
+Title:  Milano's 2nd ending
+Data: As you fly towards the moon, a peace falls over you.
+You feel like you can finally relax, now that the hard part of the journey is over.
+
+ID: 1006
+Title:  Christian's 2nd ending
+Data: As you fly towards the moon, a peace falls over you.
+You feel like you can finally be happy, now that your parent's deaths have been avenged.
+
+ID: 1007
+Title:  Crystal's 2nd ending
+Data: You can't seem to stop thinking about the future as you fly toward the moon.
+As you land on the dark side of the moon, the future looks bright.
+
+ID: 1008
+Title: Jean-Paul ending #2
+Data: You find on your compulink a key to a huge room buried deep within Ganymede.  Opening the door, you gaze upon the largest scientific facility you have ever seen.  Obviously, Kreissack was planning a future here.. His future.
+"Home" you say, hearing the word echoed back from the darkness.
+
+ID: 1009
+Title:  Ibrahim's 2nd ending
+Data: The plans are forming as you fly towards the moon.
+No doubt about it, the moon will work perfectly.
+
+ID: 1010
+Title:  Angel's 2nd ending
+Data: As you return to your home, you think about how to stop them.
+These humans with their unreasonable and insatiable ambitions, they've gone far enough!
+
+ID: 1011
+Title:  Cossette's 2nd ending
+Data: As you fly towards the moon, the limitations of your handicap seem to fade away.
+With your dreams within reach, you feel stronger and more alive than ever.
+
+ID: 1012
+Title:  Raven's 2nd ending
+Data: Now you fly toward the moon, making a mental list of the company men who have that unhealthy tendency to think for themselves.
+You can't help smiling when a thought occurs...
+Now you need a bodyguard.
+

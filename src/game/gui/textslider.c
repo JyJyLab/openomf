@@ -5,6 +5,7 @@
 #include "game/gui/text/text.h"
 #include "game/gui/textslider.h"
 #include "game/gui/widget.h"
+#include "resources/languages.h"
 #include "utils/allocator.h"
 #include "utils/str.h"
 
@@ -28,9 +29,9 @@ typedef struct text_slider {
 static void refresh(component *c) {
     text_slider *t = widget_get_obj(c);
     str txt;
-    str_from_format(&txt, "%s ", str_c(&t->title));
+    str_from_format(&txt, "%s ", lang_ui(str_c(&t->title)));
     if(t->has_off && *t->pos == 0) {
-        str_append_c(&txt, "OFF");
+        str_append_c(&txt, lang_ui("OFF"));
     } else {
         for(int i = 0; i < t->positions; i++) {
             if(i + 1 > *t->pos) {

@@ -415,7 +415,7 @@ static void lab_menu_focus_arm_power(component *c, bool focused, void *userdata)
                 snprintf(tmp, sizeof(tmp), "Level %d\n\n$ %sK", pilot->arm_power, price_str);
                 label_set_text(details_label, tmp);
             }
-            unsafe_snprintf(tmp, sizeof(tmp), lang_get(553), "arm");
+            unsafe_snprintf(tmp, sizeof(tmp), lang_get(553), lang_ui("arm"));
             mechlab_set_hint(s, tmp);
         } else {
             label_set_text(header_label, "ARM POWER:\n\nUPGRADE COST:");
@@ -428,7 +428,7 @@ static void lab_menu_focus_arm_power(component *c, bool focused, void *userdata)
                 snprintf(tmp, sizeof(tmp), "Level %d\n\n$ %sK", pilot->arm_power + 1, price_str);
                 label_set_text(details_label, tmp);
             }
-            unsafe_snprintf(tmp, sizeof(tmp), lang_get(554), "arm");
+            unsafe_snprintf(tmp, sizeof(tmp), lang_get(554), lang_ui("arm"));
             mechlab_set_hint(s, tmp);
         }
     }
@@ -452,7 +452,7 @@ static void lab_menu_focus_leg_power(component *c, bool focused, void *userdata)
                 snprintf(tmp, sizeof(tmp), "Level %d\n\n$ %sK", pilot->leg_power, price_str);
                 label_set_text(details_label, tmp);
             }
-            unsafe_snprintf(tmp, sizeof(tmp), lang_get(555), "leg");
+            unsafe_snprintf(tmp, sizeof(tmp), lang_get(555), lang_ui("leg"));
             mechlab_set_hint(s, tmp);
         } else {
             label_set_text(header_label, "LEG POWER:\n\nUPGRADE COST:");
@@ -465,7 +465,7 @@ static void lab_menu_focus_leg_power(component *c, bool focused, void *userdata)
                 snprintf(tmp, sizeof(tmp), "Level %d\n\n$ %sK", pilot->leg_power + 1, price_str);
                 label_set_text(details_label, tmp);
             }
-            unsafe_snprintf(tmp, sizeof(tmp), lang_get(556), "leg");
+            unsafe_snprintf(tmp, sizeof(tmp), lang_get(556), lang_ui("leg"));
             mechlab_set_hint(s, tmp);
         }
     }
@@ -489,7 +489,7 @@ static void lab_menu_focus_arm_speed(component *c, bool focused, void *userdata)
                 snprintf(tmp, sizeof(tmp), "Level %d\n\n$ %sK", pilot->arm_speed, price_str);
                 label_set_text(details_label, tmp);
             }
-            unsafe_snprintf(tmp, sizeof(tmp), lang_get(557), "arm");
+            unsafe_snprintf(tmp, sizeof(tmp), lang_get(557), lang_ui("arm"));
             mechlab_set_hint(s, tmp);
         } else {
             label_set_text(header_label, "ARM SPEED:\n\nUPGRADE COST:");
@@ -502,7 +502,7 @@ static void lab_menu_focus_arm_speed(component *c, bool focused, void *userdata)
                 snprintf(tmp, sizeof(tmp), "Level %d\n\n$ %sK", pilot->arm_speed + 1, price_str);
                 label_set_text(details_label, tmp);
             }
-            unsafe_snprintf(tmp, sizeof(tmp), lang_get(558), "arm");
+            unsafe_snprintf(tmp, sizeof(tmp), lang_get(558), lang_ui("arm"));
             mechlab_set_hint(s, tmp);
         }
     }
@@ -526,7 +526,7 @@ static void lab_menu_focus_leg_speed(component *c, bool focused, void *userdata)
                 snprintf(tmp, sizeof(tmp), "Level %d\n\n$ %sK", pilot->leg_speed, price_str);
                 label_set_text(details_label, tmp);
             }
-            unsafe_snprintf(tmp, sizeof(tmp), lang_get(559), "leg");
+            unsafe_snprintf(tmp, sizeof(tmp), lang_get(559), lang_ui("leg"));
             mechlab_set_hint(s, tmp);
         } else {
             label_set_text(header_label, "LEG SPEED:\n\nUPGRADE COST:");
@@ -539,7 +539,7 @@ static void lab_menu_focus_leg_speed(component *c, bool focused, void *userdata)
                 snprintf(tmp, sizeof(tmp), "Level %d\n\n$ %sK", pilot->leg_speed + 1, price_str);
                 label_set_text(details_label, tmp);
             }
-            unsafe_snprintf(tmp, sizeof(tmp), lang_get(560), "leg");
+            unsafe_snprintf(tmp, sizeof(tmp), lang_get(560), lang_ui("leg"));
             mechlab_set_hint(s, tmp);
         }
     }

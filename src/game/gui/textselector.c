@@ -3,6 +3,7 @@
 #include "controller/controller.h"
 #include "game/gui/text/text.h"
 #include "game/gui/widget.h"
+#include "resources/languages.h"
 #include "utils/allocator.h"
 #include "utils/c_string_util.h"
 
@@ -49,7 +50,7 @@ static void refresh(component *c) {
         // label & options
         char **opt = vector_get(&t->options, *t->pos);
         if(opt) {
-            str_from_format(&new, "%s %s", str_c(&t->title), *opt);
+            str_from_format(&new, "%s %s", lang_ui(str_c(&t->title)), lang_ui(*opt)); // Korean: label + value
         } else {
             str_from_format(&new, "%s NULL", str_c(&t->title));
         }
@@ -57,13 +58,13 @@ static void refresh(component *c) {
         // no label, just options
         char **opt = vector_get(&t->options, *t->pos);
         if(opt) {
-            str_from_format(&new, "%s", *opt);
+            str_from_format(&new, "%s", lang_ui(*opt));
         } else {
             str_from_format(&new, "NULL");
         }
     } else {
         // no options, just label
-        str_from_format(&new, "%s -", str_c(&t->title));
+        str_from_format(&new, "%s -", lang_ui(str_c(&t->title)));
     }
     text_set_from_str(t->text, &new);
     str_free(&new);
