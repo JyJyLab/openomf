@@ -23,6 +23,10 @@ public class OMFActivity extends SDLActivity implements InputManager.InputDevice
     static final String PREFS = "omf_overlay";
     static final String PAD_MODE = "pad_mode";      // 0 자동(게임패드 있으면 숨김), 1 항상 표시, 2 항상 숨김
     static final String SWAP = "swap_punch_kick";
+    static final String EASY_FINISH = "easy_finish";  // 간편 마무리 (기본 켜짐)
+
+    /** 엔진(main.c): 승리 후 주먹 = 반파, 반파 중 발 = 완파 */
+    static native void nativeSetEasyFinish(boolean on);
 
     private TouchPadView pad;
     private final GamepadBridge bridge = new GamepadBridge();
@@ -39,6 +43,7 @@ public class OMFActivity extends SDLActivity implements InputManager.InputDevice
         super.onCreate(savedInstanceState);
         prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         bridge.swapPunchKick = prefs.getBoolean(SWAP, false);
+        setEasyFinish(prefs.getBoolean(EASY_FINISH, true));
         if (mLayout != null) {
             pad = new TouchPadView(this);
             mLayout.addView(pad, new ViewGroup.LayoutParams(
@@ -79,13 +84,23 @@ public class OMFActivity extends SDLActivity implements InputManager.InputDevice
     @Override public void onInputDeviceRemoved(int id) { updatePadVisibility(); }
     @Override public void onInputDeviceChanged(int id) { updatePadVisibility(); }
 
+    private static void setEasyFinish(boolean on) {
+        try {
+            nativeSetEasyFinish(on);
+        } catch (UnsatisfiedLinkError e) {
+            // 라이브러리를 못 불러온 경우(SDL 이 오류 화면을 띄움) — 무시
+        }
+    }
+
     /** 오버레이 옵션 (톱니 버튼) */
     void showOverlayOptions() {
         final String[] modes = {"자동 (게임패드 연결 시 숨김)", "항상 표시", "항상 숨김"};
         final boolean swap = prefs.getBoolean(SWAP, false);
+        final boolean easy = prefs.getBoolean(EASY_FINISH, true);
         String[] items = {
             "가상 패드: " + modes[prefs.getInt(PAD_MODE, 0)],
             "게임패드 펀치/킥 바꾸기: " + (swap ? "켜짐" : "꺼짐"),
+            "간편 마무리 (승리 후 주먹=반파, 발=완파): " + (easy ? "켜짐" : "꺼짐"),
             "닫기",
         };
         new AlertDialog.Builder(this)
@@ -98,6 +113,10 @@ public class OMFActivity extends SDLActivity implements InputManager.InputDevice
                 } else if (which == 1) {
                     prefs.edit().putBoolean(SWAP, !swap).apply();
                     bridge.swapPunchKick = !swap;
+                    showOverlayOptions();
+                } else if (which == 2) {
+                    prefs.edit().putBoolean(EASY_FINISH, !easy).apply();
+                    setEasyFinish(!easy);
                     showOverlayOptions();
                 }
             })

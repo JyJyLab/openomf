@@ -60,6 +60,17 @@ void scan_game_controllers(void) {
 // 앱에 넣은 게임 데이터(APK assets/omf/...)를 앱 전용 폴더로 한 번 복사하고, OpenOMF 경로 환경변수를 정한다.
 // OpenOMF 는 일반 파일 경로로 리소스를 읽으므로 assets 를 그대로 쓸 수 없다.
 // 복사할 파일 목록은 assets/omf/files.txt (APK 를 만들 때 생성), 버전이 바뀌면 다시 복사한다.
+#include <jni.h>
+
+// 오버레이 옵션 "간편 마무리": 승리 후 주먹 = 반파, 반파 중 발 = 완파 (game/objects/har.c)
+volatile bool omf_android_easy_finish = true;
+
+JNIEXPORT void JNICALL Java_com_omf2097_android_OMFActivity_nativeSetEasyFinish(JNIEnv *env, jclass cls, jboolean on) {
+    (void)env;
+    (void)cls;
+    omf_android_easy_finish = on;
+}
+
 static void android_mkdirs(const char *path) {
     char tmp[1024];
     snprintf(tmp, sizeof(tmp), "%s", path);

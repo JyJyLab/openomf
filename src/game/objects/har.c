@@ -24,6 +24,10 @@
 #include "video/vga_state.h"
 #include "video/video.h"
 
+#ifdef __ANDROID__
+extern volatile bool omf_android_easy_finish; // main.c, 오버레이 옵션에서 바뀜
+#endif
+
 #define IS_ZERO(n) (n < 0.8 && n > -0.8)
 
 void har_finished(object *obj);
@@ -2208,13 +2212,19 @@ af_move *scrap_destruction_cheat(object *obj) {
     for(int i = 0; i < 70; i++) {
         af_move *move;
         if((move = af_get_move(h->af_data, i))) {
-            if(move->category == CAT_SCRAP && h->state == STATE_VICTORY && h->kick_valid &&
+#ifdef __ANDROID__
+            // 안드로이드 간편 마무리: 승리 후 주먹 = 반파, 반파 중 발 = 완파
+            const bool scrap_button = h->punch_valid, destruct_button = h->kick_valid;
+#else
+            const bool scrap_button = h->kick_valid, destruct_button = h->punch_valid;
+#endif
+            if(move->category == CAT_SCRAP && h->state == STATE_VICTORY && scrap_button &&
                (player_frame_isset(obj, TAG_JF) ||
                 (player_frame_isset(obj, TAG_JN) && i == player_frame_get(obj, TAG_JN)))) {
                 return move;
             }
 
-            if(move->category == CAT_DESTRUCTION && h->state == STATE_SCRAP && h->punch_valid &&
+            if(move->category == CAT_DESTRUCTION && h->state == STATE_SCRAP && destruct_button &&
                (player_frame_isset(obj, TAG_JF2) ||
                 (player_frame_isset(obj, TAG_JN) && i == player_frame_get(obj, TAG_JN)))) {
                 return move;
@@ -2336,7 +2346,15 @@ int har_act(object *obj, int act_type) {
         move = af_get_move(h->af_data, player_frame_get(obj, TAG_JN));
     }
 
-    if(game_state_get_player(obj->gs, h->player_id)->ez_destruct && move == NULL &&
+    game_player *self_player = game_state_get_player(obj->gs, h->player_id);
+    bool ez_destruct = self_player->ez_destruct;
+#ifdef __ANDROID__
+    // 오버레이 옵션 "간편 마무리" (기본 켜짐): 사람이 조종하는 쪽만
+    if(omf_android_easy_finish && self_player->ctrl != NULL && self_player->ctrl->type != CTRL_TYPE_AI) {
+        ez_destruct = true;
+    }
+#endif
+    if(ez_destruct && move == NULL &&
        (h->state == STATE_VICTORY || h->state == STATE_SCRAP)) {
         move = scrap_destruction_cheat(obj);
     }
