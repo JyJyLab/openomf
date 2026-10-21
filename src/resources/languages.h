@@ -46,4 +46,9 @@ const char *lang_get(unsigned int id);
 // Gets an openomf localization string
 const char *lang_get2(unsigned int id);
 
+// Korean translation of an English UI string that OpenOMF has hard-coded in its source (menus, buttons...).
+// Looked up in KOREAN.UI ("English<TAB>Korean" per line) only while the Korean language is active;
+// returns the input unchanged when there is no translation.
+const char *lang_ui(const char *english);
+
 #endif // LANGUAGES_H

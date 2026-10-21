@@ -1,4 +1,5 @@
 #include "resources/languages.h"
+#include "resources/fonts.h"
 
 #include "formats/error.h"
 #include "formats/language.h"
@@ -10,6 +11,11 @@
 #include "utils/log.h"
 #include "utils/path.h"
 #include "utils/str.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 
 static sd_language *language = NULL;
 static sd_language *language2 = NULL;
@@ -72,6 +78,9 @@ bool lang_init(void) {
 
     log_info("Loaded language file '%s'.", path_c(&language_file1));
 
+    // Korean translation: strings are UTF-8 (not CP437) and Hangul is drawn from KOREAN.FNT
+    fonts_set_utf8(strncasecmp(lang_settings->language, "KOREAN", 6) == 0);
+
     // Load up language2 file (OpenOMF)
     path language_file2 = get_resource_filename(lang_settings->language);
     str ext;
@@ -124,4 +133,71 @@ const char *lang_get2(unsigned int id) {
         return "!INVALID2!";
     }
     return str_c(&entry->data);
+}
+
+// ---------------------------------------------------------------- KOREAN.UI
+typedef struct ui_pair {
+    char *en;
+    char *ko;
+} ui_pair;
+
+static ui_pair *ui_pairs = NULL;
+static size_t ui_count = 0;
+static bool ui_loaded = false;
+
+static int ui_cmp(const void *a, const void *b) {
+    return strcmp(((const ui_pair *)a)->en, ((const ui_pair *)b)->en);
+}
+
+static void ui_load(void) {
+    ui_loaded = true;
+    const path filename = get_resource_filename("KOREAN.UI");
+    FILE *f = fopen(path_c(&filename), "rb");
+    if(f == NULL) {
+        return;
+    }
+    char line[1024];
+    size_t cap = 0;
+    while(fgets(line, sizeof(line), f) != NULL) {
+        size_t n = strlen(line);
+        while(n > 0 && (line[n - 1] == '\n' || line[n - 1] == '\r')) {
+            line[--n] = 0;
+        }
+        char *tab = strchr(line, '\t');
+        if(line[0] == '#' || tab == NULL || tab == line || tab[1] == 0) {
+            continue;
+        }
+        *tab = 0;
+        if(ui_count == cap) {
+            cap = cap ? cap * 2 : 256;
+            ui_pairs = omf_realloc(ui_pairs, cap * sizeof(ui_pair));
+        }
+        // "\n" in the file means a line break
+        char *ko = omf_strdup(tab + 1);
+        for(char *p = ko; (p = strstr(p, "\\n")) != NULL;) {
+            *p = '\n';
+            memmove(p + 1, p + 2, strlen(p + 2) + 1);
+        }
+        ui_pairs[ui_count].en = omf_strdup(line);
+        ui_pairs[ui_count].ko = ko;
+        ui_count++;
+    }
+    fclose(f);
+    qsort(ui_pairs, ui_count, sizeof(ui_pair), ui_cmp);
+    log_info("Loaded %u Korean UI strings from '%s'", (unsigned)ui_count, path_c(&filename));
+}
+
+const char *lang_ui(const char *english) {
+    if(english == NULL || !fonts_get_utf8()) {
+        return english;
+    }
+    if(!ui_loaded) {
+        ui_load();
+    }
+    if(ui_count == 0) {
+        return english;
+    }
+    ui_pair key = {(char *)english, NULL};
+    const ui_pair *hit = bsearch(&key, ui_pairs, ui_count, sizeof(ui_pair), ui_cmp);
+    return hit != NULL ? hit->ko : english;
 }

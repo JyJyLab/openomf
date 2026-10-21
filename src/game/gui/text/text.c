@@ -1,3 +1,4 @@
+#include "resources/languages.h"
 #include <assert.h>
 #include <ctype.h>
 
@@ -139,14 +140,19 @@ void text_set_from_c(text *t, const char *src) {
     if(src == NULL) {
         str_truncate(&t->buf, 0);
     } else {
-        str_set_c(&t->buf, src);
+        str_set_c(&t->buf, lang_ui(src)); // Korean: hard-coded English UI strings -> KOREAN.UI
     }
     t->cache_flags |= INVALIDATE_ALL;
 }
 
 void text_set_from_str(text *t, const str *src) {
     assert(src);
-    str_set(&t->buf, src);
+    const char *ui = lang_ui(str_c(src));
+    if(ui != str_c(src)) {
+        str_set_c(&t->buf, ui);
+    } else {
+        str_set(&t->buf, src);
+    }
     t->cache_flags |= INVALIDATE_ALL;
 }
 

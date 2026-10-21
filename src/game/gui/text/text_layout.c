@@ -34,7 +34,9 @@ size_t find_next_line_end(const str *buf, const font *font, text_row_direction d
     size_t cut_off = start_index;
     bool found_cut_off = false;
     uint16_t pos = 0;
-    for(size_t i = start_index; i < len; i++) {
+    size_t glyph_len = 1;
+    for(size_t i = start_index; i < len; i += glyph_len) {
+        glyph_len = 1;
         // Linebreak encountered, we are done here.
         if(ptr[i] == '\n') {
             return i + 1;
@@ -48,7 +50,7 @@ size_t find_next_line_end(const str *buf, const font *font, text_row_direction d
         }
 
         // Special characters handled, try to get printable surface.
-        const surface *s = font_get_surface(font, ptr[i]);
+        const surface *s = font_get_glyph(font, ptr + i, len - i, &glyph_len);
         if(s == NULL) {
             // Character has no surface, just skip it since we can't do anything with it.
             assert(false && "Encountered unprintable character!");
@@ -85,16 +87,20 @@ static area find_row_metrics(const str *buf, const font *font, uint8_t letter_sp
                              size_t start, size_t end) {
     area ret = {0, font->h}; // Note that we use generic font height if row has no characters.
     const char *ptr = str_c(buf);
-    for(size_t i = start; i < end; i++) {
-        const surface *s = font_get_surface(font, ptr[i]);
+    size_t glyphs = 0, glyph_len = 1;
+    for(size_t i = start; i < end; i += glyph_len) {
+        const surface *s = font_get_glyph(font, ptr + i, end - i, &glyph_len);
         if(s == NULL) {
             assert(false && "Encountered unprintable character!");
             continue;
         }
+        glyphs++;
         ret.h = max2(ret.h, (direction == TEXT_ROW_HORIZONTAL) ? s->h : s->w);
         ret.w += (direction == TEXT_ROW_HORIZONTAL) ? s->w : s->h;
     }
-    ret.w += (end - start - 1) * letter_spacing;
+    if(glyphs > 0) {
+        ret.w += (glyphs - 1) * letter_spacing; // count glyphs, not bytes (UTF-8)
+    }
     return ret;
 }
 
@@ -209,8 +215,9 @@ void text_layout_compute(text_layout *layout, const str *buf, const font *font, 
     uint16_t y = valign_offset(vertical_align, max_height, text_block.h);
     foreach(it, row) {
         uint16_t x = halign_offset(horizontal_align, max_width, row->size.w);
-        for(size_t i = row->start_index; i < row->end_index; i++) {
-            const surface *glyph = font_get_surface(font, src[i]);
+        size_t glyph_len = 1;
+        for(size_t i = row->start_index; i < row->end_index; i += glyph_len) {
+            const surface *glyph = font_get_glyph(font, src + i, row->end_index - i, &glyph_len);
             if(glyph != NULL) {
                 text_layout_item *item = vector_append_ptr(&layout->items);
                 item->glyph = glyph;

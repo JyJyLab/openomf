@@ -250,8 +250,10 @@ int main(int argc, char *argv[]) {
     struct arg_file *output = arg_file0("o", "output", "<file>", "compile output language file");
     struct arg_int *check_count =
         arg_int0("c", "check-count", "<NUM>", "Check that language file has this many entries, or bail.");
+    struct arg_lit *keep_utf8 =
+        arg_lit0("u", "keep-utf8", "save strings as UTF-8 instead of CP437 (Korean translation, KOREAN.*)");
     struct arg_end *end = arg_end(20);
-    void *argtable[] = {help, vers, file_arg, input, output, str, check_count, end};
+    void *argtable[] = {help, vers, file_arg, input, output, str, check_count, keep_utf8, end};
     const char *progname = "languagetool";
 
     bool language_is_utf8 = false;
@@ -395,7 +397,7 @@ int main(int argc, char *argv[]) {
             goto exit_0;
         }
 
-        if(language_is_utf8) {
+        if(language_is_utf8 && keep_utf8->count == 0) {
             conversion_result result = sd_language_from_utf8(&language);
             if(result.error_code != CP437_SUCCESS) {
                 fprintf(stderr, "Error converting from UTF-8! Error %s on language entry %d\n",
