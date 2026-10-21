@@ -19,7 +19,7 @@ uniform usampler2D remaps;
 uniform uint framebuffer_options;
 
 // for info about these options, see renderer_framebuffer_options in video/enums.h
-bool FBUFOPT_CREDITS = (framebuffer_options & 0x01u) != 0u;
+#define FBUFOPT_CREDITS ((framebuffer_options & 0x01u) != 0u)
 
 // It's magic!
 const int MAGIC_REMAP_ROUNDS = 12;
@@ -33,7 +33,7 @@ void set_color(int index) {
 }
 
 void main() {
-    vec4 texel = textureLod(framebuffer, tex_coord, 0);
+    vec4 texel = textureLod(framebuffer, tex_coord, 0.0);
     int idx = int(texel.r * 1023.0 + 0.5);
     int remap_enc = int(texel.g * 255.0);
     int darktint = int(texel.b * 1023.0 + 0.5);

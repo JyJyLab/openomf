@@ -1,3 +1,5 @@
+> **Unofficial Android port** in this fork: see [android/README.md](android/README.md) (branch `android`).
+
 OpenOMF
 =======
 

@@ -2,8 +2,8 @@
 
 // Note: This is modified from https://godotshaders.com/shader/very-simple-crt-shader/
 
-uniform float scanline_intensity = 0.25;
-uniform float color_bleed_weight = 0.35;
+const float scanline_intensity = 0.25;
+const float color_bleed_weight = 0.35;
 
 // In
 in vec2 tex_coord;

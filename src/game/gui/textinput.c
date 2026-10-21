@@ -36,6 +36,9 @@ typedef struct textinput {
     textinput_filter_cb filter_cb;
     textinput_done_cb done_cb;
     void *userdata;
+#ifdef __ANDROID__
+    bool soft_keyboard; // 이 입력 칸이 화면 키보드를 띄웠는지
+#endif
 } textinput;
 
 static bool textinput_wheel_active(component *c) {
@@ -93,6 +96,21 @@ static void refresh(component *c) {
 }
 
 static void textinput_render(component *c) {
+#ifdef __ANDROID__
+    {
+        // 안드로이드: 입력 칸이 선택되어 있으면 화면 키보드를 띄우고, 선택이 풀리면 닫는다
+        // (데스크톱 SDL 은 처음부터 글자 입력을 받지만 안드로이드는 요청해야 키보드가 뜸)
+        textinput *kb = widget_get_obj(c);
+        bool want = component_is_selected(c) && !component_is_disabled(c);
+        if(want && !kb->soft_keyboard) {
+            SDL_StartTextInput();
+            kb->soft_keyboard = true;
+        } else if(!want && kb->soft_keyboard) {
+            SDL_StopTextInput();
+            kb->soft_keyboard = false;
+        }
+    }
+#endif
     const textinput *ti = widget_get_obj(c);
     const gui_theme *theme = component_get_theme(c);
 
@@ -311,6 +329,11 @@ void textinput_clear(component *c) {
 }
 
 static void textinput_free(component *c) {
+#ifdef __ANDROID__
+    if(((textinput *)widget_get_obj(c))->soft_keyboard) {
+        SDL_StopTextInput(); // 입력 칸이 사라지면 화면 키보드도 닫는다
+    }
+#endif
     textinput *ti = widget_get_obj(c);
     surface_free(&ti->bg_surface);
     text_free(&ti->text);

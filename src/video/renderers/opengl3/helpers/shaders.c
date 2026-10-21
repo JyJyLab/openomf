@@ -65,6 +65,22 @@ static bool load_shader(GLuint program_id, GLenum shader_type, const char *shade
         log_error("Failed to load shader from %s", path_c(&shader_path));
         return false;
     }
+#ifdef __ANDROID__
+    // GLSL 330 core -> GLSL ES 3.00: 첫 줄(#version)을 바꾸고 기본 정밀도를 넣는다.
+    // 셰이더 본문은 두 버전 모두에서 통과하도록 작성되어 있음 (glslangValidator 로 확인)
+    {
+        const char *src = str_c(&shader_source);
+        const char *body = strchr(src, '\n');
+        str es;
+        str_from_c(&es, "#version 300 es\n"
+                        "precision highp float;\nprecision highp int;\nprecision highp usampler2D;\n");
+        str_append_c(&es, body != NULL ? body : "");
+        // ES 에서는 내장 변수 gl_FragCoord 를 다시 선언할 수 없다
+        str_replace(&es, "in vec4 gl_FragCoord;", "", -1);
+        str_free(&shader_source);
+        shader_source = es;
+    }
+#endif
     const char *c_str = str_c(&shader_source);
 
     GLuint shader = glCreateShader(shader_type);

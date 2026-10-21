@@ -263,6 +263,13 @@ void engine_run(const engine_init_flags *init_flags) {
                     mouse_visible_ticks = 1000;
                     SDL_ShowCursor(1);
                     break;
+#ifdef __ANDROID__
+                case SDL_RENDER_DEVICE_RESET:
+                    // SDL 이 잃어버린 GL 컨텍스트를 새로 만들었다 → GL 객체 다시 만들기
+                    video_reinit_renderer();
+                    enable_screen_updates = 1;
+                    break;
+#endif
                 case SDL_WINDOWEVENT:
                     switch(e.window.event) {
                         case SDL_WINDOWEVENT_MINIMIZED:
@@ -279,6 +286,10 @@ void engine_run(const engine_init_flags *init_flags) {
                             break;
                         case SDL_WINDOWEVENT_RESTORED:
                             video_get_state(NULL, NULL, &check_fs, NULL, NULL, NULL);
+#ifdef __ANDROID__
+                            // 안드로이드: 백그라운드에서 돌아오면 GL 상태를 항상 다시 확인 (컨텍스트가 바뀌었으면 재생성)
+                            check_fs = true;
+#endif
                             if(check_fs) {
                                 video_reinit_renderer();
                             }

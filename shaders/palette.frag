@@ -21,11 +21,11 @@ uniform usampler2D remaps;
 in vec4 gl_FragCoord;
 
 // for info about these options, see renderer_options in video/enums.h
-bool SPRITE_REMAP = (options & 1u) != 0u;
-bool SPRITE_SHADOWMASK = (options & 2u) != 0u;
-bool SPRITE_INDEX_ADD = (options & 4u) != 0u;
-bool SPRITE_HAR_QUIRKS = (options & 8u) != 0u;
-bool SPRITE_DARK_TINT = (options & 0x10u) != 0u;
+#define SPRITE_REMAP ((options & 1u) != 0u)
+#define SPRITE_SHADOWMASK ((options & 2u) != 0u)
+#define SPRITE_INDEX_ADD ((options & 4u) != 0u)
+#define SPRITE_HAR_QUIRKS ((options & 8u) != 0u)
+#define SPRITE_DARK_TINT ((options & 0x10u) != 0u)
 
 const int MAGIC_REMAP_ROUNDS = 12;
 const float PHI = 1.61803398874989484820459;
@@ -36,7 +36,7 @@ float noise(in vec2 v) {
     // OMF had a fairly random offset for each row, because
     // they applied their noise row by row.
     // they then changed the threshold by 0x6b for each subsequent X.
-    return fract(tan(10 * PHI * v.y) + (float(0x6b) * v.x) / 256.0);
+    return fract(tan(10.0 * PHI * v.y) + (float(0x6b) * v.x) / 256.0);
 }
 
 // Encode a palette index into the paletted framebuffer (GL_RGBA16).
@@ -72,7 +72,7 @@ vec4 handle(int index) {
 
 void main() {
     // Don't render if we're decimating due to opacity
-    float decimate_limit = opacity / 255.0;
+    float decimate_limit = float(opacity) / 255.0;
     float decimate_value = noise(gl_FragCoord.xy);
     if (decimate_value > decimate_limit) {
         discard;
@@ -83,7 +83,7 @@ void main() {
         int coverage = 0;
         for(int y = 0; y < 4; y++) {
             float offset = float(y - 1) / ATLAS_H;
-            uvec4 texel = textureLod(atlas, tex_coord + vec2(0, offset), 0);
+            uvec4 texel = textureLod(atlas, tex_coord + vec2(0.0, offset), 0.0);
             int index = int(texel.r);
             coverage += int(index != transparency_index);
         }
@@ -98,7 +98,7 @@ void main() {
     }
 
 
-    uvec4 texel = textureLod(atlas, tex_coord, 0);
+    uvec4 texel = textureLod(atlas, tex_coord, 0.0);
 
     // Don't render if it's transparent pixel
     int index = int(texel.r);

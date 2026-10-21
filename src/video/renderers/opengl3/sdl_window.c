@@ -52,9 +52,18 @@ bool has_gl_available(int version_major, int version_minor) {
     SDL_GLContext *c;
     bool ret = false;
 
+#ifdef __ANDROID__
+    // 안드로이드: 데스크톱 GL 3.3 대신 GLES 3.0
+    (void)version_major;
+    (void)version_minor;
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+#else
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version_minor);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+#endif
 
     if((w = SDL_CreateWindow("", 0, 0, 320, 200, SDL_WINDOW_HIDDEN | SDL_WINDOW_OPENGL)) == NULL) {
         goto exit_0;
@@ -77,10 +86,17 @@ bool create_window(SDL_Window **window, int width, int height, bool fullscreen) 
     char title[32];
     snprintf(title, 32, "OpenOMF v%s", get_version_string());
 
+#ifdef __ANDROID__
+    // Android: OpenGL ES 3.0 context (GLSL ES 3.00)
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+#else
     // Request OpenGL 3.3 core context. This also gives us GLSL 330.
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+#endif
 
     // RGBA8888
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);

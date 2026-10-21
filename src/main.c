@@ -52,7 +52,144 @@ void scan_game_controllers(void) {
     }
 }
 
+#ifdef __ANDROID__
+#include <errno.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+
+// 앱에 넣은 게임 데이터(APK assets/omf/...)를 앱 전용 폴더로 한 번 복사하고, OpenOMF 경로 환경변수를 정한다.
+// OpenOMF 는 일반 파일 경로로 리소스를 읽으므로 assets 를 그대로 쓸 수 없다.
+// 복사할 파일 목록은 assets/omf/files.txt (APK 를 만들 때 생성), 버전이 바뀌면 다시 복사한다.
+static void android_mkdirs(const char *path) {
+    char tmp[1024];
+    snprintf(tmp, sizeof(tmp), "%s", path);
+    for(char *p = tmp + 1; *p; p++) {
+        if(*p == '/') {
+            *p = 0;
+            mkdir(tmp, 0755);
+            *p = '/';
+        }
+    }
+    mkdir(tmp, 0755);
+}
+
+static bool android_copy_asset(const char *asset, const char *dst) {
+    SDL_RWops *in = SDL_RWFromFile(asset, "rb");
+    if(in == NULL) {
+        return false;
+    }
+    char tmp[1100];
+    snprintf(tmp, sizeof(tmp), "%s.tmp", dst);
+    FILE *out = fopen(tmp, "wb");
+    if(out == NULL) {
+        SDL_RWclose(in);
+        return false;
+    }
+    char buf[65536];
+    size_t n;
+    bool ok = true;
+    while((n = SDL_RWread(in, buf, 1, sizeof(buf))) > 0) {
+        if(fwrite(buf, 1, n, out) != n) {
+            ok = false;
+            break;
+        }
+    }
+    SDL_RWclose(in);
+    if(fclose(out) != 0) {
+        ok = false;
+    }
+    return ok && rename(tmp, dst) == 0;
+}
+
+static void android_prepare_paths(void) {
+    const char *base = SDL_AndroidGetInternalStoragePath();
+    if(base == NULL) {
+        return;
+    }
+    char root[1024], buf[1100];
+    snprintf(root, sizeof(root), "%s/omf", base);
+    android_mkdirs(root);
+
+    // assets/omf/files.txt: 첫 줄 = 데이터 버전, 다음 줄부터 상대 경로
+    SDL_RWops *list = SDL_RWFromFile("omf/files.txt", "rb");
+    if(list != NULL) {
+        Sint64 size = SDL_RWsize(list);
+        char *text = SDL_calloc(1, (size_t)size + 1);
+        SDL_RWread(list, text, 1, (size_t)size);
+        SDL_RWclose(list);
+
+        char *nl = strchr(text, '\n');
+        char version[128] = "";
+        if(nl != NULL) {
+            snprintf(version, sizeof(version), "%.*s", (int)(nl - text), text);
+        }
+        char stamp_path[1100], stamp[128] = "";
+        snprintf(stamp_path, sizeof(stamp_path), "%s/.assets_version", root);
+        FILE *f = fopen(stamp_path, "rb");
+        if(f != NULL) {
+            size_t r = fread(stamp, 1, sizeof(stamp) - 1, f);
+            stamp[r] = 0;
+            fclose(f);
+        }
+        if(nl != NULL && strcmp(stamp, version) != 0) {
+            bool all_ok = true;
+            for(char *line = nl + 1; *line;) {
+                char *end = strchr(line, '\n');
+                if(end != NULL) {
+                    *end = 0;
+                }
+                if(*line) {
+                    char asset[1100], dst[1100];
+                    snprintf(asset, sizeof(asset), "omf/%s", line);
+                    snprintf(dst, sizeof(dst), "%s/%s", root, line);
+                    char *slash = strrchr(dst, '/');
+                    if(slash != NULL) {
+                        *slash = 0;
+                        android_mkdirs(dst);
+                        *slash = '/';
+                    }
+                    if(!android_copy_asset(asset, dst)) {
+                        all_ok = false;
+                        SDL_Log("OMF: failed to copy asset %s", asset);
+                    }
+                }
+                if(end == NULL) {
+                    break;
+                }
+                line = end + 1;
+            }
+            if(all_ok && (f = fopen(stamp_path, "wb")) != NULL) {
+                fputs(version, f);
+                fclose(f);
+            }
+        }
+        SDL_free(text);
+    }
+
+    snprintf(buf, sizeof(buf), "%s/", root);
+    setenv("OPENOMF_RESOURCE_PATH", buf, 1);
+    // 로그·세이브·설정은 사용자가 파일 관리자/PC 로 볼 수 있는 앱 외부 폴더
+    // (Android/data/com.omf2097.android/files). 쓸 수 없으면 내부 폴더
+    const char *user = NULL;
+    if(SDL_AndroidGetExternalStorageState() & SDL_ANDROID_EXTERNAL_STORAGE_WRITE) {
+        user = SDL_AndroidGetExternalStoragePath();
+    }
+    if(user == NULL) {
+        user = base;
+    }
+    snprintf(buf, sizeof(buf), "%s/state/", user);
+    android_mkdirs(buf);
+    setenv("OPENOMF_STATE_PATH", buf, 1);
+    snprintf(buf, sizeof(buf), "%s/config/", user);
+    android_mkdirs(buf);
+    setenv("OPENOMF_CONFIG_PATH", buf, 1);
+}
+#endif
+
 int main(int argc, char *argv[]) {
+#ifdef __ANDROID__
+    android_prepare_paths();
+#endif
     // Set up initial state for misc things
     char *ip = NULL;
     char *lobbyaddr = NULL;

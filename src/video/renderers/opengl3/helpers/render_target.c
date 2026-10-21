@@ -15,7 +15,13 @@ typedef struct render_target {
 render_target *render_target_create(GLuint tex_unit, int w, int h, GLint internal_format, GLenum format,
                                     GLenum filtering) {
     render_target *target = omf_calloc(1, sizeof(render_target));
+#ifdef __ANDROID__
+    // GLES: half float 내부 형식은 자료형도 GL_HALF_FLOAT 여야 한다 (epoxy/gl.h shim 참고)
+    GLenum type = internal_format == GL_RGBA16F ? GL_HALF_FLOAT : GL_UNSIGNED_BYTE;
+    target->texture_id = texture_create(tex_unit, w, h, internal_format, format, type, filtering);
+#else
     target->texture_id = texture_create(tex_unit, w, h, internal_format, format, GL_UNSIGNED_BYTE, filtering);
+#endif
     target->fbo_id = fbo_create(target->texture_id);
     target->tex_unit = tex_unit;
     return target;

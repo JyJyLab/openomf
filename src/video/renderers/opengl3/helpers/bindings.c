@@ -74,3 +74,13 @@ void bindings_unbind_fbo(GLuint id) {
         bound_fbo = 0;
     }
 }
+
+void bindings_reset(void) {
+    bound_vbo = 0;
+    bound_vao = 0;
+    for(unsigned i = 0; i < sizeof(bound_tex) / sizeof(bound_tex[0]); i++) {
+        bound_tex[i] = 0;
+    }
+    bound_fbo = 0;
+    active_tex = ~0u;
+}

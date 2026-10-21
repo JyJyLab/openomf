@@ -2,6 +2,7 @@
 #include "video/renderers/common.h"
 #include "video/renderers/opengl3/sdl_window.h"
 
+#include "video/renderers/opengl3/helpers/bindings.h"
 #include "video/renderers/opengl3/helpers/object_array.h"
 #include "video/renderers/opengl3/helpers/palette.h"
 #include "video/renderers/opengl3/helpers/remaps.h"
@@ -106,45 +107,23 @@ static void reload_scaler_program(const gl3_context *ctx) {
     bind_uniform_2f(ctx->scale_prog_id, "texture_size", (GLfloat)fb_w, (GLfloat)fb_h);
 }
 
-static bool setup_context(void *userdata, int window_w, int window_h, bool fullscreen, bool vsync, int aspect,
-                          int framerate_limit, int fb_scale, int scaling_mode) {
-    gl3_context *ctx = userdata;
-    ctx->screen_w = window_w;
-    ctx->screen_h = window_h;
-    ctx->fullscreen = fullscreen;
-    ctx->framerate_limit = framerate_limit;
-    ctx->fb_scale = fb_scale;
-    ctx->vsync = vsync;
-    ctx->aspect = aspect;
-    ctx->scaling_mode = scaling_mode;
-    ctx->target_move_x = 0;
-    ctx->target_move_y = 0;
-    ctx->current_blend_mode = MODE_SET;
-    ctx->last_tick = SDL_GetPerformanceCounter();
-    set_framerate_limit(ctx, framerate_limit);
-
-    if(!create_window(&ctx->window, window_w, window_h, fullscreen)) {
-        goto error_0;
-    }
-    if(!create_gl_context(&ctx->gl_context, ctx->window)) {
-        goto error_1;
-    }
-    if(!set_vsync(ctx->vsync)) {
-        goto error_2;
-    }
+// 셰이더·텍스처·프레임버퍼 등 GL 객체를 (현재 GL 컨텍스트에) 만든다.
+// 안드로이드에서 백그라운드에 다녀온 뒤 GL 컨텍스트가 새로 만들어지면 이것을 다시 부른다.
+static bool create_gl_objects(gl3_context *ctx) {
+    const int scaling_mode = ctx->scaling_mode;
     if(!create_program(&ctx->palette_prog_id, "palette.vert", "palette.frag")) {
-        goto error_2;
+        return false;
     }
     if(!create_program(&ctx->rgba_prog_id, "rgba.vert", "rgba.frag")) {
-        goto error_3;
+        return false;
     }
     if(!create_program(&ctx->debug_atlas_prog_id, "rgba.vert", "debug_atlas.frag")) {
-        goto error_4;
+        return false;
     }
     const char *scale_vert, *scale_frag;
     get_scaling_shader_names(scaling_mode, &scale_vert, &scale_frag);
     if(!create_program(&ctx->scale_prog_id, scale_vert, scale_frag)) {
-        goto error_5;
+        return false;
     }
 
     // Fetch viewport size which may be different from window size.
@@ -197,17 +176,41 @@ static bool setup_context(void *userdata, int window_w, int window_h, bool fulls
     // Activate scale program and bind uniforms
     reload_scaler_program(ctx);
 
+    return true;
+}
+
+static bool setup_context(void *userdata, int window_w, int window_h, bool fullscreen, bool vsync, int aspect,
+                          int framerate_limit, int fb_scale, int scaling_mode) {
+    gl3_context *ctx = userdata;
+    ctx->screen_w = window_w;
+    ctx->screen_h = window_h;
+    ctx->fullscreen = fullscreen;
+    ctx->framerate_limit = framerate_limit;
+    ctx->fb_scale = fb_scale;
+    ctx->vsync = vsync;
+    ctx->aspect = aspect;
+    ctx->scaling_mode = scaling_mode;
+    ctx->target_move_x = 0;
+    ctx->target_move_y = 0;
+    ctx->current_blend_mode = MODE_SET;
+    ctx->last_tick = SDL_GetPerformanceCounter();
+    set_framerate_limit(ctx, framerate_limit);
+
+    if(!create_window(&ctx->window, window_w, window_h, fullscreen)) {
+        goto error_0;
+    }
+    if(!create_gl_context(&ctx->gl_context, ctx->window)) {
+        goto error_1;
+    }
+    if(!set_vsync(ctx->vsync)) {
+        goto error_2;
+    }
+    if(!create_gl_objects(ctx)) {
+        goto error_2;
+    }
+
     log_info("OpenGL3 Renderer initialized!");
     return true;
-
-error_5:
-    delete_program(ctx->debug_atlas_prog_id);
-
-error_4:
-    delete_program(ctx->rgba_prog_id);
-
-error_3:
-    delete_program(ctx->palette_prog_id);
 
 error_2:
     SDL_GL_DeleteContext(ctx->gl_context);
@@ -295,6 +298,24 @@ static bool reset_context_with(void *userdata, int window_w, int window_h, bool 
 }
 
 static void reset_context(void *userdata) {
+#ifdef __ANDROID__
+    // 안드로이드: 백그라운드에서 돌아올 때 SDL 이 GL 컨텍스트를 새로 만들었으면(기기에 따라 기존 것이 사라짐)
+    // 예전 GL 객체는 모두 없어졌으므로 처음처럼 다시 만든다. 컨텍스트가 그대로면 화면만 다시 그리게 한다.
+    gl3_context *ctx = userdata;
+    SDL_GLContext current = SDL_GL_GetCurrentContext();
+    if(current != NULL && current != ctx->gl_context) {
+        log_info("GL context was recreated; rebuilding GL objects");
+        ctx->gl_context = current;
+        bindings_reset();
+        ctx->current_blend_mode = MODE_SET;
+        set_vsync(ctx->vsync);
+        if(!create_gl_objects(ctx)) {
+            log_error("Failed to rebuild GL objects after context loss");
+        }
+    }
+    SDL_GL_GetDrawableSize(ctx->window, &ctx->viewport_w, &ctx->viewport_h);
+    vga_state_mark_dirty();
+#endif
     return;
 }
 
@@ -374,8 +395,18 @@ static inline void video_set_blend_mode(gl3_context *ctx, object_array_blend_mod
 static void capture_screenshot(void *userdata) {
     gl3_context *ctx = userdata;
     SDL_Rect r = {0, 0, ctx->screen_w, ctx->screen_h};
-    unsigned char *buffer = omf_malloc(r.w * r.h * 3);
+    unsigned char *buffer = omf_malloc(r.w * r.h * 4);
+#ifdef __ANDROID__
+    // GLES 는 GL_RGBA/GL_UNSIGNED_BYTE 읽기만 보장 → RGB 로 줄인다
+    glReadPixels(r.x, r.y, r.w, r.h, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+    for(int i = 0; i < r.w * r.h; i++) {
+        buffer[i * 3 + 0] = buffer[i * 4 + 0];
+        buffer[i * 3 + 1] = buffer[i * 4 + 1];
+        buffer[i * 3 + 2] = buffer[i * 4 + 2];
+    }
+#else
     glReadPixels(r.x, r.y, r.w, r.h, GL_RGB, GL_UNSIGNED_BYTE, buffer);
+#endif
     ctx->screenshot_cb(&r, buffer, true); // TODO: should preferably happen in a thread.
     omf_free(buffer);
 }
@@ -536,7 +567,18 @@ static void render_area_finish(void *userdata, surface *dst) {
     const int scale = ctx->fb_scale;
     const SDL_Rect r = (SDL_Rect){x0 * scale, y0 * scale, (x1 - x0) * scale, (y1 - y0) * scale};
     uint16_t *buffer = omf_calloc(r.w * r.h, sizeof(uint16_t));
+#ifdef __ANDROID__
+    // half float 프레임버퍼: RGBA/FLOAT 로 읽어 R 값을 16비트 정규화 값으로 바꾼다
+    float *fbuf = omf_calloc((size_t)r.w * r.h * 4, sizeof(float));
+    glReadPixels(r.x, r.y, r.w, r.h, GL_RGBA, GL_FLOAT, fbuf);
+    for(int i = 0; i < r.w * r.h; i++) {
+        float v = fbuf[i * 4] * 65535.0f + 0.5f;
+        buffer[i] = (uint16_t)(v < 0.0f ? 0.0f : (v > 65535.0f ? 65535.0f : v));
+    }
+    omf_free(fbuf);
+#else
     glReadPixels(r.x, r.y, r.w, r.h, GL_RED, GL_UNSIGNED_SHORT, buffer);
+#endif
     surface_create_from_flip_scale(dst, r.w, r.h, buffer, 1023.0f / 65535.0f);
     omf_free(buffer);
 }
