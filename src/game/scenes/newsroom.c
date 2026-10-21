@@ -110,7 +110,7 @@ void newsroom_fixup_str(newsroom_local *local) {
         translation_id = LANG_STR_NEWSROOM_TEXT + local->news_id + min2(local->screen, 1);
     }
 
-    char scratch[9];
+    char scratch[64]; // Korean HAR names are up to 12+ bytes in UTF-8
     str tmp;
     str_from_c(&tmp, lang_get(translation_id));
     str_replace(&tmp, "~11", pronoun_strip(subject_pronoun(local->sex2), scratch, sizeof scratch), -1);
