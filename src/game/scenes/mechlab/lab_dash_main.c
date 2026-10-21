@@ -584,7 +584,7 @@ void lab_dash_sim_update(scene *s, dashboard_widgets *dw, sd_pilot *pilot) {
     label_set_text(dw->losses, tmp);
     snprintf(tmp, sizeof(tmp), "MODEL: %s", lang_get(31 + pilot->har_id));
     label_set_text(dw->har_name, tmp);
-    snprintf(tmp, sizeof(tmp), "NAME: %s", str_c(&pilot->name));
+    snprintf(tmp, sizeof(tmp), "NAME: %s", lang_ui(str_c(&pilot->name)));
     label_set_text(dw->name, tmp);
 
     lab_dash_sim_update_portraits(dw);

@@ -19,7 +19,7 @@ def main():
     for f in sorted(glob.glob(os.path.join(HERE, 'tr', '*.py'))):
         ns = {}
         exec(open(f, encoding='utf-8').read(), ns)
-        tr.update(ns['TR'])
+        tr.update(ns.get('TR', {}))  # trn.py 는 UI 사전만 있음
     ents = parse(os.path.join(HERE, 'ENGLISH-source.txt'))
     done = 0
     with open(os.path.join(HERE, 'KOREAN.TXT'), 'w', encoding='utf-8') as out:

@@ -101,6 +101,10 @@ static area find_row_metrics(const str *buf, const font *font, uint8_t letter_sp
     if(glyphs > 0) {
         ret.w += (glyphs - 1) * letter_spacing; // count glyphs, not bytes (UTF-8)
     }
+    if(font->size == FONT_BIG && direction == TEXT_ROW_HORIZONTAL && ret.h > font->h) {
+        // Korean 9px glyphs keep the original 8px row height so full menus still fit (1px goes into the gap)
+        ret.h = font->h;
+    }
     return ret;
 }
 

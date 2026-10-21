@@ -4,7 +4,8 @@
 #   ANDROID_HOME      Android SDK with platforms;android-34 and build-tools;34.0.0 (+ cmdline-tools for d8)
 #   ANDROID_NDK_HOME  Android NDK (tested r27c)
 #   OMF_DATA          folder with the original One Must Fall 2097 game files (not included in this repository)
-#   OMF_DESKTOP_BUILD desktop OpenOMF build dir that contains resources/ (openomf.bk, *.LNG2 ...), default: ../build-linux
+#   OMF_DESKTOP_BUILD desktop OpenOMF build dir that contains resources/ (openomf.bk, *.LNG2 ...) and languagetool,
+#                     default: ../build-linux
 #   KEYSTORE / KEYSTORE_PASS  signing key (a new personal key is created in android/work if missing)
 #
 # usage: android/build_apk.sh [version]
@@ -39,6 +40,8 @@ for f in "$DATA"/*; do
   esac
 done
 cp "$DESK"/resources/* $OUT/assets/omf/resources/
+# Korean translation (KOREAN.LNG/.LNG2/.UI/.FNT); the game switches to Korean once on first run
+"$OMF/korean/build.sh" "$DESK/languagetool" $OUT/assets/omf/resources
 cp -r $OMF/shaders/* $OUT/assets/omf/shaders/
 ( cd $OUT/assets/omf && { echo "data-$VER-$(cat resources/* shaders/*/* shaders/* 2>/dev/null | md5sum | cut -c1-12)"; find resources shaders -type f | sort; } > files.txt )
 

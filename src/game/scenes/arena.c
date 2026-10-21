@@ -32,6 +32,7 @@
 #include "game/utils/score.h"
 #include "game/utils/settings.h"
 #include "game/utils/ticktimer.h"
+#include "resources/fonts.h"
 #include "resources/languages.h"
 #include "resources/script_cache.h"
 #include "resources/sgmanager.h"
@@ -1481,12 +1482,13 @@ void arena_render_overlay(scene *scene) {
             component_render(local->endurance_bars[i]);
         }
 
-        // Render HAR and pilot names
+        // Render HAR and pilot names (Korean glyphs are 7px tall: move the HAR line down so the rows don't touch)
+        const int har_y = fonts_get_utf8() ? 27 : 25;
         text_draw(local->player_name[0], 4, 18);
-        text_draw(local->player_har[0], 4, 25);
+        text_draw(local->player_har[0], 4, har_y);
         if(player[1]->pilot) {
             text_draw(local->player_name[1], 161, 18);
-            text_draw(local->player_har[1], 161, 25);
+            text_draw(local->player_har[1], 161, har_y);
         }
 
         // Render score stuff

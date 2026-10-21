@@ -195,6 +195,30 @@ static void android_prepare_paths(void) {
     android_mkdirs(buf);
     setenv("OPENOMF_CONFIG_PATH", buf, 1);
 }
+
+// 한국어 파일이 들어 있으면 처음 한 번만 언어를 한국어로 바꾼다 (이전 버전에서 쓰던 설정 포함).
+// 그 뒤에 메뉴에서 다른 언어를 고르면 그대로 둔다. 표시 파일: <config>/korean_default
+static void android_korean_default(void) {
+    const char *res = getenv("OPENOMF_RESOURCE_PATH");
+    const char *cfg = getenv("OPENOMF_CONFIG_PATH");
+    if(res == NULL || cfg == NULL) {
+        return;
+    }
+    char lng[1100], mark[1100];
+    snprintf(lng, sizeof(lng), "%sresources/KOREAN.LNG", res);
+    snprintf(mark, sizeof(mark), "%skorean_default", cfg);
+    struct stat st;
+    if(stat(lng, &st) != 0 || stat(mark, &st) == 0) {
+        return;
+    }
+    omf_free(settings_get()->language.language);
+    settings_get()->language.language = omf_strdup("KOREAN.LNG");
+    settings_save();
+    FILE *f = fopen(mark, "w");
+    if(f != NULL) {
+        fclose(f);
+    }
+}
 #endif
 
 int main(int argc, char *argv[]) {
@@ -367,6 +391,9 @@ int main(int argc, char *argv[]) {
         goto exit_1;
     }
     settings_load();
+#ifdef __ANDROID__
+    android_korean_default();
+#endif
 
     // Network game override stuff
     if(ip) {

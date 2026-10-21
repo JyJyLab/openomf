@@ -18,20 +18,25 @@ import sys
 
 from PIL import Image, ImageDraw, ImageFont
 
-CODEPOINTS = (list(range(0xAC00, 0xD7A4))      # Hangul syllables
+CODEPOINTS = sorted(list(range(0xAC00, 0xD7A4))      # Hangul syllables
               + list(range(0x3131, 0x318F))    # compatibility jamo
-              + [0x00B7, 0x2026, 0x2018, 0x2019, 0x201C, 0x201D, 0x300C, 0x300D, 0x2192, 0x2190, 0x00D7, 0x203B])
+              + [0x00B7, 0x2026, 0x2018, 0x2019, 0x201C, 0x201D, 0x300C, 0x300D, 0x2192, 0x2190, 0x00D7, 0x203B])  # sorted: the engine looks glyphs up by binary search
 
 
-def table(ttf, px, size_id, w, h):
+def table(ttf, px, size_id, w, h, dy=-1):
     font = ImageFont.truetype(ttf, px)
+    if dy is None:
+        # outline fonts: fit the tallest syllables into the cell
+        bbs = [font.getbbox(c) for c in '힘뷁갉똥를젊았']
+        top, bot = min(b[1] for b in bbs), max(b[3] for b in bbs)
+        dy = -top - max(0, (bot - top) - h) // 2
     bpr = (w + 7) // 8
     cps, bits = [], bytearray()
     for cp in CODEPOINTS:
         im = Image.new('1', (w + 4, h + 4), 0)
         d = ImageDraw.Draw(im)
         d.fontmode = '1'
-        d.text((0, -1), chr(cp), font=font, fill=1)  # Galmuri leaves one empty row on top
+        d.text((0, dy), chr(cp), font=font, fill=1)  # Galmuri leaves one empty row on top (dy -1)
         px_ = im.load()
         if im.getbbox() is None:
             continue

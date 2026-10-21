@@ -122,8 +122,8 @@ void newsroom_fixup_str(newsroom_local *local) {
     str_replace(&tmp, "~5", lang_ui("Stadium"), -1);
     str_replace(&tmp, "~4", pronoun_strip(lang_get(local->har2 + LANG_STR_HAR), scratch, sizeof scratch), -1);
     str_replace(&tmp, "~3", pronoun_strip(lang_get(local->har1 + LANG_STR_HAR), scratch, sizeof scratch), -1);
-    str_replace(&tmp, "~2", str_c(&local->pilot2), -1);
-    str_replace(&tmp, "~1", str_c(&local->pilot1), -1);
+    str_replace(&tmp, "~2", lang_ui(str_c(&local->pilot2)), -1); // Korean: tournament pilot names
+    str_replace(&tmp, "~1", lang_ui(str_c(&local->pilot1)), -1);
     lang_josa(&tmp); // Korean particles after the inserted names
 
     newsroom_fixup_capitalization(&tmp);

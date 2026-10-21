@@ -5,8 +5,9 @@
 Native Android port of [OpenOMF](https://github.com/omf2097/openomf) — the open-source remake of One Must Fall 2097.
 No DOS emulator: the OpenOMF engine runs natively with SDL2 + OpenGL ES 3.0.
 
-This is a personal, unofficial fork. **No game data is included.** You need your own copy of the original
-One Must Fall 2097 files (released as freeware by Diversions Entertainment).
+This is a personal, unofficial fork. The repository contains no game data; building needs the original
+One Must Fall 2097 files (released as freeware by Diversions Entertainment). The APKs on the Releases page
+include the freeware game data and are ready to install.
 
 ---
 
@@ -27,7 +28,12 @@ One Must Fall 2097 files (released as freeware by Diversions Entertainment).
   - touch pad: 8-way D-pad, PUNCH (= Enter), KICK (= Right Shift), MENU (= Esc); multitouch
   - gamepads (Bluetooth/USB) are translated to the same keyboard keys, the touch pad hides automatically.
     Xbox-style A = punch, B = kick; Nintendo-style B = punch, A = kick
-  - overlay options (gear button): touch pad auto/always/never, swap punch/kick
+  - overlay options (gear button): touch pad auto/always/never, swap punch/kick, easy finish
+    (after the final hit, punch = scrap, kick during the scrap = destruction; on by default)
+- **Korean translation** (`korean/`): UTF-8 language files, a Hangul bitmap font made from
+  [Galmuri](https://github.com/quiple/galmuri) (SIL OFL 1.1, `korean/Galmuri-OFL.txt`) and a table for the
+  English strings that are hard-coded in OpenOMF (`KOREAN.UI`). The Android build switches to Korean once on
+  first run; other languages stay selectable in the menu. On desktop, set `language="KOREAN.LNG"`.
 - Networking features are present in the code but not used on Android.
 
 ### Building (Linux)
@@ -35,8 +41,8 @@ Requirements: JDK 17+, CMake, Ninja, Android SDK (`platforms;android-34`, `build
 Android NDK (tested r27c), and a desktop OpenOMF build for the generated resources.
 
 ```sh
-# 1. desktop build (creates build-linux/resources: openomf.bk, *.LNG2, *.DAT2 ...)
-cmake -S . -B build-linux -G Ninja -DCMAKE_BUILD_TYPE=Release && ninja -C build-linux
+# 1. desktop build (creates build-linux/resources: openomf.bk, *.LNG2, *.DAT2 ... and languagetool)
+cmake -S . -B build-linux -G Ninja -DCMAKE_BUILD_TYPE=Release -DUSE_TOOLS=ON && ninja -C build-linux
 
 # 2. Android dependencies -> android/work/prefix
 export ANDROID_HOME=/path/to/android-sdk ANDROID_NDK_HOME=/path/to/android-ndk-r27c
@@ -58,7 +64,13 @@ OMF_DATA=/path/to/OMF2097 android/build_apk.sh 0.6
 - **백그라운드 복귀**: GL 컨텍스트가 새로 만들어지면 GL 객체를 다시 만듦. 게임을 끝내면 프로세스도 종료해 다시 실행할 때 깨끗하게 시작.
 - **이름 입력**: 입력 칸이 선택되면 화면 키보드 표시, 키보드 Enter 로 확정.
 - **조작**: 터치 가상 패드(8방향, PUNCH=Enter, KICK=오른쪽 Shift, MENU=Esc, 멀티터치), 블루투스·유선 게임패드는 같은 키로 변환되고 연결되면 터치 패드 자동 숨김
-  (Xbox 계열 A 펀치·B 킥, 닌텐도 계열 B 펀치·A 킥). 톱니 버튼의 오버레이 옵션: 터치 패드 자동/항상/숨김, 펀치·킥 바꾸기.
+  (Xbox 계열 A 펀치·B 킥, 닌텐도 계열 B 펀치·A 킥). 톱니 버튼의 오버레이 옵션: 터치 패드 자동/항상/숨김, 펀치·킥 바꾸기,
+  간편 마무리(승부가 난 뒤 펀치 = 반파, 반파 중 킥 = 완파, 기본 켜짐).
+- **한국어**(`korean/`): UTF-8 언어 파일, [갈무리](https://github.com/quiple/galmuri)(SIL OFL 1.1) 기반 한글 비트맵 글꼴,
+  OpenOMF 소스에 박힌 영어 문구 번역표(`KOREAN.UI`). 안드로이드는 처음 실행할 때 한 번 한국어로 바뀌고, 메뉴에서 다른 언어도 고를 수 있습니다.
+
+### 받기
+[Releases](https://github.com/JyJyLab/openomf/releases) 의 APK 는 프리웨어 게임 데이터를 포함하므로 바로 설치해 쓸 수 있습니다.
 
 ### 빌드
 위 English 의 Building 순서와 같습니다. 원본 게임 파일 폴더를 `OMF_DATA` 로 지정해야 합니다(저장소에는 게임 데이터가 없음).
