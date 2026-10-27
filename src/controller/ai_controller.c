@@ -13,6 +13,12 @@
 #include "utils/log.h"
 #include "utils/random.h"
 #include "utils/vec.h"
+#include "game/utils/settings.h"
+
+#include "utils/miscmath.h"
+
+bool is_move_chain_allowed(object *obj, af_move *move);
+struct ai_t;
 #include <math.h>
 
 /* times thrown before we AI learns its lesson */
@@ -91,7 +97,23 @@ typedef struct {
 
     // all projectiles currently on screen (vector of projectile object*)
     vector active_projectiles;
+
+    // MASTER.DAT AI state (see ai_original_poll)
+    bool orig_mode;
+    int orig_learn[70];  ///< per move learnt weight (move +0x228)
+    int orig_air;        ///< HAR+0x8E8
+    int orig_b;          ///< HAR+0x8EC
+    int orig_c;          ///< HAR+0x8F0
+    int orig_advance;    ///< HAR+0x945 bit 1
+    int orig_retreat;    ///< HAR+0x945 bit 2
+    int orig_forget_tick;
+    int orig_offense, orig_defense;
+    bool orig_ready;
+    const void *orig_af; ///< AF the state was built for (FIRE/ICE swap the HAR between fights)
+    uint32_t orig_har_obj; ///< HAR object the state was built for (a new fight gets a new HAR object)
 } ai;
+
+static void ai_original_learn(ai *a, har_event event, int own_move);
 
 enum
 {
@@ -833,21 +855,23 @@ void reset_tactic_state(ai *a) {
  * \return Void.
  */
 void reset_pilot_personality(sd_pilot *pilot) {
-    // log_debug("\033[90mReset pilot personality: %d", pilot->pilot_id);
+    // Values taken from MASTER.DAT 0x494BC (one player pilot table)
     switch(pilot->pilot_id) {
         case 0:
             // crystal
             pilot->att_normal = 30;
             pilot->att_hyper = 10;
             pilot->att_jump = 10;
+            pilot->att_def = 40;
             pilot->att_sniper = 20;
+            pilot->ap_close = 0;
             pilot->ap_throw = 100;
             pilot->ap_special = 75;
             pilot->ap_jump = -30;
             pilot->ap_high = -50;
             pilot->ap_low = -50;
             pilot->ap_middle = -50;
-            pilot->pref_jump = -10;
+            pilot->pref_jump = -50;
             pilot->pref_fwd = 30;
             pilot->pref_back = 10;
             pilot->learning = 1.5f;
@@ -858,12 +882,16 @@ void reset_pilot_personality(sd_pilot *pilot) {
             pilot->att_normal = 40;
             pilot->att_hyper = 60;
             pilot->att_jump = 30;
+            pilot->att_def = 0;
+            pilot->att_sniper = 0;
+            pilot->ap_close = 0;
             pilot->ap_throw = 25;
             pilot->ap_special = 20;
+            pilot->ap_jump = 0;
             pilot->ap_high = -75;
             pilot->ap_low = 75;
             pilot->ap_middle = 50;
-            pilot->pref_jump = 6;
+            pilot->pref_jump = 30;
             pilot->pref_fwd = 20;
             pilot->pref_back = -9;
             pilot->learning = 1.0f;
@@ -874,14 +902,16 @@ void reset_pilot_personality(sd_pilot *pilot) {
             pilot->att_normal = 20;
             pilot->att_hyper = 30;
             pilot->att_jump = 40;
-            pilot->att_sniper = 20;
+            pilot->att_def = 0;
+            pilot->att_sniper = 0;
+            pilot->ap_close = 0;
             pilot->ap_throw = -50;
             pilot->ap_special = -50;
             pilot->ap_jump = -50;
             pilot->ap_high = 50;
             pilot->ap_low = 50;
             pilot->ap_middle = 50;
-            pilot->pref_jump = 8;
+            pilot->pref_jump = 40;
             pilot->pref_fwd = 30;
             pilot->pref_back = -3;
             pilot->learning = 0.9f;
@@ -891,17 +921,20 @@ void reset_pilot_personality(sd_pilot *pilot) {
             // christian
             pilot->att_normal = 20;
             pilot->att_hyper = 15;
+            pilot->att_jump = 0;
             pilot->att_def = 30;
             pilot->att_sniper = 10;
-            pilot->ap_throw = 30;
+            pilot->ap_close = 0;
+            pilot->ap_throw = 35;
             pilot->ap_special = 25;
             pilot->ap_jump = 30;
+            pilot->ap_high = 0;
             pilot->ap_low = -25;
             pilot->ap_middle = 20;
-            pilot->pref_jump = 2;
+            pilot->pref_jump = -10;
             pilot->pref_fwd = 10;
-            pilot->pref_back = -10;
-            pilot->learning = 2.5f;
+            pilot->pref_back = 10;
+            pilot->learning = 2.4f;
             pilot->forget = 0.35f;
             break;
         case 4:
@@ -911,13 +944,14 @@ void reset_pilot_personality(sd_pilot *pilot) {
             pilot->att_jump = 5;
             pilot->att_def = 20;
             pilot->att_sniper = 4;
+            pilot->ap_close = 0;
             pilot->ap_throw = 75;
             pilot->ap_special = 50;
             pilot->ap_jump = -50;
             pilot->ap_high = -50;
             pilot->ap_low = -50;
             pilot->ap_middle = -50;
-            pilot->pref_jump = -20;
+            pilot->pref_jump = -100;
             pilot->pref_fwd = 10;
             pilot->pref_back = 10;
             pilot->learning = 2.0f;
@@ -930,13 +964,16 @@ void reset_pilot_personality(sd_pilot *pilot) {
             pilot->att_jump = 20;
             pilot->att_def = 30;
             pilot->att_sniper = 45;
+            pilot->ap_close = 0;
             pilot->ap_throw = -50;
             pilot->ap_special = 75;
             pilot->ap_jump = 100;
             pilot->ap_high = -50;
             pilot->ap_low = 100;
             pilot->ap_middle = -50;
-            pilot->pref_fwd = 20;
+            pilot->pref_jump = 0;
+            pilot->pref_fwd = 10;
+            pilot->pref_back = 0;
             pilot->learning = 1.2f;
             pilot->forget = 0.07f;
             break;
@@ -947,12 +984,14 @@ void reset_pilot_personality(sd_pilot *pilot) {
             pilot->att_jump = 5;
             pilot->att_def = 50;
             pilot->att_sniper = 7;
+            pilot->ap_close = 0;
+            pilot->ap_throw = 0;
             pilot->ap_special = 50;
             pilot->ap_jump = -50;
             pilot->ap_high = 50;
             pilot->ap_low = 50;
             pilot->ap_middle = 50;
-            pilot->pref_jump = 2;
+            pilot->pref_jump = 10;
             pilot->pref_fwd = 10;
             pilot->pref_back = -10;
             pilot->learning = 2.5f;
@@ -960,20 +999,23 @@ void reset_pilot_personality(sd_pilot *pilot) {
             break;
         case 7:
             // angel
-            pilot->att_normal = 40;
-            pilot->att_hyper = 60;
-            pilot->att_jump = 30;
-            pilot->ap_throw = 25;
-            pilot->ap_special = 20;
-            pilot->ap_jump = 100;
-            pilot->ap_high = -75;
-            pilot->ap_low = 75;
+            pilot->att_normal = 50;
+            pilot->att_hyper = 5;
+            pilot->att_jump = 50;
+            pilot->att_def = 10;
+            pilot->att_sniper = 30;
+            pilot->ap_close = 0;
+            pilot->ap_throw = -75;
+            pilot->ap_special = 25;
+            pilot->ap_jump = 75;
+            pilot->ap_high = 50;
+            pilot->ap_low = 50;
             pilot->ap_middle = 50;
-            pilot->pref_jump = 40;
-            pilot->pref_fwd = 40;
-            pilot->pref_back = -9;
-            pilot->learning = 3.0f;
-            pilot->forget = 0.15f;
+            pilot->pref_jump = 100;
+            pilot->pref_fwd = 30;
+            pilot->pref_back = 5;
+            pilot->learning = 1.1f;
+            pilot->forget = 0.4f;
             break;
         case 8:
             // cossette
@@ -982,13 +1024,15 @@ void reset_pilot_personality(sd_pilot *pilot) {
             pilot->att_jump = 5;
             pilot->att_def = 5;
             pilot->att_sniper = 5;
+            pilot->ap_close = 0;
             pilot->ap_throw = 25;
             pilot->ap_special = -50;
-            pilot->ap_jump = -50;
+            pilot->ap_jump = 50;
             pilot->ap_high = -25;
-            pilot->ap_low = 10;
-            pilot->ap_middle = -50;
-            pilot->pref_jump = -10;
+            pilot->ap_low = -50;
+            pilot->ap_middle = -25;
+            pilot->pref_jump = -50;
+            pilot->pref_fwd = 0;
             pilot->pref_back = 10;
             pilot->learning = 0.7f;
             pilot->forget = 0.2f;
@@ -997,28 +1041,41 @@ void reset_pilot_personality(sd_pilot *pilot) {
             // raven
             pilot->att_normal = 30;
             pilot->att_hyper = 40;
+            pilot->att_jump = 0;
+            pilot->att_def = 0;
+            pilot->att_sniper = 0;
+            pilot->ap_close = 0;
             pilot->ap_throw = 100;
             pilot->ap_special = 100;
-            pilot->ap_jump = 100;
-            pilot->ap_high = 100;
-            pilot->ap_low = 100;
-            pilot->ap_middle = 100;
-            pilot->pref_jump = 12;
+            pilot->ap_jump = 50;
+            pilot->ap_high = 50;
+            pilot->ap_low = 50;
+            pilot->ap_middle = 50;
+            pilot->pref_jump = 35;
             pilot->pref_fwd = 30;
             pilot->pref_back = -7;
-            pilot->learning = 3.0;
-            pilot->forget = 0.5;
+            pilot->learning = 3.0f;
+            pilot->forget = 0.5f;
             break;
         case 10:
             // kreissack
-            // special
-            pilot->att_normal = 30;
-            pilot->att_hyper = 75;
-            pilot->att_sniper = 25;
-            pilot->ap_throw = 100;
-            pilot->ap_special = 100;
-            pilot->learning = 3.0;
-            pilot->forget = 0.25;
+            pilot->att_normal = 40;
+            pilot->att_hyper = 60;
+            pilot->att_jump = 30;
+            pilot->att_def = 55;
+            pilot->att_sniper = 90;
+            pilot->ap_close = 0;
+            pilot->ap_throw = -6;
+            pilot->ap_special = -6;
+            pilot->ap_jump = 50;
+            pilot->ap_high = 50;
+            pilot->ap_low = 50;
+            pilot->ap_middle = 50;
+            pilot->pref_jump = 50;
+            pilot->pref_fwd = 70;
+            pilot->pref_back = -50;
+            pilot->learning = 4.0f;
+            pilot->forget = 0.1f;
             break;
     }
 }
@@ -1095,6 +1152,13 @@ int ai_har_event(controller *ctrl, har_event event) {
     sd_pilot *pilot = a->pilot;
     move_stat *ms;
 
+    if(a->orig_mode) {
+        // the MASTER.DAT AI keeps no tactic bookkeeping; only its learning reacts to hits
+        int own_move = (o && h && h->executing_move && o->cur_animation) ? o->cur_animation->id : -1;
+        ai_original_learn(a, event, own_move);
+        return 0;
+    }
+
     bool has_queued_tactic = a->tactic->tactic_type > 0;
 
     if(has_queued_tactic) {
@@ -1150,7 +1214,7 @@ int ai_har_event(controller *ctrl, har_event event) {
             ms = &a->move_stats[event.move->id];
 
             // in the heat of the moment they might forget what they have learnt
-            if(roll_chance(2) && forgetful(a)) {
+            if(roll_chance(2) && forgetful(a) && !pilot->photo) {
                 reset_pilot_personality(pilot);
                 a->blocked = 0;
                 a->thrown = 0;
@@ -2622,6 +2686,390 @@ bool handle_queued_tactic(controller *ctrl, ctrl_event **ev) {
     return acted;
 }
 
+/*
+ * Computer AI modelled on MASTER.DAT (controller 0x514F0, reaction picker 0x534A0, learning 0x18DE4/0x1AAE0).
+ * Probabilities are "value / 10001 per tick" like the original.
+ * The original types a whole move string in one tick; here the string is fed through process_selected_move().
+ */
+
+// MASTER.DAT 0x494BC result for computer opponents (first fight), [pilot][difficulty]
+static const int16_t orig_sp_offense[11][7] = {
+    {1, 6, 23, 35, 72, 140, 259},    {1, 14, 39, 57, 112, 206, 373}, {1, 12, 35, 51, 102, 188, 343},
+    {1, 14, 41, 59, 117, 212, 385},  {1, 13, 38, 55, 109, 200, 364}, {1, 4, 19, 29, 61, 122, 229},
+    {1, 5, 20, 31, 64, 128, 238},    {1, 16, 44, 63, 124, 224, 406}, {1, 9, 29, 43, 87, 164, 301},
+    {1, 15, 42, 61, 120, 218, 394},  {3, 24, 65, 93, 181, 318, 571}};
+static const int16_t orig_sp_defense[11][7] = {
+    {1, 13, 40, 58, 117, 214, 388},  {1, 9, 30, 46, 93, 174, 322},   {1, 10, 33, 50, 100, 186, 343},
+    {1, 8, 27, 42, 85, 162, 301},    {1, 8, 27, 42, 85, 162, 301},   {1, 16, 46, 66, 132, 238, 430},
+    {1, 14, 43, 62, 124, 226, 409},  {1, 9, 30, 46, 93, 174, 322},   {1, 15, 45, 65, 129, 234, 424},
+    {1, 8, 29, 44, 90, 170, 313},    {2, 24, 66, 95, 186, 328, 589}};
+
+// MASTER.DAT 0x512B0
+static int orig_learn_scale(int x, int w) {
+    if(w > 0) {
+        return (x * 64) / (w + 64);
+    }
+    return (x * 64 - x * w) >> 6;
+}
+
+static bool orig_roll(int value) {
+    return (int)rand_int(10001) < value;
+}
+
+// category -> pilot preference used as the resting point of the learnt weight (MASTER.DAT 0x1AAE0)
+static int orig_category_pref(const sd_pilot *p, int category) {
+    switch(category) {
+        case CAT_CLOSE:
+            return p->ap_throw;
+        case 11:
+            return p->ap_special;
+        case CAT_JUMPING:
+            return p->ap_jump;
+        case CAT_LOW:
+            return p->ap_high; // stored at +0xD0, used by the original for category 4
+        case CAT_HIGH:
+            return p->ap_low; // +0xD2
+        case CAT_MEDIUM:
+            return p->ap_middle; // +0xD4
+        default:
+            return 0;
+    }
+}
+
+static void ai_original_init(controller *ctrl, ai *a, const har *h) {
+    sd_pilot *p = a->pilot;
+    // HAR+0x8E8/+0x8EC/+0x8F0 start at 0 and drift one step per tick towards pilot +0xD6/+0xD8/+0xDA (0x1AAE0)
+    a->orig_air = 0;
+    a->orig_b = 0;
+    a->orig_c = 0;
+    a->orig_advance = a->orig_retreat = 0;
+    a->orig_forget_tick = 0;
+    for(int i = 0; i < 70; i++) {
+        af_move *m = af_get_move(h->af_data, i);
+        a->orig_learn[i] = m ? orig_category_pref(p, m->category) : 0;
+    }
+    int d = a->difficulty - 1; // ai->difficulty is 1-based
+    if(d < 0)
+        d = 0;
+    if(d > 6)
+        d = 6;
+    if(p->offense || p->defense) {
+        // tournament pilots carry their own values
+        a->orig_offense = p->offense;
+        a->orig_defense = p->defense;
+    } else if(p->pilot_id <= 10) {
+        a->orig_offense = orig_sp_offense[p->pilot_id][d];
+        a->orig_defense = orig_sp_defense[p->pilot_id][d];
+    } else {
+        a->orig_offense = a->orig_defense = 50;
+    }
+}
+
+static bool orig_move_usable(object *o, const har *h, const af_move *m) {
+    return m && is_valid_move(m, h, true) && is_move_chain_allowed(o, (af_move *)m);
+}
+
+// MASTER.DAT 0x534A0: pick a move whose ai_flags react to what the enemy is doing
+static bool ai_original_react(controller *ctrl, ai *a, object *o, har *h, uint16_t mask, int k, bool urgent) {
+    uint8_t order[70];
+    for(int i = 0; i < 70; i++) {
+        order[i] = i;
+    }
+    for(int i = 0; i < 70; i++) {
+        int j = rand_int(70);
+        uint8_t t = order[i];
+        order[i] = order[j];
+        order[j] = t;
+    }
+    // G: offense, raised as health drops (0x534A0 start)
+    int g = a->orig_offense + ((h->health_max - h->health) * a->orig_offense / max2(1, h->health_max)) * 2 / 3;
+    if(g < 1) {
+        g = 1;
+    }
+    for(int n = 15; n < 70; n++) {
+        af_move *m = af_get_move(h->af_data, order[n]);
+        if(!m || !(m->ai_flags & mask) || !orig_move_usable(o, h, m)) {
+            continue;
+        }
+        int w = 100;
+        for(int bit = 0; bit < 16; bit++) {
+            if(m->ai_flags & (1 << bit)) {
+                w >>= 1;
+            }
+        }
+        if(urgent) {
+            w = 0xB4;
+        }
+        w += 1;
+        int base = (m->category == CAT_CLOSE) ? 0x721 : 0xE42;
+        int lw = orig_learn_scale(base, a->orig_learn[m->id]);
+        uint32_t r = rand_int((uint32_t)max2(1, (lw + (base >> 3)) * 2));
+        if((int)r <= ((w * k * g) >> 7)) {
+            set_selected_move(ctrl, m);
+            return true;
+        }
+    }
+    return false;
+}
+
+static void orig_cmd_dir(controller *ctrl, object *o, int code, ctrl_event **ev) {
+    // codes are relative to a right-facing HAR: 1 up, 2 up-fwd, 3 fwd, 4 down-fwd, 5 down, 6 down-back, 7 back,
+    // 8 up-back (MASTER.DAT 0x533E0 mirrors them when facing left)
+    bool right = object_get_direction(o) == OBJECT_FACE_RIGHT;
+    int fwd = right ? ACT_RIGHT : ACT_LEFT, back = right ? ACT_LEFT : ACT_RIGHT;
+    int act = ACT_STOP;
+    switch(code) {
+        case 1: act = ACT_UP; break;
+        case 2: act = ACT_UP | fwd; break;
+        case 3: act = fwd; break;
+        case 4: act = ACT_DOWN | fwd; break;
+        case 5: act = ACT_DOWN; break;
+        case 6: act = ACT_DOWN | back; break;
+        case 7: act = back; break;
+        case 8: act = ACT_UP | back; break;
+    }
+    controller_cmd(ctrl, act, ev);
+}
+
+// MASTER.DAT 0x1AAE0: learnt weights drift back towards the pilot's preferences
+static void ai_original_forget(ai *a, const har *h) {
+    sd_pilot *p = a->pilot;
+    for(int i = 0; i < 70; i++) {
+        af_move *m = af_get_move(h->af_data, i);
+        if(!m) {
+            continue;
+        }
+        int pref = orig_category_pref(p, m->category);
+        a->orig_learn[i] += (pref < a->orig_learn[i]) ? -1 : 1;
+    }
+}
+
+static void ai_original_drift_prefs(ai *a) {
+    sd_pilot *p = a->pilot;
+    a->orig_air += (a->orig_air < p->pref_jump) ? 1 : -1; // +0x8E8 -> +0xD6
+    a->orig_b += (a->orig_b < p->pref_fwd) ? 1 : -1;      // +0x8EC -> +0xD8
+    a->orig_c += (a->orig_c < p->pref_back) ? 1 : -1;     // +0x8F0 -> +0xDA
+}
+
+// learning on hits (MASTER.DAT 0x18DE4:84~120)
+static void ai_original_learn(ai *a, har_event event, int own_move) {
+    // event.move is only valid for the hit events handled below
+    if(event.type != HAR_EVENT_TAKE_HIT && event.type != HAR_EVENT_TAKE_HIT_PROJECTILE &&
+       event.type != HAR_EVENT_LAND_HIT && event.type != HAR_EVENT_LAND_HIT_PROJECTILE) {
+        return;
+    }
+    if(!event.move) {
+        return;
+    }
+    int dmg = (int)event.move->damage;
+    float learning = a->pilot->learning;
+    switch(event.type) {
+        case HAR_EVENT_TAKE_HIT:
+        case HAR_EVENT_TAKE_HIT_PROJECTILE:
+            // the move we were doing when hit becomes less attractive, so does staying in the air
+            if(own_move >= 0 && own_move < 70) {
+                a->orig_learn[own_move] += 2 * dmg;
+            }
+            a->orig_air -= (int)((dmg + 25) * learning * 0.5f);
+            break;
+        case HAR_EVENT_LAND_HIT:
+        case HAR_EVENT_LAND_HIT_PROJECTILE:
+            if(event.move->id < 70) {
+                a->orig_learn[event.move->id] -= (int)((dmg + 4) * learning);
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+static int ai_original_poll(controller *ctrl, ctrl_event **ev, object *o, har *h) {
+    ai *a = ctrl->data;
+    if(!a->orig_ready || a->orig_af != (const void *)h->af_data || a->orig_har_obj != ctrl->har_obj_id) {
+        ai_original_init(ctrl, a, h);
+        a->orig_ready = true;
+        a->orig_af = h->af_data;
+        a->orig_har_obj = ctrl->har_obj_id;
+    }
+    object *e = game_state_find_object(ctrl->gs, o->animation_state.enemy_obj_id);
+    if(!e) {
+        return 0;
+    }
+    har *eh = object_get_userdata(e);
+
+    if(a->selected_move) {
+        process_selected_move(ctrl, ev);
+        return 0;
+    }
+
+    ai_original_drift_prefs(a);
+    if(++a->orig_forget_tick >= 70) {
+        a->orig_forget_tick = 0;
+        ai_original_forget(a, h);
+    }
+
+    // defensiveness (0x514F0)
+    int D = a->orig_defense / 4 + 2;
+
+    // distance -> stance
+    float dx = fabsf(o->pos.x - e->pos.x), dy = fabsf(o->pos.y - e->pos.y);
+    int dist = (int)sqrtf(dx * dx + dy * dy);
+    bool self_air = object_is_airborne(o), enemy_air = object_is_airborne(e);
+    if(self_air) {
+        dist = dist * 3 / 5;
+    }
+    int stance = 3;
+    if(dist < 140)
+        stance = 0;
+    if(dist < 85)
+        stance = 1;
+    if(dist < 40)
+        stance = 0;
+
+    af_move *em = eh->executing_move ? af_get_move(eh->af_data, e->cur_animation->id) : NULL;
+    bool can_act = h->state == STATE_STANDING || h->state == STATE_WALKTO || h->state == STATE_WALKFROM ||
+                   h->state == STATE_CROUCHING || h->state == STATE_CROUCHBLOCK || h->state == STATE_JUMPING;
+    if(!can_act) {
+        return 0;
+    }
+
+    // counter the enemy while its move is recovering (0x514F0:330)
+    if(em && (eh->damage_done || player_get_current_tick(e) + 2 >= player_get_len_ticks(e) * 2 / 3) && stance < 3) {
+        int denom = 5000;
+        if(enemy_air)
+            denom >>= 2;
+        static const int stance_mul[3] = {64, 32, 8};
+        if((int)rand_int(denom) < D * stance_mul[stance]) {
+            uint16_t mask = enemy_air ? (0x100 << stance) : (stance == 0 ? 0x80 : stance == 1 ? 0x01 : 0x20);
+            if(ai_original_react(ctrl, a, o, h, mask, 0x23, false)) {
+                return 0;
+            }
+        }
+    }
+
+    // react to an attack that is starting (0x534A0 mask)
+    if(em && !eh->damage_done) {
+        uint16_t mask = 0;
+        if(em->category == CAT_HIGH)
+            mask |= 0x02;
+        if(em->category == CAT_LOW)
+            mask |= 0x04;
+        if(em->category == CAT_MEDIUM)
+            mask |= 0x08;
+        if(em->category == CAT_PROJECTILE)
+            mask |= (e->pos.y < o->pos.y - 12) ? 0x10 : 0x2000;
+        if(!enemy_air) {
+            static const uint16_t ground_bits[4] = {0x80, 0x01, 0x20, 0x40};
+            mask |= ground_bits[stance];
+        } else {
+            mask |= 0x100 << stance;
+        }
+        static const int stance_k[4] = {0x23, 0x1C, 9, 1};
+        if(ai_original_react(ctrl, a, o, h, mask, stance_k[stance], true)) {
+            return 0;
+        }
+    }
+
+    // finishing moves (0x514F0:585) are handled by the arena ending hook
+
+    // movement tendencies (0x514F0:200~310)
+    int code = 0;
+    if(!a->orig_advance) {
+        if(orig_roll(a->orig_b * 14 + 320)) {
+            a->orig_advance = 1;
+        }
+    } else {
+        if(orig_roll(300)) {
+            a->orig_advance = 0;
+        }
+        code = 3;
+    }
+    if(!a->orig_retreat) {
+        if(orig_roll(a->orig_c * 12 + 150)) {
+            a->orig_retreat = 1;
+        }
+    } else {
+        if(orig_roll(a->orig_b * 6 + 160)) {
+            a->orig_retreat = 0;
+        }
+        code = 7;
+    }
+    if(a->orig_advance && a->orig_retreat) {
+        a->orig_advance = a->orig_retreat = 0;
+    }
+    if(enemy_air && orig_roll(a->orig_air + 90)) {
+        code = 8;
+    }
+    if(a->orig_advance && orig_roll(a->orig_air + 70)) {
+        code = 2;
+    }
+    if(stance != 3 && orig_roll(stance * a->orig_air * 2 + 80)) {
+        code = 2;
+    }
+    if(a->orig_retreat && orig_roll(a->orig_air + 50)) {
+        code = 8;
+    }
+    if(orig_roll(a->orig_air * 2 + 90) || (enemy_air && orig_roll(a->orig_air * 4 + 100))) {
+        code = 8;
+    }
+    if(code) {
+        orig_cmd_dir(ctrl, o, code, ev);
+    } else {
+        controller_cmd(ctrl, ACT_STOP, ev);
+    }
+
+    // MASTER.DAT 0x514F0:371 runs the move picker every tick while the stance is close (< 2) or the way is clear
+    if(stance < 3) {
+        static const uint16_t idle_bits[3] = {0x80, 0x01, 0x20};
+        static const int idle_k[3] = {0x23, 0x1C, 9};
+        ai_original_react(ctrl, a, o, h, enemy_air ? (0x100 << stance) : idle_bits[stance], idle_k[stance], false);
+    }
+    return 0;
+}
+
+static bool orig_finish_usable(object *o, const af_move *m) {
+    int len = str_size(&m->move_string);
+    if(len == 0) {
+        return false;
+    }
+    for(int i = 0; i < len; i++) {
+        char c = str_at(&m->move_string, i);
+        if(!((c >= '1' && c <= '9') || c == 'K' || c == 'P')) {
+            return false;
+        }
+    }
+    return is_move_chain_allowed(o, (af_move *)m);
+}
+
+// MASTER.DAT 0x514F0:585: after the knockout the computer tries finishing moves from World Class up:
+// scrap 1/300 per move, destruction and category 11 (e.g. the Fire Pit floor break) 1/100 above World Class
+static void ai_original_finish(controller *ctrl, ctrl_event **ev, object *o, har *h) {
+    ai *a = ctrl->data;
+    if(a->selected_move) {
+        process_selected_move(ctrl, ev);
+        return;
+    }
+    int diff = settings_get()->gameplay.difficulty;
+    // only in one player games (MASTER.DAT g_game_mode == 2), never in tournaments
+    if(is_tournament(ctrl->gs) || diff < 3 || rand_int(2)) {
+        return;
+    }
+    for(int i = 0; i < 70; i++) {
+        af_move *m = af_get_move(h->af_data, i);
+        if(!m || !orig_finish_usable(o, m)) {
+            continue;
+        }
+        if(m->category == CAT_SCRAP && rand_int(300) == 0) {
+            set_selected_move(ctrl, m);
+            return;
+        }
+        if((m->category == CAT_DESTRUCTION || m->category == 11) && diff > 3 && rand_int(100) == 0) {
+            set_selected_move(ctrl, m);
+            return;
+        }
+    }
+}
+
 int ai_controller_poll(controller *ctrl, ctrl_event **ev) {
     ai *a = ctrl->data;
     object *o = game_state_find_object(ctrl->gs, ctrl->har_obj_id);
@@ -2642,6 +3090,12 @@ int ai_controller_poll(controller *ctrl, ctrl_event **ev) {
         return 0;
     }
 
+    if(a->orig_mode && scene_is_arena(game_state_get_scene(o->gs)) &&
+       arena_get_state(game_state_get_scene(o->gs)) == ARENA_STATE_ENDING) {
+        ai_original_finish(ctrl, ev, o, h);
+        return 0;
+    }
+
     // Do not run AI while match is starting or ending
     // XXX this prevents the AI from doing scrap/destruction moves
     // XXX this could be fixed by providing a "scene changed" event
@@ -2659,6 +3113,14 @@ int ai_controller_poll(controller *ctrl, ctrl_event **ev) {
     // Grab all projectiles on screen
     vector_clear(&a->active_projectiles);
     game_state_get_projectiles(o->gs, &a->active_projectiles);
+
+    if(a->orig_mode) {
+        // projectiles are still blocked with the shared helper, everything else follows MASTER.DAT
+        if(ai_block_projectile(ctrl, ev)) {
+            return 0;
+        }
+        return ai_original_poll(ctrl, ev, o, h);
+    }
 
     // Try to block har
     if(ai_block_har(ctrl, ev)) {
@@ -2837,6 +3299,11 @@ void ai_controller_create(controller *ctrl, int difficulty, sd_pilot *pilot, int
     a->input_lag_timer = a->input_lag;
     a->selected_move = NULL;
     a->last_move_id = 0;
+    a->orig_mode = settings_get()->gameplay.original_ai != 0;
+    if(a->orig_mode) {
+        a->input_lag = 1; // the original enters the whole move string at once
+        a->input_lag_timer = a->input_lag;
+    }
     a->move_str_pos = 0;
     memset(a->move_stats, 0, sizeof(a->move_stats));
     for(int i = 0; i < 70; i++) {
@@ -2851,8 +3318,11 @@ void ai_controller_create(controller *ctrl, int difficulty, sd_pilot *pilot, int
     pilot->pilot_id = pilot_id;
     a->pilot = pilot;
 
-    // set pilot personality manually until we start reading them from binary
-    reset_pilot_personality(pilot);
+    // one player pilots take their personality from the MASTER.DAT table; tournament pilots (with a photo)
+    // already carry the values of their TRN file
+    if(!pilot->photo) {
+        reset_pilot_personality(pilot);
+    }
 
     // set initial tactical state
     tactic_state *tactic = omf_calloc(1, sizeof(tactic_state));

@@ -52,7 +52,7 @@ bool has_gl_available(int version_major, int version_minor) {
     SDL_GLContext *c;
     bool ret = false;
 
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__SWITCH__)
     // 안드로이드: 데스크톱 GL 3.3 대신 GLES 3.0
     (void)version_major;
     (void)version_minor;
@@ -86,7 +86,7 @@ bool create_window(SDL_Window **window, int width, int height, bool fullscreen) 
     char title[32];
     snprintf(title, 32, "OpenOMF v%s", get_version_string());
 
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__SWITCH__)
     // Android: OpenGL ES 3.0 context (GLSL ES 3.00)
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);

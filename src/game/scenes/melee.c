@@ -528,7 +528,7 @@ void handle_action(scene *scene, int player, int action) {
                                     continue;
                                 }
                                 player2->pilot->pilot_id = i;
-                                player2->pilot->har_id = rand_int(10);
+                                player2->pilot->har_id = player1->sp_har_order[i];
                                 break;
                             }
                         }
@@ -536,6 +536,15 @@ void handle_action(scene *scene, int player, int action) {
                         local->pilot_id_b = player2->pilot->pilot_id;
                         load_pilot_stats(scene, player);
                         load_pilot_colors(scene, 1);
+                        // computer opponent stats follow the difficulty (MASTER.DAT 0x494BC)
+                        pilot p_b;
+                        pilot_get_info(&p_b, player2->pilot->pilot_id);
+                        int pw = p_b.power, ag = p_b.agility, en = p_b.endurance;
+                        pilot_apply_sp_difficulty(&pw, &ag, &en, settings_get()->gameplay.difficulty,
+                                                  player1->pilot->agility);
+                        player2->pilot->power = pw;
+                        player2->pilot->agility = ag;
+                        player2->pilot->endurance = en;
                     }
                     if(!local->network_game) {
                         str_set_c(&player1->pilot->name, lang_get(player1->pilot->pilot_id + 20));

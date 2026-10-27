@@ -36,7 +36,7 @@ typedef struct textinput {
     textinput_filter_cb filter_cb;
     textinput_done_cb done_cb;
     void *userdata;
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__SWITCH__)
     bool soft_keyboard; // 이 입력 칸이 화면 키보드를 띄웠는지
 #endif
 } textinput;
@@ -96,7 +96,7 @@ static void refresh(component *c) {
 }
 
 static void textinput_render(component *c) {
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__SWITCH__)
     {
         // 안드로이드: 입력 칸이 선택되어 있으면 화면 키보드를 띄우고, 선택이 풀리면 닫는다
         // (데스크톱 SDL 은 처음부터 글자 입력을 받지만 안드로이드는 요청해야 키보드가 뜸)
@@ -269,13 +269,21 @@ static bool textinput_event(component *c, SDL_Event *e) {
     // Only accept input if:
     // - The global filter accepts that this is text supported by font (is_valid_input)
     // - there is no text filter callback set OR the filter callback function accepts the input.
-    if(e->type == SDL_TEXTINPUT && is_valid_input(e->text.text[0]) &&
-       (ti->filter_cb == NULL || ti->filter_cb(e->text.text[0]))) {
-        str_insert_at(&ti->buf, ti->pos, e->text.text[0]);
-        str_truncate(&ti->buf, ti->max_chars - 1);
-        ti->pos = smin2(ti->pos + 1, str_size(&ti->buf));
-        refresh(c);
-        return true;
+    // A text event can carry several characters (the Switch keyboard sends the whole line at once).
+    if(e->type == SDL_TEXTINPUT) {
+        bool taken = false;
+        for(const char *ch = e->text.text; *ch != '\0'; ch++) {
+            if(is_valid_input(*ch) && (ti->filter_cb == NULL || ti->filter_cb(*ch))) {
+                str_insert_at(&ti->buf, ti->pos, *ch);
+                str_truncate(&ti->buf, ti->max_chars - 1);
+                ti->pos = smin2(ti->pos + 1, str_size(&ti->buf));
+                taken = true;
+            }
+        }
+        if(taken) {
+            refresh(c);
+            return true;
+        }
     } else if(e->type == SDL_KEYDOWN) {
         const SDL_Scancode key = e->key.keysym.scancode;
         const bool ctrl_mod = (e->key.keysym.mod & KMOD_CTRL) != 0;
@@ -329,7 +337,7 @@ void textinput_clear(component *c) {
 }
 
 static void textinput_free(component *c) {
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__SWITCH__)
     if(((textinput *)widget_get_obj(c))->soft_keyboard) {
         SDL_StopTextInput(); // 입력 칸이 사라지면 화면 키보드도 닫는다
     }

@@ -2,6 +2,7 @@
 #include "formats/pilot.h"
 #include "utils/c_array_util.h"
 #include "utils/log.h"
+#include "utils/miscmath.h"
 #include "utils/random.h"
 
 bool har_can_upgrade(sd_pilot *pilot, enum HAR_UPGRADE upgrade) {
@@ -180,3 +181,109 @@ float calculate_winnings(sd_pilot *winner, sd_pilot *loser, float winnings_multi
     winnings *= winnings_multiplier;
     return winnings;
 }
+
+static const int32_t training_cost[] = {5,   8,   12,   18,   24,   30,   45,   60,    80,    110,   150,   250,  400,
+                                         700, 1000, 1400, 2000, 2800, 4000, 5500, 7500, 10000, 14000, 20000, 30000};
+
+static void ai_try_upgrade(sd_pilot *pilot, enum HAR_UPGRADE upgrade, int chance) {
+    if(har_can_upgrade(pilot, upgrade) && rand_int(chance) == 0) {
+        int32_t price = upgrade_price(pilot, upgrade);
+        if(price < pilot->money) {
+            upgrade_har(pilot, upgrade);
+        }
+    }
+}
+
+static void ai_try_training(sd_pilot *pilot, uint8_t *stat) {
+    if(*stat < 25 && rand_int(3) == 0) {
+        int32_t price = training_cost[*stat] * 10;
+        if(price < pilot->money) {
+            pilot->money -= price;
+            (*stat)++;
+        }
+    }
+}
+
+void ai_pilot_gradual_upgrade(sd_pilot *pilot) {
+    ai_try_upgrade(pilot, ARM_SPEED, 6);
+    ai_try_upgrade(pilot, LEG_SPEED, 6);
+    ai_try_upgrade(pilot, ARM_POWER, 6);
+    ai_try_upgrade(pilot, LEG_POWER, 6);
+    ai_try_upgrade(pilot, ARMOR, 10);
+    ai_try_upgrade(pilot, STUN_RES, 8);
+    ai_try_training(pilot, &pilot->power);
+    ai_try_training(pilot, &pilot->agility);
+    ai_try_training(pilot, &pilot->endurance);
+}
+
+// MASTER.DAT 0x3A0C4: pilot strength used by the simulated matches
+static int pilot_strength(const sd_pilot *p) {
+    return p->winnings / 50 + 2 * (p->power + p->agility + p->endurance) +
+           8 * (p->arm_power + p->leg_power + p->arm_speed + p->leg_speed) + 14 * p->armor + 10 * p->stun_resistance;
+}
+
+static sd_pilot *pilot_with_rank(sd_chr_file *chr, int rank) {
+    for(int i = 0; i < (int)chr->pilot.enemies_inc_unranked; i++) {
+        if(chr->enemies[i] && chr->enemies[i]->pilot.rank == rank) {
+            return &chr->enemies[i]->pilot;
+        }
+    }
+    return NULL;
+}
+
+void trn_simulate_other_matches(sd_chr_file *chr) {
+    int ranked = chr->pilot.enemies_ex_unranked + 1; // includes the player
+    float mult = chr->winnings_multiplier > 0 ? chr->winnings_multiplier : 1.0f;
+    bool fought[MAX_CHR_ENEMIES + 2] = {false};
+
+    // challenges from the bottom of the ranking upwards, 65% chance each
+    for(int rank = ranked; rank >= 2; rank--) {
+        sd_pilot *challenger = pilot_with_rank(chr, rank);
+        sd_pilot *defender = pilot_with_rank(chr, rank - 1);
+        if(!challenger || !defender || fought[rank] || fought[rank - 1] || rand_int(100) >= 65) {
+            continue;
+        }
+        fought[rank] = fought[rank - 1] = true;
+        int vc = pilot_strength(challenger);
+        int vd = pilot_strength(defender);
+        int a = (int)(vc * 1.7f) + rand_int(max2(1, (int)(vc * 1.5f)));
+        int b = (int)(vd * 1.2f) + rand_int(max2(1, (int)(vd * 1.3f)));
+        sd_pilot *winner = challenger, *loser = defender;
+        if(!(b < a || rand_int(10) == 0)) {
+            winner = defender;
+            loser = challenger;
+        }
+        int ls = pilot_strength(loser);
+        winner->money += (int32_t)((ls * 6 + loser->winnings) * mult * 0.6f);
+        loser->money -= (int32_t)(ls * 0.6f);
+        winner->wins++;
+        loser->losses++;
+        if(winner == challenger) {
+            // trade places in the ranking
+            uint8_t r = challenger->rank;
+            challenger->rank = defender->rank;
+            defender->rank = r;
+        }
+        ai_pilot_gradual_upgrade(challenger);
+        ai_pilot_gradual_upgrade(defender);
+    }
+
+    // everybody slowly gets better (caps by tournament difficulty, table 0x81E34)
+    static const int caps[4][2] = {{39, 35}, {70, 70}, {120, 120}, {240, 240}};
+    static const int growth_base[4] = {4, 6, 13, 27};
+    int d = chr->pilot.difficulty & 3;
+    int growth = (int)(growth_base[d] * mult);
+    for(int i = 0; i < (int)chr->pilot.enemies_inc_unranked; i++) {
+        if(!chr->enemies[i]) {
+            continue;
+        }
+        sd_pilot *p = &chr->enemies[i]->pilot;
+        if((int)rand_int(100) < growth && ((int)rand_int(400) > p->offense || rand_int(50) == 0) && p->offense < caps[d][0]) {
+            p->offense++;
+        }
+        if((int)rand_int(100) < growth && ((int)rand_int(400) > p->defense || rand_int(50) == 0) && p->defense < caps[d][1]) {
+            p->defense++;
+        }
+    }
+}
+

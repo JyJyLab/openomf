@@ -396,7 +396,7 @@ static void capture_screenshot(void *userdata) {
     gl3_context *ctx = userdata;
     SDL_Rect r = {0, 0, ctx->screen_w, ctx->screen_h};
     unsigned char *buffer = omf_malloc(r.w * r.h * 4);
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__SWITCH__)
     // GLES 는 GL_RGBA/GL_UNSIGNED_BYTE 읽기만 보장 → RGB 로 줄인다
     glReadPixels(r.x, r.y, r.w, r.h, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
     for(int i = 0; i < r.w * r.h; i++) {
@@ -567,7 +567,7 @@ static void render_area_finish(void *userdata, surface *dst) {
     const int scale = ctx->fb_scale;
     const SDL_Rect r = (SDL_Rect){x0 * scale, y0 * scale, (x1 - x0) * scale, (y1 - y0) * scale};
     uint16_t *buffer = omf_calloc(r.w * r.h, sizeof(uint16_t));
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__SWITCH__)
     // half float 프레임버퍼: RGBA/FLOAT 로 읽어 R 값을 16비트 정규화 값으로 바꾼다
     float *fbuf = omf_calloc((size_t)r.w * r.h * 4, sizeof(float));
     glReadPixels(r.x, r.y, r.w, r.h, GL_RGBA, GL_FLOAT, fbuf);

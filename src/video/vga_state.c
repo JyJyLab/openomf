@@ -164,6 +164,12 @@ void vga_state_set_base_palette_range(vga_index start, vga_index count, vga_colo
     damage_add_range(&state.dmg_base, start, start + count);
 }
 
+void vga_state_get_base_palette_range(vga_index start, vga_index count, vga_color *dst_colors) {
+    assert(start >= 0 && start + count <= VGA_PALETTE_SIZE);
+    assert(count > 0);
+    memcpy(dst_colors, &state.base.colors[start], count * 3);
+}
+
 void vga_state_copy_base_palette_range(vga_index dst, vga_index src, vga_index count) {
     assert(dst >= 0 && dst + count <= VGA_PALETTE_SIZE);
     assert(src >= 0 && src + count <= VGA_PALETTE_SIZE);

@@ -88,6 +88,9 @@ void surface_create_from(surface *dst, const surface *src) {
     surface_create(dst, src->w, src->h);
     memcpy(dst->data, src->data, src->w * src->h * sizeof(vga_pixel));
     dst->transparent = src->transparent;
+    // keep the on-screen size of high resolution (mod) sprites
+    dst->render_w = src->render_w;
+    dst->render_h = src->render_h;
 }
 
 void surface_multiply_decal(surface *src, const surface *decal, int dst_x, int dst_y) {
@@ -135,6 +138,31 @@ void surface_sub(surface *dst, const surface *src, int dst_x, int dst_y, int src
                     break;
             }
             dst->data[dst_offset] = src->data[src_offset];
+        }
+    }
+    dst->guid = guid++;
+}
+
+// Draws the opaque pixels of src onto dst. x, y and both sizes are in render (320x200) units, so either surface
+// may be a high resolution replacement.
+void surface_paint(surface *dst, const surface *src, int x, int y) {
+    const int sw = src->render_w > 0 ? src->render_w : src->w;
+    const int sh = src->render_h > 0 ? src->render_h : src->h;
+    const float dsx = dst->render_w > 0 ? (float)dst->w / dst->render_w : 1.0f;
+    const float dsy = dst->render_h > 0 ? (float)dst->h / dst->render_h : 1.0f;
+    const int x0 = x * dsx, y0 = y * dsy, x1 = (x + sw) * dsx, y1 = (y + sh) * dsy;
+    if(x1 <= x0 || y1 <= y0) {
+        return;
+    }
+    for(int ty = max2(y0, 0); ty < min2(y1, dst->h); ty++) {
+        const int sy = (ty - y0) * src->h / (y1 - y0);
+        for(int tx = max2(x0, 0); tx < min2(x1, dst->w); tx++) {
+            const int sx = (tx - x0) * src->w / (x1 - x0);
+            const vga_pixel p = src->data[sx + sy * src->w];
+            if(src->transparent >= 0 && p == src->transparent) {
+                continue;
+            }
+            dst->data[tx + ty * dst->w] = p;
         }
     }
     dst->guid = guid++;

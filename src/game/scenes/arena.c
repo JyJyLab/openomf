@@ -111,11 +111,13 @@ typedef struct arena_local {
     int player_rounds[2][4];
 
     int rein_enabled;
+    bool grate_broken; ///< Fire Pit grate already broken this match (BK animation 12 started)
 
     sd_action rec_last[2];
 } arena_local;
 
 void write_rec_move(scene *scene, game_player *player, int action);
+static void arena_spawn_bk_anim(scene *scene, int anim_id);
 
 bool defeated_at_rest(object *obj);
 
@@ -254,8 +256,110 @@ void arena_screengrab_winner(scene *sc) {
     }
 }
 
+// One player secret stages (MASTER.DAT 0x30C08). The regular opponent is kept aside while FIRE / ICE fight.
+static struct {
+    bool saved;
+    str name;
+    uint8_t har_id;
+    int power, agility, endurance;
+    uint16_t offense, defense;
+    int16_t ap[9];
+    uint8_t enhancements[11];
+} secret_saved_opponent;
+
+// AI preferences at pilot +0xCA..+0xDA in MASTER.DAT order
+static int16_t *secret_ai_pref(sd_pilot *p, int i) {
+    int16_t *fields[9] = {&p->ap_throw, &p->ap_special, &p->ap_jump,   &p->ap_high,  &p->ap_low,
+                          &p->ap_middle, &p->pref_jump, &p->pref_fwd, &p->pref_back};
+    return fields[i];
+}
+
+static void arena_enter_secret_stage(game_state *gs, int stage) {
+    game_player *p1 = game_state_get_player(gs, 0);
+    game_player *p2 = game_state_get_player(gs, 1);
+    sd_pilot *pilot = p2->pilot;
+    if(stage == 1) {
+        // a new secret run always starts from the regular opponent
+        if(secret_saved_opponent.saved) {
+            str_free(&secret_saved_opponent.name);
+        }
+        str_from(&secret_saved_opponent.name, &pilot->name);
+        secret_saved_opponent.har_id = pilot->har_id;
+        secret_saved_opponent.power = pilot->power;
+        secret_saved_opponent.agility = pilot->agility;
+        secret_saved_opponent.endurance = pilot->endurance;
+        secret_saved_opponent.offense = pilot->offense;
+        secret_saved_opponent.defense = pilot->defense;
+        for(int i = 0; i < 9; i++) {
+            secret_saved_opponent.ap[i] = *secret_ai_pref(pilot, i);
+        }
+        memcpy(secret_saved_opponent.enhancements, pilot->enhancements, sizeof(secret_saved_opponent.enhancements));
+        secret_saved_opponent.saved = true;
+    }
+    gs->secret_stage = stage;
+    // MASTER.DAT 0x30C08 fills in the AI preferences, offense and defense of FIRE and ICE
+    static const int16_t fire_ai[9] = {50, 20, 10, -5, 10, 10, -20, 100, 10};
+    static const int16_t ice_ai[9] = {50, 50, 20, 2, 20, 20, 0, 10, 100};
+    for(int i = 0; i < 9; i++) {
+        *secret_ai_pref(pilot, i) = stage == 1 ? fire_ai[i] : ice_ai[i];
+    }
+    pilot->offense = pilot->defense = stage == 1 ? 130 : 170;
+    if(stage == 1) {
+        // FIRE: Katana, power 24, agility 26, endurance 30, fully enhanced, score x5
+        str_set_c(&pilot->name, lang_get(189));
+        pilot->har_id = HAR_KATANA;
+        pilot->power = 24;
+        pilot->agility = 26;
+        pilot->endurance = 30;
+        game_player_get_score(p1)->secret_multiplier = 5.0f;
+    } else {
+        // ICE: Shadow, power 30, agility 30, endurance 33, fully enhanced, score x10
+        str_set_c(&pilot->name, lang_get(190));
+        pilot->har_id = HAR_SHADOW;
+        pilot->power = 30;
+        pilot->agility = 30;
+        pilot->endurance = 33;
+        game_player_get_score(p1)->secret_multiplier = 10.0f;
+    }
+    pilot->enhancements[pilot->har_id] = 3;
+    // speed limit (user request 2026-10-27): FIRE / ICE are not faster than the player or the opponent they replace
+    int speed_limit = p1->pilot->agility > secret_saved_opponent.agility ? p1->pilot->agility
+                                                                          : secret_saved_opponent.agility;
+    if(pilot->agility > speed_limit) {
+        pilot->agility = speed_limit;
+    }
+    log_info("Secret stage %d: %s", stage, str_c(&pilot->name));
+}
+
+static void arena_leave_secret_stage(game_state *gs) {
+    game_player *p1 = game_state_get_player(gs, 0);
+    game_player *p2 = game_state_get_player(gs, 1);
+    gs->secret_stage = 0;
+    game_player_get_score(p1)->secret_multiplier = 1.0f;
+    if(secret_saved_opponent.saved) {
+        sd_pilot *pilot = p2->pilot;
+        str_set(&pilot->name, &secret_saved_opponent.name);
+        str_free(&secret_saved_opponent.name);
+        pilot->har_id = secret_saved_opponent.har_id;
+        pilot->power = secret_saved_opponent.power;
+        pilot->agility = secret_saved_opponent.agility;
+        pilot->endurance = secret_saved_opponent.endurance;
+        pilot->offense = secret_saved_opponent.offense;
+        pilot->defense = secret_saved_opponent.defense;
+        for(int i = 0; i < 9; i++) {
+            *secret_ai_pref(pilot, i) = secret_saved_opponent.ap[i];
+        }
+        memcpy(pilot->enhancements, secret_saved_opponent.enhancements, sizeof(secret_saved_opponent.enhancements));
+        secret_saved_opponent.saved = false;
+    }
+}
+
+
 static void arena_end(scene *sc) {
     game_state *gs = sc->gs;
+    if(gs->reload_scene) {
+        return; // already handled, waiting for the arena to be rebuilt
+    }
     arena_local *local = scene_get_userdata(sc);
     const scene *scene = game_state_get_scene(gs);
     fight_stats *fight_stats = &gs->fight_stats;
@@ -383,6 +487,10 @@ static void arena_end(scene *sc) {
             fight_stats->plug_text = PLUG_LOSE + rand_int(5);
         }
 
+        if(is_tournament(gs) && p1->chr && !gs->match_settings.sim) {
+            // MASTER.DAT 0x3ADC0: the rest of the field plays its own matches
+            trn_simulate_other_matches(p1->chr);
+        }
         if(p1->chr && sg_save(p1->chr) != SD_SUCCESS) {
             log_error("Failed to save pilot %s", str_c(&p1->chr->pilot.name));
         }
@@ -391,7 +499,14 @@ static void arena_end(scene *sc) {
         } else if(gs->match_settings.sim) {
             p2->pilot = NULL;
             game_state_set_next(gs, SCENE_MECHLAB);
+        } else if(is_singleplayer(gs) && gs->floor_break && gs->secret_stage < 2) {
+            // MASTER.DAT 0x30C08: the floor was broken, restart right away against FIRE, then ICE
+            arena_enter_secret_stage(gs, gs->secret_stage + 1);
+            // same scene id: ask the engine to build the arena again
+            gs->reload_scene = true;
+            game_state_set_next(gs, SCENE_ARENA3);
         } else {
+            arena_leave_secret_stage(gs);
             game_state_set_next(gs, SCENE_NEWSROOM);
         }
     } else if(gs->net_mode == NET_MODE_LOBBY) {
@@ -705,6 +820,10 @@ void arena_har_defeat_hook(int loser_player_id, scene *scene) {
     har *winner_har = object_get_userdata(winner);
     fight_stats *fight_stats = &gs->fight_stats;
     fight_stats->winner = winner_player_id;
+    // MASTER.DAT 0x30C08 (0x847BC): once FIRE or ICE loses a round, the Fire Pit floor stays solid
+    if(loser_player_id == 1 && gs->secret_stage > 0 && scene->id == SCENE_ARENA3) {
+        gs->secret_beaten = true;
+    }
     chr_score *score = game_player_get_score(game_state_get_player(gs, winner_player_id));
     // XXX need a smarter way to detect if a player is networked or local
     if(player_winner->ctrl->type != CTRL_TYPE_NETWORK && player_loser->ctrl->type == CTRL_TYPE_NETWORK) {
@@ -1275,6 +1394,12 @@ void arena_dynamic_tick(scene *scene, int paused) {
 
         push_players(scene, game_state_get_player(scene->gs, 0), game_state_get_player(scene->gs, 1));
 
+        // MASTER.DAT 0x30C08: tag b2 with the secret allowed breaks the grate, fire bursts up (BK animation 12)
+        if(gs->floor_break_anim && gs->secret_allowed && !local->grate_broken) {
+            local->grate_broken = true;
+            arena_spawn_bk_anim(scene, 12);
+        }
+
         local->state_ticks++;
 
         // Handle scrolling score texts
@@ -1638,6 +1763,12 @@ int arena_get_wall_slam_tolerance(game_state *gs) {
 }
 
 static void arena_startup(scene *scene, int id, int *m_load, int *m_repeat) {
+    if(scene->id == SCENE_ARENA3 && id == 5 && scene->gs->secret_stage == 2 && is_singleplayer(scene->gs)) {
+        // ICE: animation 5 runs its palette shimmer (see arena_setup_fire_pit)
+        *m_load = 1;
+        *m_repeat = 1;
+        return;
+    }
     if(scene->bk_data->file_id == 64) {
         // Start up & repeat torches on arena startup
         switch(id) {
@@ -1706,6 +1837,123 @@ void arena_clone_free(scene *scene) {
     omf_free(local);
 }
 
+static void arena_paint_bk_sprite(scene *scene, int anim_id, int sprite_id) {
+    bk_info *info = bk_get_info(scene->bk_data, anim_id);
+    if(info == NULL) {
+        return;
+    }
+    sprite *spr = animation_get_sprite(&info->ani, sprite_id);
+    if(spr == NULL || spr->data == NULL) {
+        return;
+    }
+    surface_paint(&scene->bk_data->background, spr->data, info->ani.start_pos.x + spr->pos.x,
+                  info->ani.start_pos.y + spr->pos.y);
+}
+
+static void arena_spawn_bk_anim(scene *scene, int anim_id) {
+    bk_info *info = bk_get_info(scene->bk_data, anim_id);
+    if(info == NULL) {
+        return;
+    }
+    object *obj = omf_calloc(1, sizeof(object));
+    object_create(obj, scene->gs, info->ani.start_pos, vec2f_create(0, 0));
+    object_set_stl(obj, scene->bk_data->sound_translation_table);
+    object_set_animation(obj, &info->ani);
+    object_set_spawn_cb(obj, cb_scene_spawn_object, (void *)scene);
+    object_set_destroy_cb(obj, cb_scene_destroy_object, (void *)scene);
+    if(game_state_add_object(scene->gs, obj, RENDER_LAYER_BOTTOM, 0, 0) != 0) {
+        object_free(obj);
+        omf_free(obj);
+    }
+}
+
+static inline uint8_t arena_color_6to8(int c) {
+    return (c << 2) | ((c & 0x30) >> 4); // as formats/palette.c loads 6 bit VGA colors
+}
+
+// MASTER.DAT 0x5EC68 (mode 1): moves colors start..start+count-1 toward r, g, b (6 bit) by amount / 64, scaled by
+// the brightest channel of each color. orig holds the colors before any light, work the result so far.
+static void arena_light_range(const vga_color *orig, vga_color *work, int r, int g, int b, int amount, int start,
+                              int count) {
+    const int target[3] = {r, g, b};
+    for(int i = start; i < start + count; i++) {
+        int w[3] = {work[i].r >> 2, work[i].g >> 2, work[i].b >> 2};
+        const int o[3] = {orig[i].r >> 2, orig[i].g >> 2, orig[i].b >> 2};
+        int m = max2(w[0], max2(w[1], w[2]));
+        for(int c = 0; c < 3; c++) {
+            w[c] = clamp(w[c] + (((((target[c] - o[c]) * amount) >> 6) * m) >> 6), 0, 63);
+        }
+        work[i].r = arena_color_6to8(w[0]);
+        work[i].g = arena_color_6to8(w[1]);
+        work[i].b = arena_color_6to8(w[2]);
+    }
+}
+
+// MASTER.DAT 0x30C08: HAR colors take the light of the Danger Room, Power Plant and Fire Pit (both HARs, colors 1..95),
+// and in the hidden stages the player's HAR (colors 1..47) glows orange (FIRE) or blue (ICE).
+static void arena_light_hars(scene *scene) {
+    static const uint8_t light_index[5] = {0, 182, 229, 182, 0}; // 0x81CEC: palette color of the light
+    static const uint8_t light_amount[5] = {0, 3, 6, 8, 0};      // 0x81CF4
+    int arena_id = scene->id - SCENE_ARENA0;
+    if(arena_id < 0 || arena_id > 4 || light_index[arena_id] == 0) {
+        return;
+    }
+    vga_color orig[96], work[96], light;
+    vga_state_get_base_palette_range(0, 96, orig);
+    memcpy(work, orig, sizeof(work));
+    vga_state_get_base_palette_range(light_index[arena_id], 1, &light);
+    arena_light_range(orig, work, light.r >> 2, light.g >> 2, light.b >> 2, light_amount[arena_id], 1, 95);
+    if(scene->gs->secret_stage == 1) {
+        arena_light_range(orig, work, 0x3f, 0x23, 0, 0x10, 1, 47);
+    } else if(scene->gs->secret_stage == 2) {
+        arena_light_range(orig, work, 0, 0x14, 0x3f, 0x13, 1, 47);
+    }
+    vga_state_set_base_palette_range(1, 95, &work[1]);
+}
+
+// MASTER.DAT 0x30C08: the Fire Pit floor around the hidden stages. BK animation 5 holds three pictures that are
+// painted into the background: 0 = the grate you fell through (now the ceiling), 1 = solid floor, 2 = ICE's frost.
+// FIRE keeps the grate floor only on Ultimate (the way on to ICE); ICE, and every Fire Pit match after FIRE or ICE
+// lost a round, have a solid floor. No fire orb hazard (animation 0) in any of these.
+static void arena_setup_fire_pit(scene *scene) {
+    game_state *gs = scene->gs;
+    bool solid_floor;
+    if(gs->secret_stage > 0) {
+        arena_paint_bk_sprite(scene, 5, 0);
+        solid_floor = gs->secret_stage == 2 || settings_get()->gameplay.difficulty < 6;
+    } else if(gs->secret_beaten) {
+        solid_floor = true;
+    } else {
+        return;
+    }
+    if(solid_floor) {
+        arena_paint_bk_sprite(scene, 5, 1);
+    }
+    if(gs->secret_stage == 2) {
+        arena_paint_bk_sprite(scene, 5, 2);
+    }
+    if(gs->secret_stage > 0) {
+        // MASTER.DAT 0x29428: animations with a string for the stage run it (ICE: frozen torches, and animation 5
+        // becomes a palette shimmer that arena_startup starts)
+        iterator it;
+        hashmap_pair *pair = NULL;
+        hashmap_iter_begin(&scene->bk_data->infos, &it);
+        foreach(it, pair) {
+            bk_info *info = (bk_info *)pair->value;
+            if(info->ani.extra_string_count > gs->secret_stage) {
+                str *stage_string = vector_get(&info->ani.extra_strings, gs->secret_stage);
+                if(str_size(stage_string) > 2) {
+                    str_set(&info->ani.animation_string, stage_string);
+                }
+            }
+        }
+    }
+    bk_info *orb = bk_get_info(scene->bk_data, 0);
+    if(orb) {
+        orb->probability = 0;
+    }
+}
+
 int arena_create(scene *scene) {
     // Free up the script cache here, since we know that we don't share animations over the arena start.
     script_cache_clear();
@@ -1715,6 +1963,23 @@ int arena_create(scene *scene) {
 
     fight_stats *fight_stats = &scene->gs->fight_stats;
     memset(fight_stats, 0, sizeof(*fight_stats));
+
+    // MASTER.DAT 0x30C08: Fire Pit secret moves are allowed in one player games against the computer on
+    // Champion or higher; FIRE (stage 1) needs Ultimate to break through again, ICE (stage 2) never on Ultimate.
+    {
+        game_state *gs = scene->gs;
+        int difficulty = setting->gameplay.difficulty;
+        game_player *p2 = game_state_get_player(gs, 1);
+        bool p2_ai = p2->ctrl && p2->ctrl->type == CTRL_TYPE_AI;
+        gs->floor_break = false;
+        gs->floor_break_anim = false;
+        gs->secret_allowed = scene->id == SCENE_ARENA3 && is_singleplayer(gs) && p2_ai && difficulty >= 4 &&
+                             !(gs->secret_stage == 1 && difficulty < 6) && !(gs->secret_stage == 2 && difficulty == 6) &&
+                             !(gs->secret_stage == 0 && gs->secret_beaten);
+        if(scene->id == SCENE_ARENA3 && is_singleplayer(gs)) {
+            arena_setup_fire_pit(scene);
+        }
+    }
 
     // Handle music playback
     switch(scene->bk_data->file_id) {
@@ -1767,7 +2032,6 @@ int arena_create(scene *scene) {
     local->over = 0;
     local->winner = 0;
 
-    // TODO: Fire & Ice will need to set the arena palette
     unsigned pal_index = 0;
     if(scene->gs->init_flags->playback == 1) {
         // use palette index from rec
@@ -1776,11 +2040,19 @@ int arena_create(scene *scene) {
         // When playing the desert arena in Tournament mode,
         // pick a random palette to change the time of day.
         pal_index = rand_int(vector_size(&scene->bk_data->palettes));
+    } else if(scene->id == SCENE_ARENA3 && is_singleplayer(scene->gs) && scene->gs->secret_stage > 0) {
+        // MASTER.DAT 0x1B070 / 0x281B0: FIRE and ICE use the Fire Pit's palette 1 (furnace) and 2 (ice)
+        pal_index = scene->gs->secret_stage;
     }
 
     // 0 is selected by default, so nothing to do if we hit that.
     if(pal_index > 0 && pal_index < vector_size(&scene->bk_data->palettes)) {
         vga_state_set_base_palette_from_range(bk_get_palette(scene->bk_data, pal_index), 0x60, 0x60, 0x40);
+        if(scene->bk_data->file_id == 64) {
+            // the Fire Pit palettes also differ in color 209 and bring their own remap tables
+            vga_state_set_base_palette_from_range(bk_get_palette(scene->bk_data, pal_index), 209, 209, 1);
+            vga_state_set_remaps_from(bk_get_remaps(scene->bk_data, pal_index));
+        }
     }
 
     // Initial har data
@@ -1879,6 +2151,8 @@ int arena_create(scene *scene) {
             }
         }
     }
+
+    arena_light_hars(scene);
 
     // remove the keyboard hooks
 

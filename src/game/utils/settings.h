@@ -62,6 +62,7 @@ typedef struct {
     int power2;
     int hazards_on;
     int difficulty;
+    int original_ai; ///< 1 = computer AI modelled on MASTER.DAT (0x514F0), 0 = OpenOMF tactics AI
     int rounds;
 } settings_gameplay;
 

@@ -123,6 +123,7 @@ int textselector_get_pos(const component *c) {
 void textselector_set_pos(component *c, int pos) {
     text_selector *t = widget_get_obj(c);
     *t->pos = pos;
+    refresh(c);
 }
 
 static void textselector_free(component *c) {

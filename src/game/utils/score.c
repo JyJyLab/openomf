@@ -30,8 +30,8 @@ float std_multipliers[] = {
     0.6f, // veteran
     0.8f, // world class
     1.0f, // champion
-    1.2f, // deadly
-    1.4f  // ultimate
+    1.5f, // deadly (MASTER.DAT 0x30C08: 150%)
+    2.0f  // ultimate (MASTER.DAT 0x30C08: 200%)
 };
 
 // Some of the difficulties do not map to tournament.
@@ -74,6 +74,7 @@ void chr_score_create(chr_score *score) {
     score->y = 0;
     score->direction = OBJECT_FACE_RIGHT;
     score->multipliers = std_multipliers;
+    score->secret_multiplier = 1.0f;
     score->total = create_text_obj("0");
     list_create(&score->texts);
     chr_score_reset(score, 1);
@@ -133,7 +134,7 @@ int chr_score_onscreen(chr_score *score) {
 }
 
 float chr_score_get_difficulty_multiplier(chr_score *score) {
-    return score->multipliers[score->difficulty];
+    return score->multipliers[score->difficulty] * score->secret_multiplier;
 }
 
 void chr_score_free(chr_score *score) {

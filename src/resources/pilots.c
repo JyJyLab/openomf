@@ -100,3 +100,27 @@ void pilot_get_info(pilot *pilot, int id) {
             break;
     }
 }
+
+static int sp_difficulty_shift(int value, int shift) {
+    // the original subtracts a "penalty" and clamps at zero
+    return value > shift ? value - shift : 0;
+}
+
+void pilot_apply_sp_difficulty(int *power, int *agility, int *endurance, int difficulty, int player_agility) {
+    static const int penalty[] = {5, 2, 0, 0, -2, -4, -7};
+    if(difficulty < 0 || difficulty > 6) {
+        return;
+    }
+    int shift = penalty[difficulty];
+    int base_agility = *agility;
+    *power = sp_difficulty_shift(*power, shift);
+    *agility = sp_difficulty_shift(*agility, shift);
+    *endurance = sp_difficulty_shift(*endurance, shift);
+    if(shift < 0) {
+        // speed limit: the bonus stops at the player's agility
+        int limit = base_agility > player_agility ? base_agility : player_agility;
+        if(*agility > limit) {
+            *agility = limit;
+        }
+    }
+}

@@ -1,3 +1,4 @@
+#include "controller/controller.h"
 #include "controller/game_controller_db.h"
 #include "engine.h"
 #include "game/game_state.h"
@@ -196,6 +197,31 @@ static void android_prepare_paths(void) {
     setenv("OPENOMF_CONFIG_PATH", buf, 1);
 }
 
+#endif
+
+#ifdef __SWITCH__
+#include <stdlib.h>
+#include <switch.h>
+#include <sys/stat.h>
+
+// 스위치: 게임 데이터(romfs:/omf/resources, shaders)는 nro 안에서 바로 읽고,
+// 설정·세이브·로그는 sdmc:/switch/openomf/ 에 둔다.
+// "간편 마무리"(game/objects/har.c)는 안드로이드판 기본값처럼 켬 (스위치판엔 오버레이 옵션이 없음)
+volatile bool omf_android_easy_finish = true;
+
+static void switch_prepare_paths(void) {
+    romfsInit();
+    mkdir("sdmc:/switch", 0777);
+    mkdir("sdmc:/switch/openomf", 0777);
+    mkdir("sdmc:/switch/openomf/state", 0777);
+    mkdir("sdmc:/switch/openomf/config", 0777);
+    setenv("OPENOMF_RESOURCE_PATH", "romfs:/omf/", 1);
+    setenv("OPENOMF_STATE_PATH", "sdmc:/switch/openomf/state/", 1);
+    setenv("OPENOMF_CONFIG_PATH", "sdmc:/switch/openomf/config/", 1);
+}
+#endif
+
+#if defined(__ANDROID__) || defined(__SWITCH__)
 // 한국어 파일이 들어 있으면 처음 한 번만 언어를 한국어로 바꾼다 (이전 버전에서 쓰던 설정 포함).
 // 그 뒤에 메뉴에서 다른 언어를 고르면 그대로 둔다. 표시 파일: <config>/korean_default
 static void android_korean_default(void) {
@@ -224,6 +250,9 @@ static void android_korean_default(void) {
 int main(int argc, char *argv[]) {
 #ifdef __ANDROID__
     android_prepare_paths();
+#endif
+#ifdef __SWITCH__
+    switch_prepare_paths();
 #endif
     // Set up initial state for misc things
     char *ip = NULL;
@@ -356,6 +385,10 @@ int main(int argc, char *argv[]) {
 #else
     log_set_level(LOG_INFO); // In release mode, drop debugs.
 #endif
+#ifdef __SWITCH__
+    // stderr is the debug log file there (switch/nx_debug.c): errors before the log file opens show up
+    log_add_stderr(LOG_INFO, false);
+#endif
     if(log_level->count > 0) {
         if(!is_log_level(log_level->sval[0])) {
             fprintf(stderr, "Invalid loging level value %s\n", log_level->sval[0]);
@@ -391,8 +424,20 @@ int main(int argc, char *argv[]) {
         goto exit_1;
     }
     settings_load();
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__SWITCH__)
     android_korean_default();
+    // 4배 화면: 고해상도 인물 사진(mods/hd_portraits.zip)을 쓴다. 메뉴에 없는 설정이라 항상 맞춘다
+    settings_get()->video.fb_scale = 4;
+#endif
+#ifdef __SWITCH__
+    // 화면은 늘 전체 화면(1280x720), 1P 는 스위치 컨트롤러 (버튼 고정: B 펀치·A 킥·+ 메뉴)
+    settings_get()->video.screen_w = 1280;
+    settings_get()->video.screen_h = 720;
+    settings_get()->video.fullscreen = 1;
+    settings_get()->keys.ctrl_type1 = CTRL_TYPE_GAMEPAD;
+    omf_free(settings_get()->keys.joy_name1);
+    settings_get()->keys.joy_name1 = omf_strdup("Switch Controller");
+    settings_get()->keys.joy_offset1 = 0;
 #endif
 
     // Network game override stuff

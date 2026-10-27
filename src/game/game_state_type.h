@@ -75,6 +75,14 @@ typedef struct game_state_t {
 
     int arena;
 
+    // One player secret stages (MASTER.DAT 0x30C08): 0 normal, 1 FIRE, 2 ICE
+    int secret_stage;
+    bool secret_allowed; ///< Fire Pit secret moves (POS_FIRE_ICE_ALLOWED) may be used this fight
+    bool floor_break;    ///< Animation tag b1 was hit: break through the floor after the match
+    bool floor_break_anim; ///< Animation tag b2 was hit while the secret is allowed: the Fire Pit grate breaks
+    bool secret_beaten;    ///< FIRE or ICE lost a round in this one player game: the Fire Pit floor stays solid
+    bool reload_scene;   ///< load next_id again even though it is the current scene (FIRE / ICE restart)
+
     // For momentary game speed switches
     int speed_slowdown_previous;
     int speed_slowdown_time;

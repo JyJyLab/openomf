@@ -42,6 +42,17 @@ void sd_chr_from_trn(sd_chr_file *chr, const sd_tournament_file *trn, const sd_p
             chr->enemies[i]->trn_index = i;
         }
     }
+    // MASTER.DAT 0x398C0: when a tournament starts, every computer pilot gets 60 rounds of gradual upgrades
+    for(uint32_t i = 0; i < trn->enemy_count; i++) {
+        if(chr->enemies[i]->pilot.har_id == 255) {
+            purchase_random_har(&chr->enemies[i]->pilot);
+        }
+    }
+    for(int round = 0; round < 60; round++) {
+        for(uint32_t i = 0; i < trn->enemy_count; i++) {
+            ai_pilot_gradual_upgrade(&chr->enemies[i]->pilot);
+        }
+    }
     vga_palette_init(&chr->pal);
     chr->pilot.enemies_inc_unranked = trn->enemy_count;
     chr->pilot.enemies_ex_unranked = ranked;
@@ -123,7 +134,6 @@ int sd_chr_load(sd_chr_file *chr, const path *filename) {
             // pick a random HAR
             purchase_random_har(&chr->enemies[i]->pilot);
         }
-        purchase_random_har_upgrades(&chr->enemies[i]->pilot);
         if(trn_loaded) {
             memcpy(&chr->enemies[i]->pilot.palette, &sd_pic_get(&pic, trn.enemies[i]->photo_id)->pal,
                    sizeof(vga_palette));
@@ -131,6 +141,13 @@ int sd_chr_load(sd_chr_file *chr, const path *filename) {
             if(trn.enemies[i]->photo) {
                 log_info("using pilot photo %d from tournament", i);
                 sd_sprite_copy(chr->enemies[i]->pilot.photo, trn.enemies[i]->photo);
+                // A high resolution replacement drawn at the original size keeps the original placement
+                const sd_pic_photo *orig = sd_pic_get(&pic, trn.enemies[i]->photo_id);
+                sd_sprite *photo = chr->enemies[i]->pilot.photo;
+                if(orig != NULL && photo->render_width == orig->sprite->width &&
+                   photo->render_height == orig->sprite->height) {
+                    photo->pos = orig->sprite->pos;
+                }
             } else {
                 sd_sprite_copy(chr->enemies[i]->pilot.photo, sd_pic_get(&pic, trn.enemies[i]->photo_id)->sprite);
             }
@@ -228,6 +245,12 @@ int sd_chr_load(sd_chr_file *chr, const path *filename) {
         // Load player gender from PLAYERS.PIC
         const sd_pic_photo *photo = sd_pic_get(&players, chr->pilot.photo_id);
         chr->pilot.sex = photo->sex;
+        if(photo->sprite->width > photo->sprite->render_width) {
+            // a high resolution replacement exists: the save only holds the original picture (see sd_chr_save)
+            sd_sprite_free(chr->photo);
+            sd_sprite_create(chr->photo);
+            sd_sprite_copy(chr->photo, photo->sprite);
+        }
         chr->pilot.photo->render_width = photo->sprite->render_width;
         chr->pilot.photo->render_height = photo->sprite->render_height;
         sd_pic_free(&players);
@@ -291,14 +314,37 @@ int sd_chr_save(const sd_chr_file *chr, const path *filename) {
     sd_write_udword(w, chr->unknown_b);
 
     // Save photo. Hacky size fix.
-    chr->photo->width--;
-    chr->photo->height--;
+    // A high resolution replacement photo (mod players/<n>/pilot.png) does not fit the 16-bit sprite length of
+    // the CHR format, so such a photo is saved as the original PLAYERS.PIC picture and swapped back on load.
+    sd_sprite *photo = chr->photo;
+    sd_sprite original;
+    bool use_original = false;
+    if(photo->render_width && photo->width > photo->render_width) {
+        const path players_path = get_resource_filename("PLAYERS.PIC");
+        sd_pic_file players;
+        sd_pic_create(&players);
+        if(sd_pic_load(&players, &players_path) == SD_SUCCESS) {
+            const sd_pic_photo *pic = sd_pic_get(&players, chr->pilot.photo_id);
+            if(pic && pic->sprite) {
+                sd_sprite_create(&original);
+                sd_sprite_copy(&original, pic->sprite);
+                photo = &original;
+                use_original = true;
+            }
+        }
+        sd_pic_free(&players);
+    }
+    photo->width--;
+    photo->height--;
 
-    if(SD_SUCCESS != sd_sprite_save(w, chr->photo)) {
+    if(SD_SUCCESS != sd_sprite_save(w, photo)) {
         return SD_FILE_WRITE_ERROR;
     }
-    chr->photo->width++;
-    chr->photo->height++;
+    photo->width++;
+    photo->height++;
+    if(use_original) {
+        sd_sprite_free(&original);
+    }
 
     // Close & return
     sd_writer_close(w);

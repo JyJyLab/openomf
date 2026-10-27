@@ -218,6 +218,10 @@ POWER 1	파워 1
 Change the power of player 1's hits and throws. This setting will take effect only in two player games. Press left and right to change.	1P 타격과 던지기의 위력을 바꿉니다. 2인 게임에서만 적용됩니다. 왼쪽·오른쪽으로 바꿉니다.
 POWER 2	파워 2
 HAZARDS	경기장 함정
+CPU AI	컴퓨터 AI
+ORIGINAL	원작
+OPENOMF	신형
+ORIGINAL follows the AI of the DOS game (MASTER.DAT), OPENOMF uses the newer tactics AI. Takes effect from the next fight.	원작은 DOS 원본 게임의 컴퓨터 AI 를, 신형은 새 전술 AI 를 씁니다. 다음 경기부터 적용됩니다.
 Some arenas have dangerous environments: spikes, electrivity, fighter planes, and the like. This option turns them on and off.	일부 경기장에는 가시, 전기, 전투기 같은 위험 요소가 있습니다. 이를 켜거나 끕니다.
 CPU:	컴퓨터:
 This determines how well the computer fights in a one player game. This has no effect on two player games. Press left and right to change.	1인 게임에서 컴퓨터의 실력을 정합니다. 2인 게임에는 영향이 없습니다. 왼쪽·오른쪽으로 바꿉니다.

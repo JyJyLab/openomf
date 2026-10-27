@@ -117,6 +117,20 @@ static bool scan_potential_resource_dirs(path *result, const str *src, const cha
 static bool find_resource_path(path *dst) {
     str tmp;
     path_clear(dst);
+#ifdef __SWITCH__
+    // Switch device paths have a colon ("romfs:/omf/"): the ':'-separated scan below would split it in
+    // two, and realpath() does not know romfs. Take the folder as given when the resources are there.
+    if(env_str(&tmp, OPENOMF_RESOURCE_PATH)) {
+        path test;
+        path_from_parts(&test, str_c(&tmp), "resources/openomf.bk");
+        if(path_is_file(&test)) {
+            path_from_c(dst, str_c(&tmp));
+            goto ok;
+        }
+        log_error("No resources/openomf.bk in %s", str_c(&tmp));
+        str_free(&tmp);
+    }
+#endif
     if(env_str(&tmp, OPENOMF_RESOURCE_PATH)) {
         if(scan_potential_resource_dirs(dst, &tmp, "resources/openomf.bk", "/")) {
             log_debug("Resources found in %s: %s", OPENOMF_RESOURCE_PATH, path_c(dst));

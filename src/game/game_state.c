@@ -960,7 +960,8 @@ void game_state_static_tick(game_state *gs, bool replay) {
     bool crossfade_out = settings_get()->video.crossfade_on && !scene_is_arena(gs->sc);
 
     // We want to load another scene
-    if(gs->this_id != gs->next_id && (gs->next_wait_ticks <= 1 || !crossfade_out)) {
+    if((gs->this_id != gs->next_id || gs->reload_scene) && (gs->next_wait_ticks <= 1 || !crossfade_out)) {
+        gs->reload_scene = false;
         // If this is the end, set run to 0 so that engine knows to close here
         if(gs->next_id == SCENE_NONE) {
             log_debug("Next ID is SCENE_NONE! bailing.");

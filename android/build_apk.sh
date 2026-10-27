@@ -7,6 +7,7 @@
 #   OMF_DESKTOP_BUILD desktop OpenOMF build dir that contains resources/ (openomf.bk, *.LNG2 ...) and languagetool,
 #                     default: ../build-linux
 #   KEYSTORE / KEYSTORE_PASS  signing key (a new personal key is created in android/work if missing)
+#   OMF_MODS          optional folder of OpenOMF mod zips to bundle (e.g. high resolution portraits)
 #
 # usage: android/build_apk.sh [version]
 set -e
@@ -30,7 +31,7 @@ cmake -S $HERE -B $WORK/build-main -G Ninja -DCMAKE_TOOLCHAIN_FILE=$NDK/build/cm
   -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-24 -DCMAKE_BUILD_TYPE=Release -DOMF_DEPS_PREFIX=$PREFIX >/dev/null
 ninja -C $WORK/build-main
 
-rm -rf $OUT && mkdir -p $OUT/assets/omf/resources $OUT/assets/omf/shaders $OUT/classes $OUT/lib/arm64-v8a $OUT/gen
+rm -rf $OUT && mkdir -p $OUT/assets/omf/resources $OUT/assets/omf/shaders $OUT/assets/omf/mods $OUT/classes $OUT/lib/arm64-v8a $OUT/gen
 
 # 2) game data (DOS executables, setup and modem tools are left out)
 for f in "$DATA"/*; do
@@ -43,7 +44,8 @@ cp "$DESK"/resources/* $OUT/assets/omf/resources/
 # Korean translation (KOREAN.LNG/.LNG2/.UI/.FNT); the game switches to Korean once on first run
 "$OMF/korean/build.sh" "$DESK/languagetool" $OUT/assets/omf/resources
 cp -r $OMF/shaders/* $OUT/assets/omf/shaders/
-( cd $OUT/assets/omf && { echo "data-$VER-$(cat resources/* shaders/*/* shaders/* 2>/dev/null | md5sum | cut -c1-12)"; find resources shaders -type f | sort; } > files.txt )
+if [ -n "${OMF_MODS:-}" ]; then cp "$OMF_MODS"/*.zip $OUT/assets/omf/mods/; fi
+( cd $OUT/assets/omf && { echo "data-$VER-$(cat resources/* shaders/*/* shaders/* mods/* 2>/dev/null | md5sum | cut -c1-12)"; find resources shaders mods -type f | sort; } > files.txt )
 
 # 3) native libraries
 $STRIP -o $OUT/lib/arm64-v8a/libmain.so $WORK/build-main/libmain.so

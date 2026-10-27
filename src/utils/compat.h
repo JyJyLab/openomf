@@ -13,8 +13,8 @@
 
 #include <string.h>
 
-#ifdef __APPLE__
-// MacOS X does not ship uchar.h
+#if defined(__APPLE__) || defined(__SWITCH__)
+// MacOS X and the Switch (newlib) do not ship uchar.h
 #include <stdint.h>
 typedef uint_least16_t char16_t;
 typedef uint_least32_t char32_t;

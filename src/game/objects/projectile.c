@@ -2,6 +2,7 @@
 #include "game/game_player.h"
 #include "game/game_state.h"
 #include "game/objects/arena_constraints.h"
+#include "game/protos/player.h"
 #include "utils/allocator.h"
 #include "utils/log.h"
 #include "video/enums.h"
@@ -64,6 +65,14 @@ void projectile_move(object *obj) {
     game_state *gs = obj->gs;
     game_player *player = game_state_get_player(gs, projectile_get_owner(obj));
     object *obj_har = game_state_find_object(gs, game_player_get_har_obj_id(player));
+
+    // MASTER.DAT 0x21930: spawned objects carry the Fire Pit floor tags too (Shadow's floor break)
+    if(player_frame_isset(obj, TAG_B1)) {
+        gs->floor_break = true;
+    }
+    if(player_frame_isset(obj, TAG_B2) && gs->secret_allowed) {
+        gs->floor_break_anim = true;
+    }
 
     obj->pos.x += (obj->vel.x + obj->cvel.x);
     obj->vel.y += obj->gravity;

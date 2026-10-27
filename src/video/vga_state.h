@@ -125,6 +125,14 @@ void vga_state_set_base_palette_index(vga_index index, const vga_color *color);
 void vga_state_set_base_palette_range(vga_index start, vga_index count, vga_color *src_colors);
 
 /**
+ * @brief Read a range of colors from the base palette
+ * @param start Start index
+ * @param count Number of colors
+ * @param dst_colors Destination, room for count colors
+ */
+void vga_state_get_base_palette_range(vga_index start, vga_index count, vga_color *dst_colors);
+
+/**
  * @brief Copy a range of colors within the base palette
  * @param dst Destination start index
  * @param src Source start index

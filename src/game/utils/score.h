@@ -33,6 +33,7 @@ typedef struct chr_score_t {
     int combo_hits;
     int combo_hit_score;
     float *multipliers;
+    float secret_multiplier; ///< FIRE x5 / ICE x10 (MASTER.DAT 0x30C08), otherwise 1
     bool done;
     bool scrap;
     bool destruction;

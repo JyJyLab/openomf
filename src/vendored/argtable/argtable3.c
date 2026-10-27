@@ -1431,10 +1431,10 @@ static const char noarg[] = "option doesn't take an argument -- %.*s";
 static const char illoptstring[] = "unknown option -- %s";
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__SWITCH__)
 
 /*
- * Windows needs warnx().  We change the definition though:
+ * Windows (and the Switch's newlib) needs warnx().  We change the definition though:
  *  1. (another) global is defined, opterrmsg, which holds the error message
  *  2. errors are always printed out on stderr w/o the program name
  * Note that opterrmsg always gets set no matter what opterr is set to.  The
@@ -1461,6 +1461,8 @@ static void warnx(const char* fmt, ...) {
     if (fmt != NULL)
 #if (defined(__STDC_LIB_EXT1__) && defined(__STDC_WANT_LIB_EXT1__)) || (defined(__STDC_SECURE_LIB__) && defined(__STDC_WANT_SECURE_LIB__))
         _vsnprintf_s(opterrmsg, sizeof(opterrmsg), sizeof(opterrmsg) - 1, fmt, ap);
+#elif defined(__SWITCH__)
+        vsnprintf(opterrmsg, sizeof(opterrmsg) - 1, fmt, ap);
 #else
         _vsnprintf(opterrmsg, sizeof(opterrmsg) - 1, fmt, ap);
 #endif

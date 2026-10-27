@@ -25,6 +25,7 @@ typedef struct game_player_t {
     int god;
     int ez_destruct;
     int sp_wins;
+    uint8_t sp_har_order[11]; ///< One player campaign: HAR of each opponent pilot, shuffled at start (MASTER.DAT 0x4A4D0)
     har_screencaps screencaps;
 } game_player;
 

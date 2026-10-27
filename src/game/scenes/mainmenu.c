@@ -132,6 +132,18 @@ int mainmenu_create(scene *scene) {
 
         // reset any single player data
         player->sp_wins = 0;
+        scene->gs->secret_stage = 0;
+        scene->gs->secret_beaten = false;
+        // MASTER.DAT 0x4A4D0: every one player opponent gets a distinct HAR for the whole campaign
+        for(int h = 0; h < 11; h++) {
+            player->sp_har_order[h] = h;
+        }
+        for(int n = 0; n < 150; n++) {
+            int a = rand_int(10), b = rand_int(10);
+            uint8_t t = player->sp_har_order[a];
+            player->sp_har_order[a] = player->sp_har_order[b];
+            player->sp_har_order[b] = t;
+        }
         chr_score *score = game_player_get_score(player);
         chr_score_reset(score, 1);
         chr_score_reset_wins(score);

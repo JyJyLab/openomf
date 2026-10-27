@@ -16,6 +16,7 @@ void af_move_create(str *name, af_move *move, array *sprites, void *src, int id)
     move->block_damage = sdmv->block_damage;
     move->block_stun = sdmv->block_stun;
     move->pos_constraints = sdmv->pos_constraint;
+    move->ai_flags = sdmv->ai_flags;
     move->throw_duration = sdmv->throw_duration;
     move->extra_string_selector = sdmv->extra_string_selector;
     animation_create(AF_ANIMATION, name, &move->ani, sprites, sdmv->animation, id);

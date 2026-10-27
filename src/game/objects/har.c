@@ -24,7 +24,7 @@
 #include "video/vga_state.h"
 #include "video/video.h"
 
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__SWITCH__)
 extern volatile bool omf_android_easy_finish; // main.c, 오버레이 옵션에서 바뀜
 #endif
 
@@ -659,7 +659,8 @@ void har_move(object *obj) {
     }
 
     // Handle floor collisions
-    if(obj->pos.y >= ARENA_FLOOR) {
+    // MASTER.DAT 0x11B3C: not while the frame has tag ax, the HAR falls through the floor (Fire Pit floor break)
+    if(obj->pos.y >= ARENA_FLOOR && !player_frame_isset(obj, TAG_AX)) {
         controller *ctrl = game_player_get_ctrl(game_state_get_player(obj->gs, h->player_id));
 
         obj->pos.y = ARENA_FLOOR;
@@ -782,9 +783,8 @@ void apply_stun_damage(object *obj, int stun_amount) {
             h->endurance = 0;
         }
     } else {
-        if(h->state == STATE_RECOIL && object_is_airborne(obj)) { // Less stun on rehit and throws
-            stun_amount /= 2;
-        }
+        // MASTER.DAT 0x18DE4/0x189CC: airborne hits are not halved (an air rehit doubles the stun and then
+        // halves it again); throws pass half of their damage as stun themselves (see har_tick throw end)
         stun_amount = (stun_amount * 2 + 12) * 256;
         log_debug("applying %d endurance damage to %d", stun_amount, h->endurance);
         h->endurance += stun_amount;
@@ -862,25 +862,42 @@ void calc_damage_and_stun(object *obj, af_move *move, int *damage, int *stun) {
         float leg_power = (pilot->leg_power + 3) * 0.192f;
         float arm_power = (pilot->arm_power + 3) * 0.192f;
 
+        // MASTER.DAT 0x189CC: limb power also scales stun, divided by 1.3.
+        // Selectors other than arm (1, 3) and leg (2, 4) use both arm and leg power, including selector 0.
         switch(move->extra_string_selector) {
-            case ESS_NONE:
-                break;
             case ESS_ARM_SPEED:
             case ESS_SPECIAL_ARM:
                 // apply arm power for damage
                 *damage = *damage * arm_power;
+                *stun = *stun * arm_power / 1.3f;
                 break;
             case ESS_LEG_SPEED:
             case ESS_SPECIAL_LEG:
                 // apply leg power for damage
                 *damage = *damage * leg_power;
+                *stun = *stun * leg_power / 1.3f;
                 break;
+            case ESS_NONE:
             case ESS_SPECIAL:
+            default:
                 // apply leg and arm power for damage
                 *damage = *damage * arm_power * leg_power;
+                *stun = *stun * arm_power * leg_power / 1.3f;
+                break;
         }
     }
     // log_debug("Calculated damage %d", *damage);
+}
+
+// MASTER.DAT 0x189CC / 0x30C08: health is truncated toward zero after each hit and the HAR only goes down once it
+// drops below zero, so a hit that leaves exactly 0 is survived. The port treats 0 as defeated, so keep 1 instead.
+static void har_lose_health(har *h, float amount) {
+    int before = h->health;
+    float after = (float)h->health - amount;
+    h->health = (int)after;
+    if(before > 0 && h->health == 0 && after > -1.0f) {
+        h->health = 1;
+    }
 }
 
 void har_take_damage(object *obj, af_move *move) {
@@ -943,9 +960,9 @@ void har_take_damage(object *obj, af_move *move) {
             // (Armor + 2.5) * .25
             log_debug("applying %d to %d modulated by armor %f", damage, h->health,
                       0.25f * (2.5f + player->pilot->armor));
-            h->health -= damage / (0.25f * (2.5f + player->pilot->armor));
+            har_lose_health(h, damage / (0.25f * (2.5f + player->pilot->armor)));
         } else {
-            h->health -= damage;
+            har_lose_health(h, damage);
         }
         apply_stun_damage(obj, stun);
     }
@@ -1002,12 +1019,25 @@ void har_take_damage(object *obj, af_move *move) {
                 str_append_c(&custom, "-L2-M5-L2");
             }
 
-            obj->vel.y = obj->vertical_velocity_modifier * ((((30.0f - move->damage) * 0.133333f) + 6.5f) * -1.0);
-            // TODO there's an alternative formula used in some conditions:
-            // (((damage * 0.09523809523809523) + 3.5)  * -1) * obj->vertical_velocity_modifier
-            // but we don't know what those conditions are
-            obj->vel.x = (((move->damage * 0.16666666f) + 2.0f) * object_get_direction(obj) * -1) *
-                         obj->horizontal_velocity_modifier;
+            // MASTER.DAT 0x18DE4: when the attacker's current move has POS_JUMP_WALL_BOUNCE (and is not a
+            // hazard), the attacker is frozen in place and the softer alternative launch formula is used.
+            // MASTER.DAT 0x18DE4: launch height uses HAR+0xC8 = (Agility + 35) / 45, distance HAR+0xCC =
+            // (Agility + 20) / 30 of the HAR being hit
+            float knock_vmod = ((float)player->pilot->agility + 35) / 45;
+            float knock_hmod = ((float)player->pilot->agility + 20) / 30;
+            har *other_h = object_get_userdata(other_har);
+            af_move *attacker_move = af_get_move(other_h->af_data, other_har->cur_animation->id);
+            bool attacker_frozen = attacker_move && (attacker_move->pos_constraints & POS_JUMP_WALL_BOUNCE) &&
+                                   move->category != CAT_BK_HAZARD;
+            if(attacker_frozen) {
+                obj->vel.y = knock_vmod * (((move->damage * 0.0952381f) + 3.5f) * -1.0);
+                object_set_vel(other_har, vec2f_create(0, 0));
+            } else {
+                obj->vel.y = knock_vmod * ((((30.0f - move->damage) * 0.133333f) + 6.5f) * -1.0);
+            }
+            obj->vel.x = (((move->damage * 0.16666666f) + 2.0f) * object_get_direction(obj) * -1) * knock_hmod;
+            // the attacker loses momentum: vx * 0xB3 / 256
+            other_har->vel.x = other_har->vel.x * 179.0f / 256.0f;
             object_set_stride(obj, 1);
         } else {
             if(h->health <= 0 || h->endurance >= h->endurance_max || h->endurance < 0) {
@@ -1787,6 +1817,7 @@ void har_handle_stun(object *obj) {
     } else if(h->endurance < h->endurance_max) {
         if(h->endurance < 1) { // We are currently dizzy, recover gradually
             if(obj->cur_animation->id == ANIM_STUNNED) {
+                // (pressing punch / kick while dizzy is handled in har_act: +2 * 256 per press, MASTER.DAT 0x11B3C)
                 h->endurance += h->stun_factor * 1.4;
             }
         } else { // Not yet stunned, handle regular stun recovery
@@ -1804,11 +1835,11 @@ void har_handle_stun(object *obj) {
             } else if(obj->cur_animation->id == ANIM_JUMPING) {
                 float hpfactor = ((h->health_max * 25.0 / 81.0) + h->health) / h->health_max;
 
-                h->endurance -= (hpfactor * stunfactor) + STUN_RECOVERY_CONSTANT;
+                h->endurance -= (hpfactor * stunfactor) + STUN_RECOVERY_JUMPING_CONSTANT;
             } else if(obj->cur_animation->id < (ANIM_SCREW | ANIM_JUMPING)) { // Cover all other cases
                 float hpfactor = ((h->health_max * 5.0 / 27.0) + h->health) / h->health_max;
 
-                h->endurance -= (hpfactor * stunfactor) + STUN_RECOVERY_CONSTANT;
+                h->endurance -= (hpfactor * stunfactor) + STUN_RECOVERY_OTHER_CONSTANT;
             }
             if(h->endurance < 0) {
                 h->endurance = 0;
@@ -1883,11 +1914,18 @@ void har_tick(object *obj) {
 
         if(h->throw_duration == 0) {
             // we've already called har_take_damage, so just apply the damage and check for defeat
-            h->health -= h->last_damage_value;
+            // MASTER.DAT 0x189CC: the throw's damage goes through the same armor reduction as any other hit
+            game_player *thrown_player = game_state_get_player(obj->gs, h->player_id);
+            if(thrown_player->pilot->photo) {
+                har_lose_health(h, h->last_damage_value / (0.25f * (2.5f + thrown_player->pilot->armor)));
+            } else {
+                har_lose_health(h, h->last_damage_value);
+            }
             if(h->endurance < 0) {
                 h->endurance = 0;
             } else {
-                apply_stun_damage(obj, h->last_stun_value);
+                // MASTER.DAT 0x11B3C: the throw's final hit uses damage / 2 as stun
+                apply_stun_damage(obj, h->last_stun_value / 2);
             }
 
             if(h->health <= 0) {
@@ -1959,6 +1997,14 @@ void har_tick(object *obj) {
                 har_event_hit_wall(h, wall, ctrl);
             }
         }
+    }
+
+    // MASTER.DAT 0x13D44: animation tag b1 breaks through the Fire Pit floor, b2 breaks the grate (secret allowed)
+    if(player_frame_isset(obj, TAG_B1)) {
+        obj->gs->floor_break = true;
+    }
+    if(player_frame_isset(obj, TAG_B2) && obj->gs->secret_allowed) {
+        obj->gs->floor_break_anim = true;
     }
 
     // Check for HAR specific palette tricks
@@ -2085,8 +2131,34 @@ bool is_har_idle_air(object *obj) {
     return (obj->cur_animation->id == ANIM_JUMPING) && game_state_hars_are_alive(obj->gs);
 }
 
+// MASTER.DAT 0x112A4 / 0x16F74: arena bits (8 << arena), secret allowed (0x2000) and "opponent was destroyed"
+// (0x4000) in the move position constraints must all be present in the HAR's situation flags.
+static bool har_pos_conditions_met(object *obj, af_move *move) {
+    const uint16_t checked = 0x00F8 | POS_FIRE_ICE_ALLOWED | POS_OPP_FIRE_ICE_DESTRUCT;
+    uint16_t need = move->pos_constraints & checked;
+    if(need == 0) {
+        return true;
+    }
+    uint16_t have = 0;
+    int arena_id = obj->gs->this_id - SCENE_ARENA0;
+    if(arena_id >= 0 && arena_id <= 4) {
+        have |= 8 << arena_id;
+    }
+    if(obj->gs->secret_allowed) {
+        have |= POS_FIRE_ICE_ALLOWED;
+    }
+    if(obj->gs->fight_stats.finish == FINISH_DESTRUCTION) {
+        have |= POS_OPP_FIRE_ICE_DESTRUCT;
+    }
+    return (have & need) == need;
+}
+
 bool is_move_chain_allowed(object *obj, af_move *move) {
     har *h = object_get_userdata(obj);
+
+    if(!har_pos_conditions_met(obj, move)) {
+        return false;
+    }
 
     bool allowed_in_idle = true;
     if(move->pos_constraints & 0x2) { // Not allowed to perform this move normally
@@ -2212,7 +2284,7 @@ af_move *scrap_destruction_cheat(object *obj) {
     for(int i = 0; i < 70; i++) {
         af_move *move;
         if((move = af_get_move(h->af_data, i))) {
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__SWITCH__)
             // 안드로이드 간편 마무리: 승리 후 주먹 = 반파, 반파 중 발 = 완파
             const bool scrap_button = h->punch_valid, destruct_button = h->kick_valid;
 #else
@@ -2227,6 +2299,13 @@ af_move *scrap_destruction_cheat(object *obj) {
             if(move->category == CAT_DESTRUCTION && h->state == STATE_SCRAP && destruct_button &&
                (player_frame_isset(obj, TAG_JF2) ||
                 (player_frame_isset(obj, TAG_JN) && i == player_frame_get(obj, TAG_JN)))) {
+                return move;
+            }
+
+            // Fire Pit floor break: the Destruction button again while the Destruction may chain into it
+            if(h->state == STATE_DESTRUCTION && destruct_button && (move->pos_constraints & POS_IN_ARENA3) &&
+               player_frame_isset(obj, TAG_JN) && i == player_frame_get(obj, TAG_JN) &&
+               is_move_chain_allowed(obj, move)) {
                 return move;
             }
         }
@@ -2348,14 +2427,14 @@ int har_act(object *obj, int act_type) {
 
     game_player *self_player = game_state_get_player(obj->gs, h->player_id);
     bool ez_destruct = self_player->ez_destruct;
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__SWITCH__)
     // 오버레이 옵션 "간편 마무리" (기본 켜짐): 사람이 조종하는 쪽만
     if(omf_android_easy_finish && self_player->ctrl != NULL && self_player->ctrl->type != CTRL_TYPE_AI) {
         ez_destruct = true;
     }
 #endif
     if(ez_destruct && move == NULL &&
-       (h->state == STATE_VICTORY || h->state == STATE_SCRAP)) {
+       (h->state == STATE_VICTORY || h->state == STATE_SCRAP || h->state == STATE_DESTRUCTION)) {
         move = scrap_destruction_cheat(obj);
     }
 
@@ -2510,10 +2589,19 @@ int har_act(object *obj, int act_type) {
                         object_set_stride(obj, 7);
                     }
                 }
+                bool superjump = false;
                 if(input_staleness <= 6 && (h->inputs[1] == '1' || h->inputs[1] == '2' || h->inputs[1] == '3')) {
                     // jumping from crouch makes you jump 25% higher
                     vy = h->superjump_speed;
+                    superjump = true;
                 }
+                // MASTER.DAT 0x1667C: horizontal jump speed = walk speed * (0xD4 or 0x10A) * 0x14C / 65536,
+                // scaled by JUMP HEIGHT outside tournaments
+                float jump_x = (superjump ? 266.0f : 212.0f) * 332.0f / 65536.0f;
+                if(!is_tournament(obj->gs)) {
+                    jump_x *= obj->gs->match_settings.jump_height / 100.0f;
+                }
+                vx *= jump_x;
                 object_set_vel(obj, vec2f_create(vx, vy));
                 har_event_jump(h, jump_dir, ctrl);
                 break;
@@ -2721,7 +2809,12 @@ int har_create(object *obj, af *af_data, int dir, int har_id, int pilot_id, int 
         jump_multiplier = obj->gs->match_settings.jump_height / 100.0;
         vitality_multiplier = obj->gs->match_settings.vitality / 100.0;
         // see https://www.omf2097.com/wiki/doku.php?id=omf2097:stats
-        power_multiplier = 2.25 - 0.25 * power; // TODO: skip when either player is AI
+        // MASTER.DAT 0x1B2D0: POWER 1/2 only applies when both HARs are human controlled
+        controller *own_ctrl = game_player_get_ctrl(gp);
+        controller *other_ctrl = game_player_get_ctrl(game_state_get_player(obj->gs, !player_id));
+        if(own_ctrl && other_ctrl && own_ctrl->type != CTRL_TYPE_AI && other_ctrl->type != CTRL_TYPE_AI) {
+            power_multiplier = 2.25 - 0.25 * power;
+        }
 
         //  The stun cap is calculated as follows
         //  HAR Endurance * 3.6 * (Pilot Endurance + 16) / 23
@@ -2736,8 +2829,13 @@ int har_create(object *obj, af *af_data, int dir, int har_id, int pilot_id, int 
     // Health, endurance
     // HP is
     // (HAR hp * (Pilot Endurance + 25) / 35) * 1.1
-    local->health_max = local->health =
-        ((af_data->health * (pilot->endurance + 25) / 35) * 1.1) * power_multiplier * vitality_multiplier;
+    if(is_tournament(obj->gs)) {
+        // MASTER.DAT 0x1BDA9: tournament HP = 3 * (HAR hp * (Pilot Endurance + 25) / 35), no 1.1 factor
+        local->health_max = local->health = 3 * ((int)af_data->health * (pilot->endurance + 25) / 35);
+    } else {
+        local->health_max = local->health =
+            ((af_data->health * (pilot->endurance + 25) / 35) * 1.1) * power_multiplier * vitality_multiplier;
+    }
 
     // log_debug("HAR health is %d with pilot endurance %d and base health %d", local->health, pilot->endurance,
     // af_data->health);
@@ -2756,6 +2854,8 @@ int har_create(object *obj, af *af_data, int dir, int har_id, int pilot_id, int 
     // Insanius: I went ahead and changed the formulas to use division instead of multiplication since it's more precise
     // for us Insanius: jump speed = speed up * vertical_agility_modifier * 212 / 256 Insanius: superjump speed = speed
     // up * vertical_agility_modifier * 266 / 256
+    // MASTER.DAT 0x1B2D0 / 0x18DE4: HAR+0xC8 (vertical knockback) = (Agility + 35) / 45,
+    // HAR+0xCC (horizontal knockback, wall slam) = (Agility + 20) / 30
     float horizontal_agility_modifier = ((float)gp->pilot->agility + 35) / 45;
     float vertical_agility_modifier = ((float)gp->pilot->agility + 20) / 30;
     obj->horizontal_velocity_modifier = horizontal_agility_modifier;
@@ -2927,10 +3027,6 @@ int har_create(object *obj, af *af_data, int dir, int har_id, int pilot_id, int 
                 // scramble the move string
                 log_debug("disabling move %d on har %d because it has no-op animation string '%s'", i, har_id,
                           str_c(&move->ani.animation_string));
-                str_set_c(&move->move_string, "!");
-            }
-            if(move->pos_constraints & POS_IN_ARENA3) {
-                // TODO: disable all fire/ice moves indiscriminately for now
                 str_set_c(&move->move_string, "!");
             }
         }

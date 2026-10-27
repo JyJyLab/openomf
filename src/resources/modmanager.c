@@ -37,6 +37,10 @@
 // This is used to locate appropriate sprites
 int find_scale_factor(void) {
     settings *setting = settings_get();
+#if defined(__ANDROID__) || defined(__SWITCH__)
+    // The window is always fullscreen at the device resolution, so screen_w says nothing here
+    return setting->video.fb_scale;
+#endif
     int resolution_scale = 1;
     switch((int)(floor(setting->video.screen_w / 320.0))) {
         case 1:

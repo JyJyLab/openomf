@@ -1,6 +1,7 @@
 #ifndef HAR_ECONOMY_H
 #define HAR_ECONOMY_H
 
+#include "formats/chr.h"
 #include "formats/pilot.h"
 
 enum HAR_UPGRADE
@@ -35,5 +36,12 @@ void purchase_random_har(sd_pilot *pilot);
 void purchase_random_har_upgrades(sd_pilot *pilot);
 void upgrade_har(sd_pilot *pilot, enum HAR_UPGRADE);
 int32_t upgrade_price(sd_pilot *pilot, enum HAR_UPGRADE);
+
+// MASTER.DAT 0x3A1A0: a computer pilot spends a little money on single upgrade steps, each with its own chance.
+void ai_pilot_gradual_upgrade(sd_pilot *pilot);
+
+// MASTER.DAT 0x3ADC0: after each of the player's tournament matches the other pilots fight simulated matches
+// against their neighbour in the ranking, trade places and money, and grow their offense / defense.
+void trn_simulate_other_matches(sd_chr_file *chr);
 
 #endif // HAR_ECONOMY_H

@@ -79,7 +79,7 @@ void portrait_select(component *c, int pilot_id) {
 
     // Position and size hints for the gui component
     // These are set on layout function call
-    component_set_size_hints(c, local->img->data->w, local->img->data->h);
+    component_set_size_hints(c, local->img->data->render_w, local->img->data->render_h);
 
     // Save some information
     local->selected = pilot_id;
@@ -120,7 +120,7 @@ void portrait_set_from_sprite(component *c, sd_sprite *spr) {
     local->img = omf_calloc(1, sizeof(sprite));
 
     sprite_create(local->img, spr, -1);
-    component_set_size_hints(c, local->img->data->w, local->img->data->h);
+    component_set_size_hints(c, local->img->data->render_w, local->img->data->render_h);
 }
 
 component *portrait_create(int pilot_id) {

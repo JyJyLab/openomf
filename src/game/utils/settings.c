@@ -98,6 +98,7 @@ const field f_gameplay[] = {
     F_INT(settings_gameplay, power2, 5),
     F_BOOL(settings_gameplay, hazards_on, 1),
     F_INT(settings_gameplay, difficulty, 1),
+    F_INT(settings_gameplay, original_ai, 1),
     F_INT(settings_gameplay, rounds, 1)
 };
 

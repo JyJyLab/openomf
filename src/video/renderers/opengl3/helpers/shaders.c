@@ -65,7 +65,7 @@ static bool load_shader(GLuint program_id, GLenum shader_type, const char *shade
         log_error("Failed to load shader from %s", path_c(&shader_path));
         return false;
     }
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__SWITCH__)
     // GLSL 330 core -> GLSL ES 3.00: 첫 줄(#version)을 바꾸고 기본 정밀도를 넣는다.
     // 셰이더 본문은 두 버전 모두에서 통과하도록 작성되어 있음 (glslangValidator 로 확인)
     {

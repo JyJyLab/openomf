@@ -9,8 +9,8 @@
 #include "utils/vector.h"
 #include "video/surface.h"
 
+#include "utils/compat.h" // char32_t (uchar.h is missing on some platforms)
 #include <stdint.h>
-#include <uchar.h>
 #include <stdio.h>
 #include <string.h>
 

@@ -19,13 +19,50 @@ void menu_enter_advanced(component *c, void *userdata) {
     menu_set_submenu(component_get_parent(c), menu_advanced_create(s));
 }
 
+// MASTER.DAT 0x6157C: the CPU difficulty can only be raised up to a cap. The cap starts at Champion (or the current
+// difficulty if higher). Pressing right more than 20 times on the difficulty line raises it to Deadly; on handhelds
+// (changed from the original O+M+F key combination) another 21 presses raise it to Ultimate.
+static struct {
+    int cap;
+    int prev;
+    int right_presses;
+} difficulty_lock;
+
+static void menu_gameplay_difficulty_toggle(component *c, void *userdata, int pos) {
+    const int last = NUMBER_OF_AI_DIFFICULTY_TYPES - 1;
+    int prev = difficulty_lock.prev;
+    bool right = pos == prev + 1 || (prev == last && pos == 0);
+    bool left = pos == prev - 1 || (prev == 0 && pos == last);
+    if(right) {
+        difficulty_lock.right_presses++;
+        if(difficulty_lock.right_presses > 20 && difficulty_lock.cap < AI_DIFFICULTY_DEADLY) {
+            difficulty_lock.cap = AI_DIFFICULTY_DEADLY;
+        } else if(difficulty_lock.right_presses > 41 && difficulty_lock.cap < AI_DIFFICULTY_ULTIMATE) {
+            difficulty_lock.cap = AI_DIFFICULTY_ULTIMATE;
+        }
+        if(pos > difficulty_lock.cap || (prev == last && pos == 0)) {
+            pos = prev; // no wrap-around, stop at the cap
+        }
+    } else if(left && prev == 0) {
+        pos = 0; // no wrap-around at the bottom either
+    }
+    if(pos != textselector_get_pos(c)) {
+        textselector_set_pos(c, pos);
+    }
+    difficulty_lock.prev = pos;
+}
+
 component *menu_gameplay_create(scene *s) {
+    int difficulty = settings_get()->gameplay.difficulty;
+    difficulty_lock.cap = difficulty > AI_DIFFICULTY_CHAMPION ? difficulty : AI_DIFFICULTY_CHAMPION;
+    difficulty_lock.prev = difficulty;
+    difficulty_lock.right_presses = 0;
+
     const char *fightmode_opts[] = {"NORMAL", "HYPER"};
     const char *hazard_opts[] = {"OFF", "ON"};
 
     component *menu = menu_create();
     menu_attach(menu, label_create_title("GAMEPLAY"));
-    menu_attach(menu, filler_create());
     menu_attach(menu,
                 textslider_create_bind("SPEED", "Change the overall speed of the game. Press left and right to change.",
                                        10, false, menu_gameplay_speed_slide, s, &settings_get()->gameplay.speed));
@@ -50,8 +87,14 @@ component *menu_gameplay_create(scene *s) {
                 textselector_create_bind_opts("CPU:",
                                               "This determines how well the computer fights in a one player game. This "
                                               "has no effect on two player games. Press left and right to change.",
-                                              NULL, NULL, &settings_get()->gameplay.difficulty, ai_difficulty_names,
+                                              menu_gameplay_difficulty_toggle, NULL, &settings_get()->gameplay.difficulty,
+                                              ai_difficulty_names,
                                               NUMBER_OF_AI_DIFFICULTY_TYPES));
+    const char *ai_opts[] = {"OPENOMF", "ORIGINAL"};
+    menu_attach(menu, textselector_create_bind_opts("CPU AI",
+                                                    "ORIGINAL follows the AI of the DOS game (MASTER.DAT), OPENOMF uses "
+                                                    "the newer tactics AI. Takes effect from the next fight.",
+                                                    NULL, NULL, &settings_get()->gameplay.original_ai, ai_opts, 2));
     menu_attach(menu, textselector_create_bind_opts("",
                                                     "This will set matches so they are one round, best two out of "
                                                     "three rounds, or best three out of five rounds.",
