@@ -625,13 +625,16 @@ void har_move(object *obj) {
         game_state_find_object(obj->gs, game_player_get_har_obj_id(game_state_get_player(obj->gs, !h->player_id)));
     har *enemy_har = object_get_userdata(enemy_obj);
 
+    // MASTER.DAT 0x13D44 also ends the walk when the HAR gets past either wall
     if(h->walk_destination > 0 && h->walk_done_anim &&
        ((obj->pos.x >= h->walk_destination && object_get_direction(obj) == OBJECT_FACE_RIGHT) ||
-        (obj->pos.x <= h->walk_destination && object_get_direction(obj) == OBJECT_FACE_LEFT))) {
+        (obj->pos.x <= h->walk_destination && object_get_direction(obj) == OBJECT_FACE_LEFT) ||
+        obj->pos.x < ARENA_LEFT_WALL || obj->pos.x > ARENA_RIGHT_WALL)) {
         obj->pos.x = h->walk_destination;
         log_debug("reached destination!");
         if(obj->animation_state.shadow_corner_hack) {
-            object_set_direction(obj, object_get_direction(obj) * -1);
+            // shadow's scrap: face the wall it walked to (MASTER.DAT 0x13D44)
+            object_set_direction(obj, obj->pos.x < 161 ? OBJECT_FACE_LEFT : OBJECT_FACE_RIGHT);
         }
 
         object_set_vel(obj, vec2f_create(0, 0));

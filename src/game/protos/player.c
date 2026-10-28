@@ -342,15 +342,18 @@ void player_run_apply(object *obj) {
                 }
                 destination = max2(ARENA_LEFT_WALL, min2(ARENA_RIGHT_WALL, destination));
             } else if(script_is_tag_set_by_id(frame, TAG_CF)) {
-                // shadow's scrap, position is in the corner behind shadow
-                if(object_get_direction(enemy) == OBJECT_FACE_RIGHT) {
-                    destination = ARENA_RIGHT_WALL;
+                // shadow's scrap: walk to the wall on the far side from the enemy and lean against it.
+                // MASTER.DAT 0x13D44: the side comes from the enemy's position (x < 161 -> right wall) and the x+
+                // value keeps the spot inside the walls. Taking the side from the enemy's facing put the spot
+                // behind the wall (x 352) when the enemy had its back turned, and the HAR walked on forever.
+                int offset = trans_x * object_get_direction(obj);
+                destination = enemy->pos.x < 161 ? ARENA_RIGHT_WALL - offset : ARENA_LEFT_WALL + offset;
+                if(fabsf(obj->pos.x - destination) > 5.0) {
+                    object_set_direction(obj, obj->pos.x < destination ? OBJECT_FACE_RIGHT : OBJECT_FACE_LEFT);
                 } else {
-                    destination = ARENA_LEFT_WALL;
+                    // already there (also when the frame is entered again after the walk): face that wall
+                    object_set_direction(obj, destination < 161 ? OBJECT_FACE_LEFT : OBJECT_FACE_RIGHT);
                 }
-                destination += trans_x;
-                object_set_direction(obj, object_get_direction(enemy));
-                // flip the HAR's position for this animation
                 obj->animation_state.shadow_corner_hack = 1;
             } else {
                 destination = -1;
