@@ -10,7 +10,7 @@ project(openomf_switch C)
 get_filename_component(OMF "${CMAKE_CURRENT_SOURCE_DIR}/.." ABSOLUTE)
 set(OMF_DEPS_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/work/prefix" CACHE PATH "libxmp and libconfuse for the Switch")
 set(OMF_ROMFS "" CACHE PATH "folder packed into the nro as romfs")
-set(OMF_NX_VERSION "1.0.1" CACHE STRING "version shown in the homebrew menu")
+set(OMF_NX_VERSION "1.0.2" CACHE STRING "version shown in the homebrew menu")
 
 file(GLOB_RECURSE SRC LIST_DIRECTORIES OFF "${OMF}/src/*/*.c")
 list(FILTER SRC EXCLUDE REGEX "/src/audio/backends/.*/")

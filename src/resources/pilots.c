@@ -1,6 +1,7 @@
 
 #include "resources/pilots.h"
 #include "game/common_defines.h"
+#include "game/utils/settings.h"
 
 void pilot_get_info(pilot *pilot, int id) {
     // TODO read this from MASTER.DAT
@@ -106,7 +107,7 @@ static int sp_difficulty_shift(int value, int shift) {
     return value > shift ? value - shift : 0;
 }
 
-void pilot_apply_sp_difficulty(int *power, int *agility, int *endurance, int difficulty, int player_agility) {
+void pilot_apply_sp_difficulty(int *power, int *agility, int *endurance, int difficulty, int speed_limit) {
     static const int penalty[] = {5, 2, 0, 0, -2, -4, -7};
     if(difficulty < 0 || difficulty > 6) {
         return;
@@ -116,11 +117,26 @@ void pilot_apply_sp_difficulty(int *power, int *agility, int *endurance, int dif
     *power = sp_difficulty_shift(*power, shift);
     *agility = sp_difficulty_shift(*agility, shift);
     *endurance = sp_difficulty_shift(*endurance, shift);
-    if(shift < 0) {
-        // speed limit: the bonus stops at the player's agility
-        int limit = base_agility > player_agility ? base_agility : player_agility;
+    if(shift < 0 && speed_limit >= 0) {
+        // speed limit: the bonus stops at speed_limit
+        int limit = base_agility > speed_limit ? base_agility : speed_limit;
         if(*agility > limit) {
             *agility = limit;
         }
     }
+}
+
+int pilot_cpu_speed_limit(void) {
+    if(!settings_get()->gameplay.cpu_speed_limit) {
+        return -1;
+    }
+    int fastest = 0;
+    for(int id = PILOT_CRYSTAL; id <= PILOT_RAVEN; id++) {
+        pilot p;
+        pilot_get_info(&p, id);
+        if(p.agility > fastest) {
+            fastest = p.agility;
+        }
+    }
+    return fastest;
 }

@@ -62,6 +62,7 @@ component *menu_gameplay_create(scene *s) {
     const char *hazard_opts[] = {"OFF", "ON"};
 
     component *menu = menu_create();
+    menu_set_padding(menu, 2); // 12 lines: with the default padding the box would run into the help text
     menu_attach(menu, label_create_title("GAMEPLAY"));
     menu_attach(menu,
                 textslider_create_bind("SPEED", "Change the overall speed of the game. Press left and right to change.",
@@ -90,6 +91,12 @@ component *menu_gameplay_create(scene *s) {
                                               menu_gameplay_difficulty_toggle, NULL, &settings_get()->gameplay.difficulty,
                                               ai_difficulty_names,
                                               NUMBER_OF_AI_DIFFICULTY_TYPES));
+    menu_attach(menu, textselector_create_bind_opts("CPU SPEED LIMIT",
+                                                    "ON keeps the computer from getting faster than the fastest pilot "
+                                                    "(Milano) at higher difficulties. OFF lets it speed up as in the "
+                                                    "original game. One player games only.",
+                                                    NULL, NULL, &settings_get()->gameplay.cpu_speed_limit, hazard_opts,
+                                                    2));
     const char *ai_opts[] = {"OPENOMF", "ORIGINAL"};
     menu_attach(menu, textselector_create_bind_opts("CPU AI",
                                                     "ORIGINAL follows the AI of the DOS game (MASTER.DAT), OPENOMF uses "

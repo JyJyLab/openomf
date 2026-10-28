@@ -380,7 +380,7 @@ bool modmanager_init(void) {
             log_info("mod %s has %d files", path_c(p), (int)entries);
             for(size_t i = 0; i < (size_t)entries; i++) {
                 if(zip_entry_openbyindex(zip, i) == 0 && zip_entry_isdir(zip) == 0) {
-                    log_info("mod contains %s", zip_entry_name(zip));
+                    log_debug("mod contains %s", zip_entry_name(zip));
                     str filename;
                     str_create(&filename);
                     str_from_c(&filename, zip_entry_name(zip));
@@ -407,7 +407,7 @@ bool modmanager_init(void) {
                     path_filename(&p2, &fn);
                     path_ext(&p2, &ext);
 
-                    log_info("path %s has filename %s and extension %s", str_c(&filename), str_c(&fn), str_c(&ext));
+                    log_debug("path %s has filename %s and extension %s", str_c(&filename), str_c(&fn), str_c(&ext));
 
                     if(str_ends_with(&filename, "-hitcoords.png")) {
                         // parse as hitcoord overlay (raw VGA image with 3 layers)
@@ -417,7 +417,7 @@ bool modmanager_init(void) {
 
                         if(sd_vga_image_from_png_in_memory(&buf->img, entry_buf, entry_size, true, NULL) ==
                            SD_SUCCESS) {
-                            log_info("got hitcoord overlay %ux%u", buf->img.w, buf->img.h);
+                            log_debug("got hitcoord overlay %ux%u", buf->img.w, buf->img.h);
                             hashmap_put_str(&mod_resources, str_c(&filename), buf, sizeof(mod_asset));
                             omf_free(buf);
                         } else {
@@ -439,7 +439,7 @@ bool modmanager_init(void) {
                                 free_mod_asset(existing);
                             }
 
-                            log_info("got vga image %ux%u", buf->img.w, buf->img.h);
+                            log_debug("got vga image %ux%u", buf->img.w, buf->img.h);
 
                             hashmap_put_str(&mod_resources, str_c(&filename), buf, sizeof(mod_asset));
                             omf_free(buf);
@@ -502,7 +502,7 @@ bool modmanager_init(void) {
 #ifdef OPUSFILE_FOUND
                     } else if(str_equal_c(&ext, ".ogg")) {
                         if(op_test(NULL, entry_buf, entry_size) == 0) {
-                            log_info("got OPUS file %s", str_c(&filename));
+                            log_debug("got OPUS file %s", str_c(&filename));
                             list *l;
                             unsigned int len;
                             mod_asset *buf = omf_calloc(1, sizeof(mod_asset));
@@ -553,7 +553,7 @@ bool modmanager_get_bk_background(str *name, sd_vga_image **img) {
     if(!hashmap_get_str(&mod_resources, str_c(&filename), (void **)&obuf, &len)) {
         assert(obuf->type == MOD_VGA_IMAGE);
         *img = &obuf->img;
-        log_info("got vga image %ux%u with size %u", (*img)->w, (*img)->h, len);
+        log_debug("got vga image %ux%u with size %u", (*img)->w, (*img)->h, len);
         found = true;
     }
     str_free(&filename);
@@ -598,7 +598,7 @@ bool modmanager_get_sprite(animation_source source, str *name, int animation, in
         if(!hashmap_get_str(&mod_resources, str_c(&filename), (void **)&obuf, &len)) {
             assert(obuf->type == MOD_SPRITE);
             *spr = &obuf->spr;
-            log_info("got sprite %s %dx%d with scale %d", str_c(&filename), (*spr)->width, (*spr)->height, i);
+            log_debug("got sprite %s %dx%d with scale %d", str_c(&filename), (*spr)->width, (*spr)->height, i);
             str_free(&filename);
             return true;
         }
@@ -634,7 +634,7 @@ bool modmanager_get_sprite(animation_source source, str *name, int animation, in
         if(!hashmap_get_str(&mod_resources, str_c(&filename), (void **)&obuf, &len)) {
             assert(obuf->type == MOD_SPRITE);
             *spr = &obuf->spr;
-            log_info("got sprite %s %dx%d with scale %d", str_c(&filename), (*spr)->width, (*spr)->height, i);
+            log_debug("got sprite %s %dx%d with scale %d", str_c(&filename), (*spr)->width, (*spr)->height, i);
             found = true;
         }
 
@@ -774,7 +774,7 @@ bool modmanager_get_music(str *name, unsigned int index, unsigned char **buf, si
 
     if(!hashmap_get_str(&mod_resources, str_c(&filename), (void **)&l, &len)) {
         unsigned int count = list_size(l);
-        log_info("found %u music files for %s", count, str_c(name));
+        log_debug("found %u music files for %s", count, str_c(name));
         if(index >= count) {
             log_warn("requested index %u into list of %u members", index, count);
             return false;

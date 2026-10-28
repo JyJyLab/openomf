@@ -407,17 +407,15 @@ void handle_action(scene *scene, int player, int action) {
             reset_cursor_blinky(local, player);
             break;
         case ACT_DOWN:
+            // nova selection cheat (MASTER.DAT 0x4DC30): only Down pressed while already on Katana in the HAR
+            // select counts, not the move onto it, so ten presses do it whichever side Katana was entered from
+            if(local->page == HAR_SELECT && *row == 1 && *column == 0 && local->katana_down_count[player] < 10) {
+                local->katana_down_count[player]++;
+            }
             if(*row == 0) {
                 *row = 1;
             }
             reset_cursor_blinky(local, player);
-            // nova selection cheat
-            if(*row == 1 && *column == 0) {
-                local->katana_down_count[player]++;
-                if(local->katana_down_count[player] > 11) {
-                    local->katana_down_count[player] = 11;
-                }
-            }
             break;
         case ACT_KICK | ACT_UP:
             if(local->page == PILOT_SELECT && check_pilot_stat_cheat(scene, player) &&
@@ -488,6 +486,7 @@ void handle_action(scene *scene, int player, int action) {
 
                     // prepare for nova selection cheat
                     memset(local->cheat_selected, 0, sizeof(local->cheat_selected));
+                    memset(local->katana_down_count, 0, sizeof(local->katana_down_count));
                     local->cheat_selected[0][local->pilot_id_a] = 1;
                     local->cheat_selected[1][local->pilot_id_b] = 1;
 
@@ -499,7 +498,7 @@ void handle_action(scene *scene, int player, int action) {
                 } else {
                     int nova_activated[2] = {1, 1};
                     for(int i = 0; i < 2; i++) {
-                        nova_activated[i] = local->katana_down_count[i] >= 11 &&
+                        nova_activated[i] = local->katana_down_count[i] >= 10 &&
                                             !memchr(local->cheat_selected[i], 0, sizeof(local->cheat_selected[i]));
                     }
                     if(nova_activated[0] && CURSOR_NOVA_SELECT(local, 0)) {
@@ -541,7 +540,7 @@ void handle_action(scene *scene, int player, int action) {
                         pilot_get_info(&p_b, player2->pilot->pilot_id);
                         int pw = p_b.power, ag = p_b.agility, en = p_b.endurance;
                         pilot_apply_sp_difficulty(&pw, &ag, &en, settings_get()->gameplay.difficulty,
-                                                  player1->pilot->agility);
+                                                  pilot_cpu_speed_limit());
                         player2->pilot->power = pw;
                         player2->pilot->agility = ag;
                         player2->pilot->endurance = en;

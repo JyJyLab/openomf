@@ -359,7 +359,10 @@ static void menu_layout(component *c, int x, int y, int w, int h) {
             offset += obj_w + m->padding;
         } else {
             int obj_h = size_hint.y > -1 ? size_hint.y : non_hinted_item_space;
-            obj_h = min2(left, obj_h);
+            if(non_reserved_items > 0) {
+                // a menu of fixed size items only grows past its frame instead of piling the last items up
+                obj_h = min2(left, obj_h);
+            }
             component_layout(*tmp, x, y + offset, w, obj_h);
             offset += obj_h + m->padding;
         }

@@ -75,7 +75,7 @@ int sd_vga_image_from_png_in_memory(sd_vga_image *img, const unsigned char *buf,
     if(!read_paletted_png_from_memory(buf, len, NULL, &w, &h, allow_transparency, NULL)) {
         return SD_FAILURE;
     }
-    log_info("allocating png %dx%d", w, h);
+    log_debug("allocating png %dx%d", w, h);
     if(sd_vga_image_create(img, w, h) != SD_SUCCESS) {
         return SD_FAILURE;
     }

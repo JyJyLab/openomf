@@ -300,7 +300,7 @@ void newsroom_input_tick(scene *scene) {
                                     // computer opponent stats follow the difficulty (MASTER.DAT 0x494BC)
                                     pilot_apply_sp_difficulty(&p.power, &p.agility, &p.endurance,
                                                               settings_get()->gameplay.difficulty,
-                                                              p1->pilot->agility);
+                                                              pilot_cpu_speed_limit());
                                     p2->pilot->endurance = p.endurance;
                                     p2->pilot->power = p.power;
                                     p2->pilot->agility = p.agility;

@@ -224,6 +224,8 @@ OPENOMF	신형
 ORIGINAL follows the AI of the DOS game (MASTER.DAT), OPENOMF uses the newer tactics AI. Takes effect from the next fight.	원작은 DOS 원본 게임의 컴퓨터 AI 를, 신형은 새 전술 AI 를 씁니다. 다음 경기부터 적용됩니다.
 Some arenas have dangerous environments: spikes, electrivity, fighter planes, and the like. This option turns them on and off.	일부 경기장에는 가시, 전기, 전투기 같은 위험 요소가 있습니다. 이를 켜거나 끕니다.
 CPU:	컴퓨터:
+CPU SPEED LIMIT	컴퓨터 속도 제한
+ON keeps the computer from getting faster than the fastest pilot (Milano) at higher difficulties. OFF lets it speed up as in the original game. One player games only.	켬: 난이도가 올라도 컴퓨터가 가장 빠른 파일럿(밀라노)보다 빨라지지 않습니다. 끔: 원작처럼 난이도에 따라 빨라집니다. 1인 게임에만 적용됩니다.
 This determines how well the computer fights in a one player game. This has no effect on two player games. Press left and right to change.	1인 게임에서 컴퓨터의 실력을 정합니다. 2인 게임에는 영향이 없습니다. 왼쪽·오른쪽으로 바꿉니다.
 This will set matches so they are one round, best two out of three rounds, or best three out of five rounds.	경기를 1라운드, 3판 2선승, 5판 3선승 중에서 정합니다.
 ADVANCED OPTIONS	고급 설정

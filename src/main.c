@@ -36,13 +36,13 @@ void scan_game_controllers(void) {
         if(joy) {
             SDL_JoystickGUID guid = SDL_JoystickGetGUID(joy);
             SDL_JoystickGetGUIDString(guid, guid_str, 33);
-            log_info("Opened Joystick %d", i);
-            log_info(" * Name:              %s", SDL_JoystickNameForIndex(i));
-            log_info(" * Number of Axes:    %d", SDL_JoystickNumAxes(joy));
-            log_info(" * Number of Buttons: %d", SDL_JoystickNumButtons(joy));
-            log_info(" * Number of Balls:   %d", SDL_JoystickNumBalls(joy));
-            log_info(" * Number of Hats:    %d", SDL_JoystickNumHats(joy));
-            log_info(" * GUID          :    %s", guid_str);
+            log_debug("Opened Joystick %d", i);
+            log_debug(" * Name:              %s", SDL_JoystickNameForIndex(i));
+            log_debug(" * Number of Axes:    %d", SDL_JoystickNumAxes(joy));
+            log_debug(" * Number of Buttons: %d", SDL_JoystickNumButtons(joy));
+            log_debug(" * Number of Balls:   %d", SDL_JoystickNumBalls(joy));
+            log_debug(" * Number of Hats:    %d", SDL_JoystickNumHats(joy));
+            log_debug(" * GUID          :    %s", guid_str);
         } else {
             log_info("Joystick %d is unsupported", i);
         }
@@ -386,8 +386,9 @@ int main(int argc, char *argv[]) {
     log_set_level(LOG_INFO); // In release mode, drop debugs.
 #endif
 #ifdef __SWITCH__
-    // stderr is the debug log file there (switch/nx_debug.c): errors before the log file opens show up
-    log_add_stderr(LOG_INFO, false);
+    // stderr is the debug log file there (switch/nx_debug.c): errors before the log file opens show up. Warnings and
+    // errors only: every line costs several SD card writes (unbuffered), the log file has the rest
+    log_add_stderr(LOG_WARN, false);
 #endif
     if(log_level->count > 0) {
         if(!is_log_level(log_level->sval[0])) {

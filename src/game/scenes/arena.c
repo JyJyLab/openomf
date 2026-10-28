@@ -34,6 +34,7 @@
 #include "game/utils/ticktimer.h"
 #include "resources/fonts.h"
 #include "resources/languages.h"
+#include "resources/pilots.h"
 #include "resources/script_cache.h"
 #include "resources/sgmanager.h"
 #include "utils/allocator.h"
@@ -322,10 +323,9 @@ static void arena_enter_secret_stage(game_state *gs, int stage) {
         game_player_get_score(p1)->secret_multiplier = 10.0f;
     }
     pilot->enhancements[pilot->har_id] = 3;
-    // speed limit (user request 2026-10-27): FIRE / ICE are not faster than the player or the opponent they replace
-    int speed_limit = p1->pilot->agility > secret_saved_opponent.agility ? p1->pilot->agility
-                                                                          : secret_saved_opponent.agility;
-    if(pilot->agility > speed_limit) {
+    // "CPU speed limit" setting: FIRE / ICE are not faster than the fastest pilot either
+    int speed_limit = pilot_cpu_speed_limit();
+    if(speed_limit >= 0 && pilot->agility > speed_limit) {
         pilot->agility = speed_limit;
     }
     log_info("Secret stage %d: %s", stage, str_c(&pilot->name));

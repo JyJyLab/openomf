@@ -63,6 +63,7 @@ typedef struct {
     int hazards_on;
     int difficulty;
     int original_ai; ///< 1 = computer AI modelled on MASTER.DAT (0x514F0), 0 = OpenOMF tactics AI
+    int cpu_speed_limit; ///< 1 = the difficulty bonus never makes the computer faster than the fastest pilot (Milano)
     int rounds;
 } settings_gameplay;
 

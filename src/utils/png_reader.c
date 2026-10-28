@@ -186,7 +186,7 @@ bool read_paletted_png_from_memory(const unsigned char *buffer, size_t size, uns
         log_error("PNG must be paletted image");
     }
 
-    log_info("png is %dx%d", *w, *h);
+    log_debug("png is %dx%d", *w, *h);
 
     png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
     return valid;
